@@ -1,0 +1,21 @@
+name: dogfood
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch demo corpus (pre-existing, public)
+        run: git clone --depth 1 https://github.com/tuannx/arcade-agent-examples "$HOME/workspace/arcade-agent-examples"
+      - name: Install
+        run: pip install -e ".[api,dev]"
+      - name: Dogfood gate (tests + demo PASS/BLOCK + determinism)
+        run: bash scripts/dogfood.sh

@@ -82,3 +82,12 @@ def test_invalid_records_rejected():
 def test_evidence_pack_is_json_serializable():
     pack = evaluate(RECORD, CLEAN, evaluated_at=AT)
     json.dumps(pack)
+
+
+def test_unknown_component_sizes_warn_cap_cannot_trigger():
+    from arcade_attest.adapter import normalize_changelog
+
+    data = normalize_changelog({"smells": {"new": []}, "summary": {"entities_a": 5, "entities_b": 6}})
+    assert data["coverage"]["component_sizes_known"] is False
+    pack = evaluate(RECORD, {**data, "coverage": {**data["coverage"], "entities_b": 6}}, evaluated_at=AT)
+    assert any("component_entity_cap cannot trigger" in w for w in pack["coverage"]["warnings"])

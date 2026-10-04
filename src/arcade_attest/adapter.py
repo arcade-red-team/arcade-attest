@@ -63,6 +63,7 @@ def normalize_changelog(changelog: Any, *, components=None, refs=None, languages
         "languages_b": (cl.get("languages") or {}).get("b") or languages_b or [],
         "entities_a": summary.get("entities_a"),
         "entities_b": summary.get("entities_b"),
+        "component_sizes_known": components is not None,
         "warnings": [],
     }
     return {

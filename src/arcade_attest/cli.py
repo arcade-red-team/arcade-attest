@@ -42,11 +42,13 @@ def main(argv: list[str] | None = None) -> int:
     ev.add_argument("--head", required=True)
     ev.add_argument("--record", required=True, help="Decision Record JSON file")
     ev.add_argument("--language", default="python")
+    ev.add_argument("--evaluated-at", help="ISO-8601 UTC timestamp (reproducible runs); default: now")
     ev.add_argument("--out")
 
     fc = sub.add_parser("from-changelog", help="Evaluate an existing changelog_architecture JSON output")
     fc.add_argument("--changelog", required=True)
     fc.add_argument("--record", required=True)
+    fc.add_argument("--evaluated-at", help="ISO-8601 UTC timestamp (reproducible runs); default: now")
     fc.add_argument("--out")
 
     pl = sub.add_parser("payload", help="Build the EAS attestation payload for an evidence pack")
@@ -75,7 +77,7 @@ def main(argv: list[str] | None = None) -> int:
     else:
         raw = _load_json(args.changelog)
         data = normalize_changelog(raw.get("changelog", raw))
-    evaluated_at = _now()
+    evaluated_at = args.evaluated_at or _now()
     pack = evaluate(record, data, evaluated_at=evaluated_at, expires_at=_expiry(evaluated_at))
     _emit(pack, args.out)
     return 0 if pack["verdict"] != "BLOCK" else 2

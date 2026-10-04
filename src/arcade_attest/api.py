@@ -67,3 +67,20 @@ def get_decision(decision_uid: str):
 def get_payload(decision_uid: str):
     pack = get_decision(decision_uid)
     return build_attestation_payload(pack)
+
+
+@app.get("/v1/repos/{owner}/{repo}/latest-verdict")
+def latest_verdict(owner: str, repo: str):
+    wanted = f"{owner}/{repo}"
+    candidates = []
+    if STORE.exists():
+        for path in STORE.glob("att_*.json"):
+            try:
+                pack = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                continue
+            if pack.get("repo") == wanted:
+                candidates.append(pack)
+    if not candidates:
+        raise HTTPException(status_code=404, detail="no verdict stored for this repo")
+    return max(candidates, key=lambda pack: pack.get("evaluated_at", ""))

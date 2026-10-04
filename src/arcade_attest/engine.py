@@ -111,6 +111,8 @@ def evaluate(record: dict, data: dict, *, evaluated_at: str, expires_at: str | N
     warnings = list(coverage.get("warnings") or [])
     if coverage.get("entities_b") == 0:
         warnings.append("Head analysis produced 0 entities: possible parser blind spot, verdict may be a false PASS.")
+    if coverage.get("component_sizes_known") is False:
+        warnings.append("Component entity counts are unknown (changelog-only input): component_entity_cap cannot trigger on this input.")
     mode = record.get("mode", "advisory")
     pack = {
         "schema": "arcade-attest/evidence@1",
