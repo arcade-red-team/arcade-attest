@@ -10,6 +10,7 @@ from pathlib import Path
 from .adapter import analyze_pair, normalize_changelog
 from .anchor import build_attestation_payload
 from .engine import evaluate
+from .render import render_comment
 
 
 def _now() -> str:
@@ -56,6 +57,10 @@ def main(argv: list[str] | None = None) -> int:
     pl.add_argument("--base-commit", default="")
     pl.add_argument("--head-commit", default="")
 
+    rc = sub.add_parser("render-comment", help="Render a PR comment (markdown) from an evidence pack")
+    rc.add_argument("--pack", required=True)
+    rc.add_argument("--out")
+
     sv = sub.add_parser("serve", help="Run the HTTP API (requires the 'api' extra)")
     sv.add_argument("--host", default="127.0.0.1")
     sv.add_argument("--port", type=int, default=8787)
@@ -69,6 +74,14 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "payload":
         pack = _load_json(args.pack)
         print(json.dumps(build_attestation_payload(pack, base_commit=args.base_commit, head_commit=args.head_commit), indent=2))
+        return 0
+    if args.command == "render-comment":
+        comment = render_comment(_load_json(args.pack))
+        if args.out:
+            Path(args.out).write_text(comment, encoding="utf-8")
+            print(f"comment -> {args.out}")
+        else:
+            print(comment)
         return 0
 
     record = _load_json(args.record)

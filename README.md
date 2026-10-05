@@ -91,9 +91,9 @@ Example Decision Record: [`examples/decision-record.json`](examples/decision-rec
 
 ## Roadmap inside the window
 
-- D3–D4: register the EAS schema on Base Sepolia, attest on evaluate, verify page.
+- D3–D4: register the EAS schema on Base Sepolia, attest on evaluate, verify page. *(script ready: `scripts/eas_attest.py`, dry-run verified; on-chain execution awaits the owner's testnet wallet — issue #1. Verify page shipped: `docs/verify.html`.)*
 - D5–D6: dashboard — paste repo/PR → verdict + evidence + on-chain link.
-- D7: GitHub Action gate + MCP tools (`evaluate_decision`, `get_verdict`, `explain_evidence`).
+- D7: GitHub Action gate + MCP tools. *(done: `action.yml` composite gate; MCP `evaluate_decision`, `get_verdict`, `explain_evidence` via `python -m arcade_attest.mcp_server`.)*
 - D8–D9: pitch + demo video (≤ 3 min).
 - D10: submit early. Rules verification: [`RULES-VERIFIED.md`](RULES-VERIFIED.md).
 

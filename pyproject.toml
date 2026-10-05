@@ -15,6 +15,8 @@ dependencies = [
 
 [project.optional-dependencies]
 api = ["fastapi>=0.110", "uvicorn>=0.29"]
+mcp = ["mcp>=1.2,<2"]
+chain = ["web3>=6", "eth-abi>=5"]
 dev = ["pytest>=8"]
 
 [project.scripts]

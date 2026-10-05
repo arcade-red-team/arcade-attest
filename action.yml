@@ -1,0 +1,69 @@
+name: "ArcadeAttest Gate"
+description: "Deterministic architecture verdict (PASS/WARN/BLOCK) for a change, from a Decision Record. Blocks on BLOCK."
+author: "ArcadeAttest"
+
+inputs:
+  record:
+    description: "Path to the Decision Record JSON in the caller repo"
+    required: true
+  base-path:
+    description: "Directory holding the base (before) source tree"
+    required: true
+  head-path:
+    description: "Directory holding the head (after) source tree"
+    required: true
+  language:
+    description: "Primary language for analysis"
+    required: false
+    default: "python"
+  comment:
+    description: "Post the rendered verdict as a PR comment (requires GH_TOKEN)"
+    required: false
+    default: "true"
+
+outputs:
+  verdict:
+    description: "PASS, WARN or BLOCK"
+    value: ${{ steps.evaluate.outputs.verdict }}
+  pack:
+    description: "Path to the evidence pack JSON"
+    value: ${{ steps.evaluate.outputs.pack }}
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+    - name: Install arcade-attest
+      shell: bash
+      run: pip install "${{ github.action_path }}"
+    - name: Evaluate
+      id: evaluate
+      shell: bash
+      run: |
+        set +e
+        arcade-attest evaluate \
+          --base "${{ inputs.base-path }}" \
+          --head "${{ inputs.head-path }}" \
+          --record "${{ inputs.record }}" \
+          --language "${{ inputs.language }}" \
+          --out evidence-pack.json
+        code=$?
+        verdict=$(python3 -c "import json; print(json.load(open('evidence-pack.json'))['verdict'])")
+        echo "verdict=$verdict" >> "$GITHUB_OUTPUT"
+        echo "pack=evidence-pack.json" >> "$GITHUB_OUTPUT"
+        echo "ArcadeAttest verdict: $verdict (cli exit $code)"
+        exit $code
+    - name: Comment on PR
+      if: ${{ inputs.comment == 'true' && github.event_name == 'pull_request' }}
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        arcade-attest render-comment --pack evidence-pack.json --out comment.md
+        gh pr comment "${{ github.event.pull_request.number }}" --body-file comment.md
+
+branding:
+  icon: "shield"
+  color: "purple"

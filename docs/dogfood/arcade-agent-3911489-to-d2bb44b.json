@@ -1,0 +1,98 @@
+{
+  "schema": "arcade-attest/evidence@1",
+  "decision_id": "ADR-DOGFOOD-ARCADE-AGENT",
+  "record_version": 1,
+  "repo": "tuannx/arcade-agent",
+  "mode": "advisory",
+  "enforced": false,
+  "refs": {
+    "a": "/tmp/aa-base",
+    "b": "/tmp/aa-head"
+  },
+  "evaluated_at": "2026-10-05T01:58:32Z",
+  "expires_at": "2026-10-06T01:58:32Z",
+  "verdict": "PASS",
+  "verdict_code": 0,
+  "predicates": [
+    {
+      "type": "no_new_smells",
+      "severity": "fail",
+      "status": "pass",
+      "measured": 0,
+      "threshold": {
+        "kinds": "any",
+        "allowed": 0
+      },
+      "evidence": []
+    },
+    {
+      "type": "max_responsibility_shifts",
+      "severity": "warn",
+      "status": "pass",
+      "measured": 0,
+      "threshold": {
+        "max": 25
+      },
+      "evidence": []
+    },
+    {
+      "type": "component_entity_cap",
+      "severity": "warn",
+      "status": "pass",
+      "measured": 140,
+      "threshold": {
+        "max": 400,
+        "component": "any"
+      },
+      "evidence": []
+    }
+  ],
+  "measured": {
+    "smells_new": 0,
+    "responsibility_shifts": 0,
+    "largest_component": {
+      "name": "Parsers",
+      "entities": 140
+    }
+  },
+  "summary": {
+    "components_a": 11,
+    "components_b": 11,
+    "shifts": 0,
+    "entities_a": 378,
+    "entities_b": 407,
+    "entities_added": 29,
+    "entities_deleted": 0,
+    "smells_new": 0,
+    "smells_resolved": 0
+  },
+  "coverage": {
+    "languages_a": [
+      "python"
+    ],
+    "languages_b": [
+      "python"
+    ],
+    "entities_a": 378,
+    "entities_b": 407,
+    "component_sizes_known": true,
+    "warnings": []
+  },
+  "engine": {
+    "name": "arcade-attest",
+    "version": "0.1.0",
+    "analyzer": "arcade-agent changelog_architecture (PKG recovery)",
+    "llm_in_verdict": false
+  },
+  "honest_gaps": [
+    "No edge-level diff yet: deny_dependency predicates are not evaluated in this MVP.",
+    "Parser blind spots exist (for example files that declare no entities): a component can look empty and a verdict can be a false PASS. Coverage is reported in every evidence pack.",
+    "Predicate thresholds are starting guesses; they need per-repo history to calibrate.",
+    "An on-chain attestation proves the integrity and timestamp of a verdict, not that the verdict is objectively correct."
+  ],
+  "hashes": {
+    "decision_record_hash": "930101d1636adefa857274282c87249f58c3d1644e30068a7815f87161cfec64",
+    "evidence_hash": "3b90a02a7a2200437873315dcfaf62cf17948a4b7e014f2ceac0ebae3acb6f53"
+  },
+  "id": "att_3b90a02a7a220043"
+}

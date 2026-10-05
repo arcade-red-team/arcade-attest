@@ -12,11 +12,12 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
+from . import store
 from .adapter import analyze_pair
 from .anchor import build_attestation_payload
 from .engine import evaluate
 
-STORE = Path("data/decisions")
+STORE = store.STORE_DIR
 
 app = FastAPI(title="ArcadeAttest Decision API", version="0.1.0")
 
@@ -50,17 +51,16 @@ def evaluate_decision(request: EvaluateRequest):
         pack = evaluate(record, data, evaluated_at=evaluated_at, expires_at=expires)
     except ValueError as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
-    STORE.mkdir(parents=True, exist_ok=True)
-    (STORE / f"{pack['id']}.json").write_text(json.dumps(pack, indent=2), encoding="utf-8")
+    store.write_pack(pack)
     return pack
 
 
 @app.get("/v1/decisions/{decision_uid}")
 def get_decision(decision_uid: str):
-    path = STORE / f"{decision_uid}.json"
-    if not path.exists():
+    pack = store.read_pack(decision_uid)
+    if pack is None:
         raise HTTPException(status_code=404, detail="decision not found")
-    return json.loads(path.read_text(encoding="utf-8"))
+    return pack
 
 
 @app.get("/v1/decisions/{decision_uid}/attestation-payload")
@@ -71,16 +71,7 @@ def get_payload(decision_uid: str):
 
 @app.get("/v1/repos/{owner}/{repo}/latest-verdict")
 def latest_verdict(owner: str, repo: str):
-    wanted = f"{owner}/{repo}"
-    candidates = []
-    if STORE.exists():
-        for path in STORE.glob("att_*.json"):
-            try:
-                pack = json.loads(path.read_text(encoding="utf-8"))
-            except (OSError, json.JSONDecodeError):
-                continue
-            if pack.get("repo") == wanted:
-                candidates.append(pack)
-    if not candidates:
+    pack = store.latest_for_repo(f"{owner}/{repo}")
+    if pack is None:
         raise HTTPException(status_code=404, detail="no verdict stored for this repo")
-    return max(candidates, key=lambda pack: pack.get("evaluated_at", ""))
+    return pack

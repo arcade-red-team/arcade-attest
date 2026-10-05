@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ArcadeAttest — Verify an evidence pack</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 2rem auto; max-width: 860px; padding: 0 1rem; background:#0b1020; color:#e6e9f2; }
+  textarea { width: 100%; min-height: 180px; background:#121a2e; color:#e6e9f2; border:1px solid #22304d; border-radius:10px; padding:10px; }
+  button { background:#6d5cff; color:#fff; border:0; border-radius:10px; padding:10px 18px; cursor:pointer; font-weight:600; }
+  .ok { color:#34d399; } .bad { color:#fb7185; } .warn { color:#fbbf24; }
+  table { border-collapse: collapse; width:100%; margin-top:1rem; } td, th { border:1px solid #22304d; padding:6px 8px; text-align:left; }
+  code { word-break: break-all; }
+</style>
+</head>
+<body>
+<h1>ArcadeAttest — verify an evidence pack</h1>
+<p>Paste an evidence pack JSON. This page recomputes its <code>evidence_hash</code> locally
+(SHA-256 over the canonical JSON, exactly as the engine produced it) and checks the pack is
+internally consistent. It does <strong>not</strong> trust this page: recompute anywhere.</p>
+<textarea id="pack" placeholder='{"schema":"arcade-attest/evidence@1", ...}'></textarea>
+<p><button id="go">Verify hash</button> <span id="status"></span></p>
+<div id="out"></div>
+<script>
+function canonical(value) {
+  if (value === null || typeof value !== "object") return JSON.stringify(value);
+  if (Array.isArray(value)) return "[" + value.map(canonical).join(",") + "]";
+  return "{" + Object.keys(value).sort().map(k => JSON.stringify(k) + ":" + canonical(value[k])).join(",") + "}";
+}
+async function sha256(text) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+document.getElementById("go").onclick = async () => {
+  const status = document.getElementById("status"), out = document.getElementById("out");
+  out.innerHTML = "";
+  let pack;
+  try { pack = JSON.parse(document.getElementById("pack").value); }
+  catch (e) { status.innerHTML = '<span class="bad">Invalid JSON</span>'; return; }
+  const expected = pack.hashes && pack.hashes.evidence_hash;
+  const clone = JSON.parse(JSON.stringify(pack));
+  delete clone.id;
+  if (clone.hashes) delete clone.hashes.evidence_hash;
+  const actual = await sha256(canonical(clone));
+  const match = expected && actual === expected;
+  status.innerHTML = match
+    ? '<span class="ok">evidence_hash MATCHES — pack is internally consistent</span>'
+    : '<span class="bad">HASH MISMATCH — pack was altered after evaluation</span>';
+  const rows = (pack.predicates || []).map(p =>
+    `<tr><td><code>${p.type}</code></td><td>${p.severity}</td><td>${p.status}</td><td>${p.measured}</td></tr>`).join("");
+  const warnings = ((pack.coverage || {}).warnings || []).map(w => `<li>${w}</li>`).join("");
+  out.innerHTML = `
+    <h2>Verdict: ${pack.verdict} (${pack.verdict_code})</h2>
+    <p>Decision <code>${pack.decision_id}</code> · repo <code>${pack.repo || "n/a"}</code> · pack <code>${pack.id || ""}</code></p>
+    <p>recomputed <code>${actual}</code><br>recorded&nbsp;&nbsp; <code>${expected || "n/a"}</code></p>
+    <table><tr><th>Predicate</th><th>Severity</th><th>Status</th><th>Measured</th></tr>${rows}</table>
+    ${warnings ? `<h3>Coverage warnings</h3><ul>${warnings}</ul>` : ""}
+    <p>On-chain check (Base Sepolia, after D3): query the attestation UID on
+    <code>base-sepolia.easscan.org</code> and confirm its <code>evidenceHash</code> equals the recorded hash above.</p>`;
+};
+</script>
+</body>
+</html>
