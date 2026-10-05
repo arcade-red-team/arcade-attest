@@ -23,3 +23,11 @@ every claim below maps to evidence; unmapped claims are marked unverified.
 - `GET /v1/repos/{owner}/{repo}/latest-verdict` (issue #4, partial — MCP remains).
 
 Tests at review time: 9 passed. Demo + determinism gates green.
+
+## Addendum 2026-10-05: external gate trial
+
+This PR's branch adds `.github/workflows/doctrine-gate.yml`, pinning the
+redteam-doctrine Action by full SHA. The PR itself is the test vehicle:
+expected outcome is a rendered verdict comment produced by the Action on a
+real GitHub runner (closing the "not yet exercised outside its own repo"
+gap recorded above). Result recorded in the PR thread.
