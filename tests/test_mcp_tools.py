@@ -1,8 +1,12 @@
+import asyncio
+import copy
 import json
 
-from arcade_attest import store
-from arcade_attest.engine import evaluate
-from arcade_attest.mcp_server import explain_evidence, get_verdict
+import pytest
+
+from arcade_attest import mcp_server, store
+from arcade_attest.engine import evaluate, sha256_hex
+from arcade_attest.mcp_server import _register, explain_evidence, get_verdict
 from arcade_attest.render import render_comment
 
 RECORD = {
@@ -50,3 +54,39 @@ def test_render_comment_is_template_from_pack(tmp_path, monkeypatch):
     assert pack["id"] in comment
     assert "no_new_smells" in comment
     json.dumps(pack)  # pack stays JSON-serializable
+
+
+def test_mcp_evaluate_tool_schema_is_typed_object_not_json_string():
+    pytest.importorskip("mcp")
+    tools = asyncio.run(_register().list_tools())
+    tool = next(t for t in tools if t.name == "evaluate_decision")
+    props = tool.inputSchema["properties"]
+    assert "decision_record_json" not in props
+    assert "decision_record" in props
+    record_schema = tool.inputSchema["$defs"]["DecisionRecordInput"]
+    assert record_schema["type"] == "object"
+    assert set(record_schema["required"]) == {"id", "predicates"}
+    predicate_schema = tool.inputSchema["$defs"]["PredicateInput"]
+    assert predicate_schema["properties"]["type"]["enum"] == [
+        "no_new_smells",
+        "max_responsibility_shifts",
+        "component_entity_cap",
+    ]
+    assert predicate_schema["properties"]["severity"]["enum"] == ["fail", "warn"]
+
+
+def test_mcp_evaluate_tool_accepts_structured_record_and_preserves_hash(tmp_path, monkeypatch):
+    pytest.importorskip("mcp")
+    monkeypatch.setattr(store, "STORE_DIR", tmp_path)
+    monkeypatch.setattr(mcp_server, "analyze_pair", lambda base, head, language="python": copy.deepcopy(DATA))
+    record = {**RECORD, "status": "accepted"}  # extra field must survive: it is hashed
+    result = asyncio.run(
+        _register().call_tool(
+            "evaluate_decision",
+            {"base_path": "base", "head_path": "head", "decision_record": record},
+        )
+    )
+    content = result[0] if isinstance(result, tuple) else result
+    pack = json.loads(content[0].text)
+    assert pack["verdict"] == "BLOCK"
+    assert pack["hashes"]["decision_record_hash"] == sha256_hex(record)

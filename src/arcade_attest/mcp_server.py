@@ -8,14 +8,46 @@ LLMs calling these tools receive verdicts; they never produce them.
 """
 from __future__ import annotations
 
-import json
 from datetime import datetime, timedelta, timezone
+from typing import Any, Literal
 
 from . import store
 from .adapter import analyze_pair
 from .anchor import build_attestation_payload
 from .engine import evaluate
 from .scoring import list_profiles
+
+# Typed MCP tool signature: FastMCP generates the JSON Schema from these
+# models, so an LLM caller passes a structured Decision Record object
+# instead of hand-building a JSON string. pydantic ships with the mcp
+# extra; the guard keeps the plain functions below importable without
+# the transport installed. extra="allow" plus
+# model_dump(exclude_unset=True) at the tool boundary passes the record
+# through unchanged in content, so decision_record_hash matches the
+# CLI/API surfaces.
+try:
+    from pydantic import BaseModel, ConfigDict
+
+    class PredicateInput(BaseModel):
+        model_config = ConfigDict(extra="allow")
+
+        type: Literal["no_new_smells", "max_responsibility_shifts", "component_entity_cap"]
+        severity: Literal["fail", "warn"] = "fail"
+        params: dict[str, Any] | None = None
+
+    class DecisionRecordInput(BaseModel):
+        model_config = ConfigDict(extra="allow")
+
+        id: str
+        predicates: list[PredicateInput]
+        repo: str | None = None
+        version: int | None = None
+        mode: str | None = None
+        scoring: dict[str, Any] | None = None
+
+except ImportError:  # pragma: no cover - only when the mcp extra is absent
+    PredicateInput = DecisionRecordInput = None  # type: ignore[assignment,misc]
+
 
 def _now() -> datetime:
     return datetime.now(timezone.utc)
@@ -97,24 +129,31 @@ def _register() -> "object":
     mcp = FastMCP("arcade-attest")
 
     @mcp.tool(name="evaluate_decision")
-    def _evaluate_tool(base_path: str, head_path: str, decision_record_json: str, language: str = "python") -> str:
-        """Evaluate a Decision Record (JSON string) against base/head source trees; returns the evidence pack JSON.
+    def _evaluate_tool(
+        base_path: str, head_path: str, decision_record: DecisionRecordInput, language: str = "python"
+    ) -> dict:
+        """Evaluate a Decision Record against base/head source trees; returns the evidence pack.
 
-        The record may include optional `scoring`: {profile: a
-        list_scoring_profiles id or "auto", weights: {criterion: non-negative
-        number}, context: {tags: [...]}} for admin criterion weights.
+        decision_record is a structured object: required `id` and a non-empty
+        `predicates` list (type is one of no_new_smells,
+        max_responsibility_shifts, component_entity_cap; severity fail|warn;
+        params.max required for the two max predicates). The record may
+        include optional `scoring`: {profile: a list_scoring_profiles id or
+        "auto", weights: {criterion: non-negative number}, context:
+        {tags: [...]}} for admin criterion weights. Do not pass JSON text.
         """
-        return json.dumps(evaluate_decision(base_path, head_path, json.loads(decision_record_json), language))
+        record = decision_record.model_dump(exclude_unset=True)
+        return evaluate_decision(base_path, head_path, record, language)
 
     @mcp.tool(name="get_verdict")
-    def _get_tool(decision_uid: str) -> str:
+    def _get_tool(decision_uid: str) -> dict:
         """Fetch a stored evidence pack by its att_ id."""
-        return json.dumps(get_verdict(decision_uid))
+        return get_verdict(decision_uid)
 
     @mcp.tool(name="explain_evidence")
-    def _explain_tool(decision_uid: str) -> str:
+    def _explain_tool(decision_uid: str) -> dict:
         """Explain which predicates triggered, with measurements and coverage warnings."""
-        return json.dumps(explain_evidence(decision_uid))
+        return explain_evidence(decision_uid)
 
     @mcp.tool(name="list_scoring_profiles")
     def _profiles_tool() -> dict:
