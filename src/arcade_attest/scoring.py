@@ -383,21 +383,229 @@ CRITERION_IDS: tuple[str, ...] = (
 )
 
 
-def score_all(bundle: dict, *, max_workers: int = 10) -> list[dict]:
+# --- Admin weight configuration: template/appetite profiles ("skills") -----
+# Each profile is a selection skill for agents applying the Decision API: the
+# manifest under skills/scoring/<id>.json mirrors this registry 1:1 (a test
+# enforces that), an agent picks a profile id from the `apply_when` signals,
+# and the deterministic engine resolves and validates the weights. An admin
+# may also override individual weights; verdict thresholds never move.
+
+
+def _weights(**overrides: float) -> dict[str, float]:
+    weights = {criterion_id: 1.0 for criterion_id in CRITERION_IDS}
+    weights.update(overrides)
+    return weights
+
+
+SCORING_PROFILES: tuple[dict, ...] = (
+    {
+        "id": "balanced",
+        "name": "Balanced (default)",
+        "appetite": "balanced",
+        "description": "Every criterion counts equally. Default when an admin configures nothing.",
+        "apply_when": {"signals": ["no special signal", "first rollout", "baseline reporting"]},
+        "weights": _weights(),
+    },
+    {
+        "id": "strict_gate",
+        "name": "Strict Gate",
+        "appetite": "risk_averse",
+        "description": "Blocking/architecture-board gates: smells, god components, coupling and evidence confidence dominate.",
+        "apply_when": {"mode": ["blocking"], "signals": ["architecture board", "regulated", "high risk"]},
+        "weights": _weights(
+            smell_regression=3.0, responsibility_stability=2.0, god_component_risk=3.0,
+            component_balance=1.5, modularity_trend=1.5, coupling_control=2.5,
+            change_containment=1.5, evidence_confidence=2.0,
+        ),
+    },
+    {
+        "id": "ship_fast",
+        "name": "Ship Fast",
+        "appetite": "speed",
+        "description": "Small-team/startup flow: containment and responsibility stability dominate; trend criteria still report but weigh less.",
+        "apply_when": {"signals": ["ship-fast", "startup", "mvp", "small team"]},
+        "weights": _weights(
+            smell_regression=1.5, responsibility_stability=2.0, god_component_risk=1.0,
+            component_balance=0.5, modularity_trend=1.0, cohesion_trend=0.5,
+            coupling_control=1.0, recovery_confidence_trend=0.5,
+            change_containment=3.0, evidence_confidence=1.5,
+        ),
+    },
+    {
+        "id": "refactor_friendly",
+        "name": "Refactor Friendly",
+        "appetite": "refactor_tolerant",
+        "description": "Migrations and refactors: modularity/cohesion/RCI/balance dominate; shifts and churn are expected, so they weigh less.",
+        "apply_when": {"signals": ["refactor", "migration", "modernization"]},
+        "weights": _weights(
+            smell_regression=1.5, responsibility_stability=0.5, god_component_risk=2.0,
+            component_balance=2.0, modularity_trend=3.0, cohesion_trend=2.5,
+            coupling_control=2.0, recovery_confidence_trend=2.5,
+            change_containment=0.5, evidence_confidence=1.5,
+        ),
+    },
+    {
+        "id": "ai_agent_code_gate",
+        "name": "AI Agent Code Gate",
+        "appetite": "agent_risk_averse",
+        "description": "Code produced by AI agents: smells, god components, coupling, containment and evidence confidence dominate.",
+        "apply_when": {"signals": ["ai-agent", "agent-code", "ai-generated"]},
+        "weights": _weights(
+            smell_regression=3.0, responsibility_stability=2.0, god_component_risk=3.0,
+            component_balance=1.5, modularity_trend=1.5, coupling_control=3.0,
+            change_containment=2.5, evidence_confidence=2.5,
+        ),
+    },
+    {
+        "id": "oss_maintainer",
+        "name": "OSS Maintainer Triage",
+        "appetite": "maintainer_triage",
+        "description": "High-volume PR triage: evidence confidence, smells, stability and containment decide what needs a human first.",
+        "apply_when": {"signals": ["oss", "maintainer", "review-triage", "high-volume pr"]},
+        "weights": _weights(
+            smell_regression=2.5, responsibility_stability=2.0, god_component_risk=1.5,
+            cohesion_trend=0.75, recovery_confidence_trend=0.75,
+            change_containment=2.5, evidence_confidence=3.0,
+        ),
+    },
+)
+
+_PROFILE_BY_ID = {profile["id"]: profile for profile in SCORING_PROFILES}
+
+
+def list_profiles() -> list[dict]:
+    """All admin weight profiles (templates), in registry order."""
+    return copy.deepcopy(list(SCORING_PROFILES))
+
+
+def validate_scoring_config(config: Any) -> None:
+    """Validate the optional ``scoring`` object of a Decision Record."""
+    if config is None:
+        return
+    if not isinstance(config, dict):
+        raise ValueError("Decision Record 'scoring' must be a JSON object")
+    unknown_keys = set(config) - {"profile", "weights", "context"}
+    if unknown_keys:
+        raise ValueError(f"Decision Record 'scoring' has unsupported keys: {sorted(unknown_keys)}")
+    profile = config.get("profile")
+    if profile is not None and profile != "auto" and profile not in _PROFILE_BY_ID:
+        raise ValueError(
+            f"Unsupported scoring profile: {profile!r} (supported: {', '.join(_PROFILE_BY_ID)}, auto)"
+        )
+    weights = config.get("weights")
+    if weights is not None:
+        if not isinstance(weights, dict) or not weights:
+            raise ValueError("Decision Record 'scoring.weights' must be a non-empty JSON object")
+        unknown = set(weights) - set(CRITERION_IDS)
+        if unknown:
+            raise ValueError(f"Unknown criterion in scoring.weights: {sorted(unknown)}")
+        for criterion_id, value in weights.items():
+            if not isinstance(value, (int, float)) or isinstance(value, bool) or value < 0:
+                raise ValueError(f"scoring.weights.{criterion_id} must be a non-negative number")
+        if all(float(value) == 0.0 for value in weights.values()):
+            raise ValueError("scoring.weights must not set every criterion weight to 0")
+    context = config.get("context")
+    if context is not None:
+        if not isinstance(context, dict):
+            raise ValueError("Decision Record 'scoring.context' must be a JSON object")
+        tags = context.get("tags")
+        if tags is not None and (not isinstance(tags, list) or not all(isinstance(tag, str) for tag in tags)):
+            raise ValueError("Decision Record 'scoring.context.tags' must be a list of strings")
+
+
+def suggest_profile(context: dict | None = None, *, mode: str | None = None) -> tuple[str, str]:
+    """Deterministically suggest a profile from admin/agent-supplied signals.
+
+    Returns (profile_id, rule_id). This is the machine form of the selection
+    skill in skills/scoring/SKILL.md: an agent may propose the context, but
+    the suggestion rule is fixed and reported in the evidence pack.
+    """
+    context = context or {}
+    tags = {str(tag).lower() for tag in context.get("tags") or []}
+    signals = tags | {str(context.get("purpose") or "").lower(), str(context.get("change_kind") or "").lower()}
+    if signals & {"ai-agent", "agent-code", "ai-generated"}:
+        return "ai_agent_code_gate", "signal:ai-agent-code"
+    if signals & {"refactor", "migration", "modernization"}:
+        return "refactor_friendly", "signal:refactor-or-migration"
+    if signals & {"oss", "maintainer", "review-triage", "high-volume pr"}:
+        return "oss_maintainer", "signal:oss-maintainer-triage"
+    if signals & {"ship-fast", "startup", "mvp", "small team"}:
+        return "ship_fast", "signal:ship-fast"
+    if mode == "blocking" or signals & {"regulated", "architecture board", "high risk"}:
+        return "strict_gate", "signal:blocking-or-high-risk"
+    return "balanced", "default:balanced"
+
+
+def resolve_weights(record: dict) -> dict:
+    """Resolve a Decision Record's scoring config into effective weights."""
+    config = record.get("scoring") or {}
+    validate_scoring_config(config)
+    suggestion_rule = None
+    profile_id = config.get("profile")
+    if profile_id == "auto":
+        profile_id, suggestion_rule = suggest_profile(config.get("context"), mode=record.get("mode"))
+        source = "auto_suggested"
+    elif profile_id:
+        source = "preset"
+    else:
+        profile_id = "balanced"
+        source = "default"
+    profile = _PROFILE_BY_ID[profile_id]
+    weights = {criterion_id: float(value) for criterion_id, value in profile["weights"].items()}
+    overrides = config.get("weights") or {}
+    for criterion_id, value in overrides.items():
+        weights[criterion_id] = float(value)
+    if overrides:
+        source = f"{source}+custom_weights"
+    total = sum(weights.values())
+    if total <= 0:
+        raise ValueError("Resolved scoring weights sum to 0: at least one criterion needs a positive weight")
+    return {
+        "profile": {
+            "id": profile["id"],
+            "name": profile["name"],
+            "appetite": profile["appetite"],
+            "skill": f"skills/scoring/{profile['id']}.json",
+        },
+        "source": source,
+        "suggestion_rule": suggestion_rule,
+        "weights": weights,
+        "normalized_weights": {criterion_id: round(value / total, 4) for criterion_id, value in weights.items()},
+    }
+
+
+def score_all(bundle: dict, *, weights: dict | None = None, max_workers: int = 10) -> list[dict]:
     """Score all ten criteria in parallel over the same bundle.
 
     Results are reassembled in CRITERION_IDS order, so parallel execution
     never changes the output. Each scorer gets its own deep copy: scorers
-    are pure, and the copy keeps that true even if one misbehaves.
+    are pure, and the copy keeps that true even if one misbehaves. Resolved
+    admin weights are attached to each result; scoring itself is unweighted.
     """
     with ThreadPoolExecutor(max_workers=max(1, min(max_workers, len(CRITERIA)))) as pool:
         results = list(pool.map(lambda scorer: scorer(copy.deepcopy(bundle)), CRITERIA))
     by_id = {result["id"]: result for result in results}
-    return [by_id[criterion_id] for criterion_id in CRITERION_IDS]
+    ordered = [by_id[criterion_id] for criterion_id in CRITERION_IDS]
+    resolved = weights or {}
+    for result in ordered:
+        weight = float(resolved.get(result["id"], 1.0))
+        result["weight"] = weight
+        result["weighted_score"] = round(result["score"] * weight, 4) if result["score"] is not None else None
+    return ordered
 
 
-def overall_score(criteria: list[dict]) -> float | None:
-    scored = [c["score"] for c in criteria if c["status"] == "scored" and c["score"] is not None]
-    if not scored:
+def overall_score(criteria: list[dict], weights: dict | None = None) -> float | None:
+    """Weighted mean of scored criteria (not_run and 0-weight excluded)."""
+    total_weight = 0.0
+    weighted_sum = 0.0
+    for criterion in criteria:
+        if criterion["status"] != "scored" or criterion["score"] is None:
+            continue
+        weight = float((weights or {}).get(criterion["id"], criterion.get("weight", 1.0)))
+        if weight <= 0:
+            continue
+        weighted_sum += criterion["score"] * weight
+        total_weight += weight
+    if total_weight <= 0:
         return None
-    return quantize(sum(scored) / len(scored))
+    return quantize(weighted_sum / total_weight)

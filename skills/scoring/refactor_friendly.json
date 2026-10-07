@@ -1,0 +1,33 @@
+{
+  "skill": "scoring/refactor_friendly",
+  "applies_to": "arcade-attest Decision API scoring@1",
+  "id": "refactor_friendly",
+  "name": "Refactor Friendly",
+  "appetite": "refactor_tolerant",
+  "description": "Migrations and refactors: modularity/cohesion/RCI/balance dominate; shifts and churn are expected, so they weigh less.",
+  "apply_when": {
+    "signals": [
+      "refactor",
+      "migration",
+      "modernization"
+    ]
+  },
+  "weights": {
+    "smell_regression": 1.5,
+    "responsibility_stability": 0.5,
+    "god_component_risk": 2.0,
+    "component_balance": 2.0,
+    "modularity_trend": 3.0,
+    "cohesion_trend": 2.5,
+    "coupling_control": 2.0,
+    "recovery_confidence_trend": 2.5,
+    "change_containment": 0.5,
+    "evidence_confidence": 1.5
+  },
+  "how_to_apply": {
+    "decision_record_field": "scoring.profile",
+    "value": "refactor_friendly",
+    "custom_override_field": "scoring.weights",
+    "rule": "Weights change the advisory overall score only. Predicate verdicts and thresholds never move."
+  }
+}

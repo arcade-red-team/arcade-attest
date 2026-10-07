@@ -90,10 +90,33 @@ Evidence pack có thêm:
 }
 ```
 
-`overall_score` = trung bình các tiêu chí `scored` (quantize 0.1). `not_run` bị loại khỏi trung bình và phải được liệt kê — điểm tổng không bao giờ lặng lẽ che giấu tiêu chí thiếu evidence.
+`overall_score` = trung bình **có trọng số** của các tiêu chí `scored` (quantize 0.1; trọng số admin xem mục 6, mặc định mọi trọng số = 1). `not_run` bị loại khỏi trung bình và phải được liệt kê — điểm tổng không bao giờ lặng lẽ che giấu tiêu chí thiếu evidence.
 
 Đọc điểm: ≥ 0.8 mạnh · 0.6–0.7 chấp nhận được · 0.4–0.5 yếu, cần người nhìn · ≤ 0.3 kém. Đây là dải đọc cho reviewer, **không** map thẳng sang verdict.
 
 ## 5. PR comment
 
 Comment render từ pack (template, không prose tự sinh): dòng verdict trước, rồi bảng 10 tiêu chí (điểm / status / measured chính), overall, warnings, hash. Reviewer thấy trong 3 giây: tiêu chí nào thấp, vì số nào.
+
+## 6. Admin config trọng số — template theo khẩu vị (skills)
+
+`overall_score` là **trung bình có trọng số**: `Σ(score × weight) / Σ(weight)` trên các tiêu chí `scored` có weight > 0. Tiêu chí `not_run` và weight = 0 bị loại khỏi mẫu số và phải được liệt kê trong pack (`scoring.not_run`, `scoring.effective_weights` là trọng số đã renormalize trên phần scored). Trọng số **không** đổi verdict và **không** hạ threshold.
+
+Admin cấu hình qua Decision Record (đây là bề mặt của Decision API — CLI `--scoring-profile/--weights`, HTTP record, MCP tool đều đi qua cùng một resolver):
+
+```json
+{"scoring": {"profile": "strict_gate"}}
+{"scoring": {"profile": "balanced", "weights": {"coupling_control": 3.0}}}
+{"scoring": {"profile": "auto", "context": {"tags": ["ai-agent"]}}}
+```
+
+| `profile` | Khẩu vị | Mạnh tay ở đâu |
+|---|---|---|
+| `balanced` (default) | Cân bằng | Mọi tiêu chí = 1 |
+| `strict_gate` | Chặt / risk-averse | smell ×3, god ×3, coupling ×2.5, evidence ×2 |
+| `ship_fast` | Nhanh / startup | containment ×3, stability ×2 |
+| `refactor_friendly` | Chịu refactor/migration | modularity ×3, cohesion ×2.5, RCI ×2.5; shifts/churn nhẹ |
+| `ai_agent_code_gate` | Code do AI agent sinh | smell ×3, god ×3, coupling ×3, containment ×2.5, evidence ×2.5 |
+| `oss_maintainer` | Triage PR volume lớn | evidence ×3, smell ×2.5, containment ×2.5 |
+
+Mỗi profile là một **selection skill** trong `skills/scoring/` (SKILL.md + manifest JSON từng profile, khớp 1:1 với registry trong code — có test giữ). Khi agent apply Decision API, agent đọc skill, chọn profile theo tín hiệu `apply_when`, hoặc để engine tự gợi ý bằng `"profile": "auto"` + `context.tags`; engine resolve deterministic, validate (tiêu chí lạ / trọng số âm / tất cả = 0 → reject 422/ValueError), và ghi vào pack: `scoring.profile`, `scoring.config_source`, `scoring.suggestion_rule`, `scoring.weights`, `scoring.normalized_weights`, `scoring.effective_weights`. Liệt kê profiles: `arcade-attest scoring-profiles`, `GET /v1/scoring/profiles`, MCP `list_scoring_profiles`.

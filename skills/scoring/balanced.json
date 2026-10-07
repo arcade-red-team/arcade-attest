@@ -1,0 +1,33 @@
+{
+  "skill": "scoring/balanced",
+  "applies_to": "arcade-attest Decision API scoring@1",
+  "id": "balanced",
+  "name": "Balanced (default)",
+  "appetite": "balanced",
+  "description": "Every criterion counts equally. Default when an admin configures nothing.",
+  "apply_when": {
+    "signals": [
+      "no special signal",
+      "first rollout",
+      "baseline reporting"
+    ]
+  },
+  "weights": {
+    "smell_regression": 1.0,
+    "responsibility_stability": 1.0,
+    "god_component_risk": 1.0,
+    "component_balance": 1.0,
+    "modularity_trend": 1.0,
+    "cohesion_trend": 1.0,
+    "coupling_control": 1.0,
+    "recovery_confidence_trend": 1.0,
+    "change_containment": 1.0,
+    "evidence_confidence": 1.0
+  },
+  "how_to_apply": {
+    "decision_record_field": "scoring.profile",
+    "value": "balanced",
+    "custom_override_field": "scoring.weights",
+    "rule": "Weights change the advisory overall score only. Predicate verdicts and thresholds never move."
+  }
+}

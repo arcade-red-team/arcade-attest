@@ -15,7 +15,7 @@ from . import store
 from .adapter import analyze_pair
 from .anchor import build_attestation_payload
 from .engine import evaluate
-
+from .scoring import list_profiles
 
 def _now() -> datetime:
     return datetime.now(timezone.utc)
@@ -69,7 +69,10 @@ def explain_evidence(decision_uid: str) -> dict:
         "measured": pack["measured"],
         "overall_score": pack.get("overall_score"),
         "criteria": [
-            {"id": c["id"], "score": c["score"], "status": c["status"], "measured": c["measured"]}
+            {
+                "id": c["id"], "score": c["score"], "status": c["status"],
+                "measured": c["measured"], "weight": c.get("weight"),
+            }
             for c in pack.get("criteria") or []
         ],
         "scoring": pack.get("scoring"),
@@ -79,6 +82,15 @@ def explain_evidence(decision_uid: str) -> dict:
     }
 
 
+def list_scoring_profiles() -> dict:
+    """Admin weight profiles (template/appetite skills) an agent can apply.
+
+    Pick a profile id (or ``auto`` with context signals) and put it in the
+    Decision Record as ``scoring.profile``; the engine resolves the weights.
+    """
+    return {"version": "scoring@1", "default": "balanced", "profiles": list_profiles()}
+
+
 def _register() -> "object":
     from mcp.server.fastmcp import FastMCP
 
@@ -86,7 +98,12 @@ def _register() -> "object":
 
     @mcp.tool(name="evaluate_decision")
     def _evaluate_tool(base_path: str, head_path: str, decision_record_json: str, language: str = "python") -> str:
-        """Evaluate a Decision Record (JSON string) against base/head source trees; returns the evidence pack JSON."""
+        """Evaluate a Decision Record (JSON string) against base/head source trees; returns the evidence pack JSON.
+
+        The record may include optional `scoring`: {profile: a
+        list_scoring_profiles id or "auto", weights: {criterion: non-negative
+        number}, context: {tags: [...]}} for admin criterion weights.
+        """
         return json.dumps(evaluate_decision(base_path, head_path, json.loads(decision_record_json), language))
 
     @mcp.tool(name="get_verdict")
@@ -98,6 +115,11 @@ def _register() -> "object":
     def _explain_tool(decision_uid: str) -> str:
         """Explain which predicates triggered, with measurements and coverage warnings."""
         return json.dumps(explain_evidence(decision_uid))
+
+    @mcp.tool(name="list_scoring_profiles")
+    def _profiles_tool() -> dict:
+        """List admin weight profiles (template/appetite skills) for scoring config."""
+        return list_scoring_profiles()
 
     return mcp
 

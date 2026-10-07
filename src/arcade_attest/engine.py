@@ -11,7 +11,15 @@ import json
 from typing import Any
 
 from . import HONEST_GAPS, VERDICT_CODES, __version__
-from .scoring import SCORING_VERSION, build_bundle, bundle_hash, overall_score, score_all
+from .scoring import (
+    SCORING_VERSION,
+    build_bundle,
+    bundle_hash,
+    overall_score,
+    resolve_weights,
+    score_all,
+    validate_scoring_config,
+)
 
 SUPPORTED_PREDICATES = ("no_new_smells", "max_responsibility_shifts", "component_entity_cap")
 SEVERITIES = ("fail", "warn")
@@ -46,6 +54,7 @@ def validate_record(record: dict) -> None:
             limit = params.get("max")
             if not isinstance(limit, (int, float)) or isinstance(limit, bool) or limit < 0:
                 raise ValueError(f"Predicate {ptype}: params.max must be a non-negative number")
+    validate_scoring_config(record.get("scoring"))
 
 
 def _smell_kind(smell: dict) -> str:
@@ -119,8 +128,15 @@ def evaluate(record: dict, data: dict, *, evaluated_at: str, expires_at: str | N
     # over one bundle holding the full changelog + changes + architecture
     # summary. Scores never change the predicate verdict above.
     bundle = build_bundle(data)
-    criteria = score_all(bundle)
+    resolved = resolve_weights(record)
+    criteria = score_all(bundle, weights=resolved["weights"])
     scored = [c for c in criteria if c["status"] == "scored"]
+    scored_positive = [c for c in scored if resolved["weights"][c["id"]] > 0]
+    scored_weight = sum(resolved["weights"][c["id"]] for c in scored_positive)
+    effective_weights = {
+        c["id"]: round(resolved["weights"][c["id"]] / scored_weight, 4)
+        for c in scored_positive
+    } if scored_weight > 0 else {}
     pack = {
         "schema": "arcade-attest/evidence@1",
         "decision_id": record["id"],
@@ -144,7 +160,7 @@ def evaluate(record: dict, data: dict, *, evaluated_at: str, expires_at: str | N
         "summary": data.get("summary") or {},
         "architecture_summary": bundle["architecture_summary"]["derived"],
         "criteria": criteria,
-        "overall_score": overall_score(criteria),
+        "overall_score": overall_score(criteria, resolved["weights"]),
         "scoring": {
             "version": SCORING_VERSION,
             "scale": "0.0-1.0 step 0.1",
@@ -153,6 +169,12 @@ def evaluate(record: dict, data: dict, *, evaluated_at: str, expires_at: str | N
             "not_run": [c["id"] for c in criteria if c["status"] != "scored"],
             "scoring_input_hash": bundle_hash(bundle),
             "changes_source": bundle["changes"]["source"],
+            "profile": resolved["profile"],
+            "config_source": resolved["source"],
+            "suggestion_rule": resolved["suggestion_rule"],
+            "weights": resolved["weights"],
+            "normalized_weights": resolved["normalized_weights"],
+            "effective_weights": effective_weights,
             "llm_in_scoring": False,
         },
         "coverage": {**coverage, "warnings": warnings},
