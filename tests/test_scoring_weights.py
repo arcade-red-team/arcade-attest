@@ -146,15 +146,21 @@ def test_render_comment_shows_profile_and_weights():
 
 def test_api_lists_scoring_profiles():
     pytest.importorskip("fastapi")
-    from fastapi.testclient import TestClient
+    from arcade_attest.api import scoring_profiles
 
-    from arcade_attest.api import app
-
-    response = TestClient(app).get("/v1/scoring/profiles")
-    assert response.status_code == 200
-    body = response.json()
+    body = scoring_profiles()
     assert body["default"] == "balanced"
     assert {p["id"] for p in body["profiles"]} >= {"balanced", "strict_gate", "ai_agent_code_gate"}
+    try:
+        from fastapi.testclient import TestClient
+
+        from arcade_attest.api import app
+
+        response = TestClient(app).get("/v1/scoring/profiles")
+    except RuntimeError:
+        pytest.skip("HTTP test client transport (httpx) not installed")
+    assert response.status_code == 200
+    assert response.json()["default"] == "balanced"
 
 
 def test_mcp_lists_scoring_profiles():
