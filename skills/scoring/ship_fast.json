@@ -1,0 +1,34 @@
+{
+  "skill": "scoring/ship_fast",
+  "applies_to": "arcade-attest Decision API scoring@1",
+  "id": "ship_fast",
+  "name": "Ship Fast",
+  "appetite": "speed",
+  "description": "Small-team/startup flow: containment and responsibility stability dominate; trend criteria still report but weigh less.",
+  "apply_when": {
+    "signals": [
+      "ship-fast",
+      "startup",
+      "mvp",
+      "small team"
+    ]
+  },
+  "weights": {
+    "smell_regression": 1.5,
+    "responsibility_stability": 2.0,
+    "god_component_risk": 1.0,
+    "component_balance": 0.5,
+    "modularity_trend": 1.0,
+    "cohesion_trend": 0.5,
+    "coupling_control": 1.0,
+    "recovery_confidence_trend": 0.5,
+    "change_containment": 3.0,
+    "evidence_confidence": 1.5
+  },
+  "how_to_apply": {
+    "decision_record_field": "scoring.profile",
+    "value": "ship_fast",
+    "custom_override_field": "scoring.weights",
+    "rule": "Weights change the advisory overall score only. Predicate verdicts and thresholds never move."
+  }
+}

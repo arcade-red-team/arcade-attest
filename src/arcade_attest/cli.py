@@ -11,6 +11,7 @@ from .adapter import analyze_pair, normalize_changelog
 from .anchor import build_attestation_payload
 from .engine import evaluate
 from .render import render_comment
+from .scoring import list_profiles
 
 
 def _now() -> str:
@@ -24,6 +25,23 @@ def _expiry(evaluated_at: str, hours: int = 24) -> str:
 
 def _load_json(path: str):
     return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def _apply_scoring_config(record: dict, profile: str | None, weights_path: str | None) -> dict:
+    """Apply admin scoring config (profile skill and/or custom weights)."""
+    if not profile and not weights_path:
+        return record
+    record = dict(record)
+    scoring = dict(record.get("scoring") or {})
+    if profile:
+        scoring["profile"] = profile
+    if weights_path:
+        weights = _load_json(weights_path)
+        if not isinstance(weights, dict):
+            raise ValueError("--weights file must contain a JSON object of criterion weights")
+        scoring["weights"] = weights
+    record["scoring"] = scoring
+    return record
 
 
 def _emit(pack: dict, out: str | None) -> None:
@@ -44,13 +62,20 @@ def main(argv: list[str] | None = None) -> int:
     ev.add_argument("--record", required=True, help="Decision Record JSON file")
     ev.add_argument("--language", default="python")
     ev.add_argument("--evaluated-at", help="ISO-8601 UTC timestamp (reproducible runs); default: now")
+    ev.add_argument("--scoring-profile", help="Admin weight profile skill (see scoring-profiles; or 'auto' to suggest from scoring.context)")
+    ev.add_argument("--weights", dest="weights_file", help="JSON file with admin custom criterion weights (overrides the profile)")
     ev.add_argument("--out")
 
     fc = sub.add_parser("from-changelog", help="Evaluate an existing changelog_architecture JSON output")
     fc.add_argument("--changelog", required=True)
     fc.add_argument("--record", required=True)
     fc.add_argument("--evaluated-at", help="ISO-8601 UTC timestamp (reproducible runs); default: now")
+    fc.add_argument("--scoring-profile", help="Admin weight profile skill (see scoring-profiles; or 'auto' to suggest from scoring.context)")
+    fc.add_argument("--weights", dest="weights_file", help="JSON file with admin custom criterion weights (overrides the profile)")
     fc.add_argument("--out")
+
+    sp = sub.add_parser("scoring-profiles", help="List admin weight profiles (template/appetite skills) for the Decision API")
+    sp.add_argument("--out", help="Write the profiles JSON to this path instead of stdout")
 
     pl = sub.add_parser("payload", help="Build the EAS attestation payload for an evidence pack")
     pl.add_argument("--pack", required=True)
@@ -66,6 +91,15 @@ def main(argv: list[str] | None = None) -> int:
     sv.add_argument("--port", type=int, default=8787)
 
     args = parser.parse_args(argv)
+    if args.command == "scoring-profiles":
+        payload = {"version": "scoring@1", "default": "balanced", "profiles": list_profiles()}
+        text = json.dumps(payload, indent=2, ensure_ascii=False)
+        if args.out:
+            Path(args.out).write_text(text + "\n", encoding="utf-8")
+            print(f"scoring profiles -> {args.out}")
+        else:
+            print(text)
+        return 0
     if args.command == "serve":
         import uvicorn
 
@@ -84,7 +118,7 @@ def main(argv: list[str] | None = None) -> int:
             print(comment)
         return 0
 
-    record = _load_json(args.record)
+    record = _apply_scoring_config(_load_json(args.record), args.scoring_profile, args.weights_file)
     if args.command == "evaluate":
         data = analyze_pair(args.base, args.head, language=args.language)
     else:

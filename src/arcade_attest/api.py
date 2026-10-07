@@ -16,6 +16,7 @@ from . import store
 from .adapter import analyze_pair
 from .anchor import build_attestation_payload
 from .engine import evaluate
+from .scoring import list_profiles
 
 STORE = store.STORE_DIR
 
@@ -37,6 +38,17 @@ def _now() -> str:
 @app.get("/health")
 def health():
     return {"ok": True, "service": "arcade-attest", "llm_in_verdict": False}
+
+
+@app.get("/v1/scoring/profiles")
+def scoring_profiles():
+    """Admin weight templates (appetite skills) for configuring scoring.
+
+    An admin or agent picks one profile id (or ``auto`` plus context signals)
+    and puts it in the Decision Record as ``scoring.profile``; the evaluate
+    endpoint resolves, validates and reports the effective weights.
+    """
+    return {"version": "scoring@1", "default": "balanced", "profiles": list_profiles()}
 
 
 @app.post("/v1/decisions:evaluate")

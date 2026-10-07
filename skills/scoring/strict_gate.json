@@ -1,0 +1,36 @@
+{
+  "skill": "scoring/strict_gate",
+  "applies_to": "arcade-attest Decision API scoring@1",
+  "id": "strict_gate",
+  "name": "Strict Gate",
+  "appetite": "risk_averse",
+  "description": "Blocking/architecture-board gates: smells, god components, coupling and evidence confidence dominate.",
+  "apply_when": {
+    "mode": [
+      "blocking"
+    ],
+    "signals": [
+      "architecture board",
+      "regulated",
+      "high risk"
+    ]
+  },
+  "weights": {
+    "smell_regression": 3.0,
+    "responsibility_stability": 2.0,
+    "god_component_risk": 3.0,
+    "component_balance": 1.5,
+    "modularity_trend": 1.5,
+    "cohesion_trend": 1.0,
+    "coupling_control": 2.5,
+    "recovery_confidence_trend": 1.0,
+    "change_containment": 1.5,
+    "evidence_confidence": 2.0
+  },
+  "how_to_apply": {
+    "decision_record_field": "scoring.profile",
+    "value": "strict_gate",
+    "custom_override_field": "scoring.weights",
+    "rule": "Weights change the advisory overall score only. Predicate verdicts and thresholds never move."
+  }
+}
