@@ -14,4 +14,5 @@ HONEST_GAPS = [
     "Parser blind spots exist (for example files that declare no entities): a component can look empty and a verdict can be a false PASS. Coverage is reported in every evidence pack.",
     "Predicate thresholds are starting guesses; they need per-repo history to calibrate.",
     "An on-chain attestation proves the integrity and timestamp of a verdict, not that the verdict is objectively correct.",
+    "Criterion scores (scoring@1) are advisory: 0.5 on a trend criterion means 'no measured change', and a criterion without evidence is reported not_run instead of being scored.",
 ]

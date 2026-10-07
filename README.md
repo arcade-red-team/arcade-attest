@@ -33,6 +33,16 @@ Predicates (each maps 1:1 to a `changelog_architecture` field):
 | `max_responsibility_shifts` | `responsibility_shifts` | at most N entities change component |
 | `component_entity_cap` | component entity counts | no component grows past N entities (anti god-module) |
 
+Alongside the verdict, every pack carries a **ten-criterion scorecard**
+(`scoring@1`, see [`SCORING-10-CRITERIA.md`](SCORING-10-CRITERIA.md)): ten pure
+scorers run in parallel over one bundle (full changelog + changes +
+architecture summary) and each returns a **0.0–1.0 score in 0.1 steps** —
+smell regression, responsibility stability, god-component risk, component
+balance, modularity / cohesion / coupling / RCI trends, change containment,
+and evidence confidence. A criterion without evidence is `not_run`, never a
+fabricated 0. Scores are advisory; the PASS/WARN/BLOCK verdict above stays
+purely predicate-driven.
+
 Every verdict ships an **evidence pack**: per-predicate measurements, the exact
 offending smells/components, parser-coverage warnings, a SHA-256
 `decision_record_hash` and a deterministic `evidence_hash`, and an honest list

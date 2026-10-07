@@ -20,6 +20,30 @@ def render_comment(pack: dict) -> str:
         lines.append(
             f"| `{result['type']}` | {result['severity']} | {result['status']} | {result['measured']} | {threshold} |"
         )
+    criteria = pack.get("criteria") or []
+    if criteria:
+        scoring = pack.get("scoring") or {}
+        overall = pack.get("overall_score")
+        lines += [
+            "",
+            f"**Criterion scores** ({scoring.get('version', 'scoring@1')}, 0.0–1.0 step 0.1) · "
+            f"overall: **{overall if overall is not None else 'n/a'}** · "
+            f"scored {scoring.get('scored_count', 0)}/{len(criteria)} in parallel over one bundle",
+            "",
+            "| # | Criterion | Score | Status | Measured |",
+            "|---|---|---|---|---|",
+        ]
+        for index, criterion in enumerate(criteria, start=1):
+            score = criterion["score"] if criterion["score"] is not None else "—"
+            measured = ", ".join(
+                f"{k}={v}" for k, v in (criterion.get("measured") or {}).items() if v is not None
+            ) or "—"
+            lines.append(
+                f"| {index} | `{criterion['id']}` | {score} | {criterion['status']} | {measured} |"
+            )
+        not_run = scoring.get("not_run") or []
+        if not_run:
+            lines += ["", "Not run (evidence missing, never scored 0): " + ", ".join(f"`{c}`" for c in not_run)]
     triggered = [r for r in pack["predicates"] if r["status"] == "triggered"]
     if triggered:
         lines += ["", "**Evidence**"]

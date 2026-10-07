@@ -74,6 +74,11 @@ def normalize_changelog(changelog: Any, *, components=None, refs=None, languages
         "metrics": cl.get("metrics") or {},
         "coverage": coverage,
         "refs": refs or cl.get("refs") or {},
+        # Optional full-change feed for scoring@1: passed through untouched so
+        # every criterion scorer sees the same changes + architecture summary
+        # the caller supplied (raw text is hashed, never embedded, downstream).
+        "changes": cl.get("changes"),
+        "architecture_summary": cl.get("architecture_summary"),
     }
 
 

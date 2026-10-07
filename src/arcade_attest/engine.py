@@ -11,6 +11,7 @@ import json
 from typing import Any
 
 from . import HONEST_GAPS, VERDICT_CODES, __version__
+from .scoring import SCORING_VERSION, build_bundle, bundle_hash, overall_score, score_all
 
 SUPPORTED_PREDICATES = ("no_new_smells", "max_responsibility_shifts", "component_entity_cap")
 SEVERITIES = ("fail", "warn")
@@ -114,6 +115,12 @@ def evaluate(record: dict, data: dict, *, evaluated_at: str, expires_at: str | N
     if coverage.get("component_sizes_known") is False:
         warnings.append("Component entity counts are unknown (changelog-only input): component_entity_cap cannot trigger on this input.")
     mode = record.get("mode", "advisory")
+    # Ten-criterion advisory scoring (scoring@1): all scorers run in parallel
+    # over one bundle holding the full changelog + changes + architecture
+    # summary. Scores never change the predicate verdict above.
+    bundle = build_bundle(data)
+    criteria = score_all(bundle)
+    scored = [c for c in criteria if c["status"] == "scored"]
     pack = {
         "schema": "arcade-attest/evidence@1",
         "decision_id": record["id"],
@@ -135,6 +142,19 @@ def evaluate(record: dict, data: dict, *, evaluated_at: str, expires_at: str | N
             ),
         },
         "summary": data.get("summary") or {},
+        "architecture_summary": bundle["architecture_summary"]["derived"],
+        "criteria": criteria,
+        "overall_score": overall_score(criteria),
+        "scoring": {
+            "version": SCORING_VERSION,
+            "scale": "0.0-1.0 step 0.1",
+            "parallel_scorers": len(criteria),
+            "scored_count": len(scored),
+            "not_run": [c["id"] for c in criteria if c["status"] != "scored"],
+            "scoring_input_hash": bundle_hash(bundle),
+            "changes_source": bundle["changes"]["source"],
+            "llm_in_scoring": False,
+        },
         "coverage": {**coverage, "warnings": warnings},
         "engine": {
             "name": "arcade-attest",

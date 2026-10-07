@@ -67,6 +67,12 @@ def explain_evidence(decision_uid: str) -> dict:
             if result["status"] == "triggered"
         ],
         "measured": pack["measured"],
+        "overall_score": pack.get("overall_score"),
+        "criteria": [
+            {"id": c["id"], "score": c["score"], "status": c["status"], "measured": c["measured"]}
+            for c in pack.get("criteria") or []
+        ],
+        "scoring": pack.get("scoring"),
         "coverage_warnings": (pack.get("coverage") or {}).get("warnings", []),
         "hashes": pack["hashes"],
         "attestation_payload": build_attestation_payload(pack),
