@@ -83,24 +83,142 @@ curl -X POST localhost:8787/v1/decisions:evaluate \
 
 Exit code is `2` when the verdict is BLOCK, so the CLI drops straight into CI.
 
-**CI gate without any direct LLM** — full guide:
-[`docs/GITHUB-ACTIONS.md`](docs/GITHUB-ACTIONS.md). Two ways to gate a PR:
+## GitHub Actions — Decision Gate without any direct LLM
 
-- **Local Decision API workflow (recommended):** copy
-  [`examples/github-actions/decision-gate-local-api.yml`](examples/github-actions/decision-gate-local-api.yml)
-  into a consumer repo, add a Decision Record at
-  `.arcade-attest/decision-record.json`, and each PR is evaluated by the
-  Decision API running locally in the runner — base/head taken from the real
-  PR SHAs, verdict rendered as a PR comment, evidence pack uploaded as an
-  artifact, BLOCK fails the job when `ENFORCE_BLOCK` is on.
-- **Composite Action:** `uses: arcade-red-team/arcade-attest@<PINNED_SHA>`
-  with `record`, `base-path`, `head-path` (see [`action.yml`](action.yml)).
+ArcadeAttest can gate pull requests in GitHub Actions in two ways. Both run
+the same deterministic engine, produce the same evidence pack, and post the
+same PR comment. No LLM decides a verdict: `llm_in_verdict: false` in every
+pack. A local model such as Jinfer may draft an explanation for reviewers,
+but it must never turn into the gate.
 
-A local LLM (for example Jinfer) may draft an explanation of the pack, but
-it never decides: `llm_in_verdict: false` in every pack. Worked example:
-`tuannx/spring-boot-multi-region-ha` runs the local-API gate on every PR.
+### Option A (recommended): local Decision API workflow
 
-Example Decision Record: [`examples/decision-record.json`](examples/decision-record.json).
+This option starts the Decision API inside the GitHub Actions runner and
+evaluates the actual PR base/head trees locally.
+
+1. **Add a Decision Record to the consumer repo** at
+   `.arcade-attest/decision-record.json`. Start from
+   [`examples/github-actions/decision-record.example.json`](examples/github-actions/decision-record.example.json)
+   and set `id`, `repo`, predicate thresholds, and scoring policy:
+
+   - `no_new_smells` with `severity: "fail"` blocks a PR that introduces a
+     new architecture smell.
+   - `max_responsibility_shifts` with `params.max` warns or fails when too
+     many entities move between components.
+   - `component_entity_cap` with `params.max` warns or fails when a
+     component grows into a god component.
+   - `scoring.profile` chooses an appetite skill from
+     [`skills/scoring/`](skills/scoring/), or `"auto"` plus
+     `scoring.context.tags` lets the engine suggest one deterministically.
+     Custom `scoring.weights` only change the advisory overall score; they
+     never change PASS/WARN/BLOCK or a threshold.
+
+2. **Copy the workflow** into the consumer repo:
+
+   ```bash
+   mkdir -p .github/workflows .arcade-attest
+   cp examples/github-actions/decision-gate-local-api.yml \
+     /path/to/consumer/.github/workflows/decision-gate.yml
+   cp examples/github-actions/decision-record.example.json \
+     /path/to/consumer/.arcade-attest/decision-record.json
+   ```
+
+   In the copied workflow's `env` block, set:
+
+   - `DECISION_RECORD`: path to the record, normally
+     `.arcade-attest/decision-record.json`.
+   - `LANGUAGE`: the analyzed tree's primary language, for example
+     `python` or `java`.
+   - `ENFORCE_BLOCK`: `"true"` makes a BLOCK verdict fail the job;
+     `"false"` keeps the gate advisory (comments and artifacts only).
+   - `ATTEST_INSTALL`: the pinned ArcadeAttest install spec. Keep the commit
+     SHA pinned and upgrade it deliberately. For a pinned Git install, pip
+     extras must come before the `@`:
+
+     ```bash
+     pip install "arcade-attest[api] @ git+https://github.com/arcade-red-team/arcade-attest@<PINNED_SHA>"
+     ```
+
+     Writing `pip install "git+...@<SHA>[api]"` is a common typo: pip treats
+     `[api]` as part of the Git revision and checkout fails.
+
+   If the code to analyze is a subdirectory — for example
+   `app/src/main/java` in a Java repo — change the *Evaluate* step so
+   `base_path` and `head_path` point at that subdirectory in both trees.
+
+3. **Give the workflow only the permissions it needs**:
+
+   ```yaml
+   permissions:
+     contents: read
+     pull-requests: write
+   ```
+
+   No secret is required. The API listens on `127.0.0.1` inside the runner;
+   source code and evidence do not leave the job for the verdict.
+
+4. **Open a pull request.** The workflow:
+
+   - checks out full history (`fetch-depth: 0`) and materializes base/head
+     trees from the real PR `base.sha` and `head.sha` (for `push`, it uses
+     `before` and `after`), not `HEAD~1` from a shallow checkout;
+   - installs the pinned ArcadeAttest and waits for `GET /health` from the
+     local Decision API;
+   - sends `POST /v1/decisions:evaluate` with the two trees, language, and
+     Decision Record;
+   - posts the rendered verdict and ten-criterion scorecard as a PR comment;
+   - uploads `evidence-pack.json` as the `arcade-attest-evidence-pack`
+     artifact; and
+   - fails the job on BLOCK when `ENFORCE_BLOCK` is `"true"`.
+
+5. **Read the verdict**:
+
+   - `PASS`: no predicate triggered. Trend criteria at `0.5` mean no measured
+     change, not failure.
+   - `WARN`: a warning predicate triggered. The comment names the measured
+     value, threshold, and evidence.
+   - `BLOCK`: a fail predicate triggered. Follow the offending smells or
+     components in the comment, or download the evidence-pack artifact for
+     the full measurements, coverage warnings, hashes, and honest gaps.
+
+   A criterion marked `not_run` means the evidence needed for that score was
+   missing. It is never converted into a fake `0.0`.
+
+6. **Change policy deliberately.** Thresholds, profiles, and weights live
+   in the Decision Record, not in workflow prose. Change them in a separate
+   PR with measured evidence from previous packs. Never lower a threshold
+   on the same PR merely to make that PR pass.
+
+### Option B: composite Action
+
+If another workflow already creates before/after trees, use the composite
+Action in [`action.yml`](action.yml):
+
+```yaml
+- uses: arcade-red-team/arcade-attest@<PINNED_SHA>
+  with:
+    record: .arcade-attest/decision-record.json
+    base-path: ./before
+    head-path: ./after
+    language: python
+    comment: "true"
+```
+
+Inputs are `record`, `base-path`, `head-path`, optional `language`, and
+optional `comment`. Outputs are `verdict` and `pack`. The Action step exits
+with code `2` on BLOCK, so the job fails without extra shell logic.
+
+### Worked example and deeper reference
+
+`tuannx/spring-boot-multi-region-ha` runs Option A on every PR with
+`ADR-HA-001`, Java analysis over `app/src/main/java`, and blocking mode.
+Calibration recorded before enabling it: main evaluated `PASS` with
+overall score `0.8`; an injected god class evaluated `BLOCK`.
+
+For the extended guide — Decision Record anatomy, scoring configuration,
+result reproduction, and troubleshooting — see
+[`docs/GITHUB-ACTIONS.md`](docs/GITHUB-ACTIONS.md). Example record:
+[`examples/decision-record.json`](examples/decision-record.json).
 
 ## Pre-existing code disclosure (required, and true)
 
