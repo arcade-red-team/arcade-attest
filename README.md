@@ -92,6 +92,15 @@ it. Deploy is the owner's step (`wrangler kv namespace create …` then
 
 Exit code is `2` when the verdict is BLOCK, so the CLI drops straight into CI.
 
+**CI gate without any direct LLM** ([`examples/github-actions/decision-gate-local-api.yml`](examples/github-actions/decision-gate-local-api.yml)):
+copy the workflow into a consumer repo, add a Decision Record at
+`.arcade-attest/decision-record.json`, and each PR is evaluated by the
+Decision API running locally in the runner — base/head taken from the real
+PR SHAs, verdict rendered as a PR comment, evidence pack uploaded as an
+artifact, BLOCK fails the job when `ENFORCE_BLOCK` is on. A local LLM (for
+example Jinfer) may draft an explanation of the pack, but it never decides:
+`llm_in_verdict: false` in every pack.
+
 Example Decision Record: [`examples/decision-record.json`](examples/decision-record.json).
 
 ## Pre-existing code disclosure (required, and true)
