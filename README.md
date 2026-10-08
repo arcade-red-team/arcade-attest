@@ -83,14 +83,20 @@ curl -X POST localhost:8787/v1/decisions:evaluate \
 
 Exit code is `2` when the verdict is BLOCK, so the CLI drops straight into CI.
 
-**CI gate without any direct LLM** ([`examples/github-actions/decision-gate-local-api.yml`](examples/github-actions/decision-gate-local-api.yml)):
+**CI gate: local Decision API judges, Qxotic Jinfer explains**
+([`examples/github-actions/decision-gate-local-api.yml`](examples/github-actions/decision-gate-local-api.yml)):
 copy the workflow into a consumer repo, add a Decision Record at
 `.arcade-attest/decision-record.json`, and each PR is evaluated by the
 Decision API running locally in the runner — base/head taken from the real
 PR SHAs, verdict rendered as a PR comment, evidence pack uploaded as an
-artifact, BLOCK fails the job when `ENFORCE_BLOCK` is on. A local LLM (for
-example Jinfer) may draft an explanation of the pack, but it never decides:
-`llm_in_verdict: false` in every pack.
+artifact, BLOCK fails the job when `ENFORCE_BLOCK` is on. The workflow
+then starts [Qxotic](https://github.com/qxoticai/qxotic) Jinfer 0.3.1
+(pinned, SHA-256-checked jar) serving a local GGUF model on loopback, and
+`arcade-attest explain-qxotic` drafts a short reviewer explanation of the
+pack. The model drafts prose only; it never decides:
+`llm_in_verdict: false` in every pack. Set `QXOTIC_EXPLAIN=false` to skip
+the draft. Verified end to end locally with Jinfer serving
+`LiquidAI/LFM2.5-350M-GGUF:Q8_0` (PASS and BLOCK packs both explained).
 
 Example Decision Record: [`examples/decision-record.json`](examples/decision-record.json).
 

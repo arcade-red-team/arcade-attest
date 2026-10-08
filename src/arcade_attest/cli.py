@@ -10,6 +10,7 @@ from pathlib import Path
 from .adapter import analyze_pair, normalize_changelog
 from .anchor import build_attestation_payload
 from .engine import evaluate
+from .qxotic import DEFAULT_BASE_URL, DEFAULT_MODEL, QxoticError, explain_pack, render_explanation_section
 from .render import render_comment
 from .scoring import list_profiles
 
@@ -86,6 +87,13 @@ def main(argv: list[str] | None = None) -> int:
     rc.add_argument("--pack", required=True)
     rc.add_argument("--out")
 
+    qx = sub.add_parser("explain-qxotic", help="Draft a reviewer explanation of an evidence pack with a local Qxotic Jinfer model (draft only, never decides)")
+    qx.add_argument("--pack", required=True)
+    qx.add_argument("--base-url", default=DEFAULT_BASE_URL, help="Jinfer server base URL (default: %(default)s)")
+    qx.add_argument("--model", default=DEFAULT_MODEL, help="Model reference served by Jinfer (default: %(default)s)")
+    qx.add_argument("--timeout", type=float, default=120.0)
+    qx.add_argument("--out", help="Write the rendered markdown section here instead of stdout")
+
     sv = sub.add_parser("serve", help="Run the HTTP API (requires the 'api' extra)")
     sv.add_argument("--host", default="127.0.0.1")
     sv.add_argument("--port", type=int, default=8787)
@@ -108,6 +116,20 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "payload":
         pack = _load_json(args.pack)
         print(json.dumps(build_attestation_payload(pack, base_commit=args.base_commit, head_commit=args.head_commit), indent=2))
+        return 0
+    if args.command == "explain-qxotic":
+        pack = _load_json(args.pack)
+        try:
+            explanation = explain_pack(pack, base_url=args.base_url, model=args.model, timeout=args.timeout)
+        except QxoticError as exc:
+            print(f"explain-qxotic: {exc}", file=sys.stderr)
+            return 1
+        section = render_explanation_section(pack, explanation, model=args.model)
+        if args.out:
+            Path(args.out).write_text(section, encoding="utf-8")
+            print(f"qxotic explanation -> {args.out}")
+        else:
+            print(section)
         return 0
     if args.command == "render-comment":
         comment = render_comment(_load_json(args.pack))
