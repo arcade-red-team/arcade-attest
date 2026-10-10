@@ -23,7 +23,7 @@ Checked: 2026-10-04 (America/Chicago). Sources: official pages below.
 - "the team leader completes the submission before the deadline"
 - "**misrepresenting the development history, or failing to disclose pre-existing code: disqualifies, bans, revokes a prize**"
 
-Implication for ArcadeAttest: the submission MUST disclose that the evaluator wraps **arcade-agent** (pre-existing, MIT, github.com/tuannx/arcade-agent, PyPI 0.3.0) and that this repository's commit history starts when it starts. See README "Pre-existing code disclosure".
+Implication for ArcadeAttest: the submission MUST disclose that the evaluator wraps **arcade-agent** (pre-existing, MIT, github.com/arcade-agent/arcade-agent, PyPI 0.4.1) and that this repository's commit history starts when it starts. See README "Pre-existing code disclosure".
 
 ## Open checks before submitting
 

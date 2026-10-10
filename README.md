@@ -4,7 +4,7 @@
 
 ArcadeAttest turns architecture decisions (ADRs) into machine-checkable policy.
 You register a **Decision Record** with deterministic predicates; every change
-is analyzed with [arcade-agent](https://github.com/tuannx/arcade-agent) and the
+is analyzed with [arcade-agent](https://github.com/arcade-agent/arcade-agent) and the
 API returns a verdict — **PASS / WARN / BLOCK** — plus a signed-evidence pack
 whose hash is anchored as an [EAS](https://attest.org) attestation on Base.
 CI, a DAO, an agent, or a contract can then ask one question before merging or
@@ -59,6 +59,8 @@ D3–D4 scope.
 
 ## Quickstart
 
+Requires Python 3.12+ (arcade-agent 0.4.1).
+
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e ".[api,dev]"
@@ -102,8 +104,8 @@ Example Decision Record: [`examples/decision-record.json`](examples/decision-rec
 
 ## Pre-existing code disclosure (required, and true)
 
-- The analyzer is **arcade-agent** (MIT, PyPI `arcade-agent` 0.3.0,
-  github.com/tuannx/arcade-agent), a pre-existing open-source project by the
+- The analyzer is **arcade-agent** (MIT, PyPI `arcade-agent` 0.4.1,
+  github.com/arcade-agent/arcade-agent), a pre-existing open-source project by the
   same author. ArcadeAttest consumes its published `changelog_architecture`
   output as a library; it does not claim that work as new.
 - Everything else in this repository — the Decision Record engine, evidence
@@ -125,7 +127,7 @@ Example Decision Record: [`examples/decision-record.json`](examples/decision-rec
 
 - D3–D4: register the EAS schema on Base Sepolia, attest on evaluate, verify page. *(script ready: `scripts/eas_attest.py`, dry-run verified; on-chain execution awaits the owner's testnet wallet — issue #1. Verify page shipped: `docs/verify.html`.)*
 - D5–D6: dashboard — paste repo/PR → verdict + evidence + on-chain link.
-- D7: GitHub Action gate + MCP tools. *(done: `action.yml` composite gate; MCP `evaluate_decision`, `get_verdict`, `explain_evidence` via `python -m arcade_attest.mcp_server`.)*
+- D7: GitHub Action gate + MCP tools. *(done: `action.yml` composite gate; MCP `evaluate_decision` (typed Decision Record object), `get_verdict`, `explain_evidence`, `list_scoring_profiles` via `python -m arcade_attest.mcp_server`.)*
 - D8–D9: pitch + demo video (≤ 3 min).
 - D10: submit early. Rules verification: [`RULES-VERIFIED.md`](RULES-VERIFIED.md).
 

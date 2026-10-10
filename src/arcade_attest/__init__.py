@@ -5,7 +5,7 @@ changelog output. No LLM ever participates in a verdict; LLMs may only help
 draft Decision Records for humans to approve.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 VERDICT_CODES = {"PASS": 0, "WARN": 1, "BLOCK": 2}
 

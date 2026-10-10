@@ -1,7 +1,7 @@
 """Adapter: run arcade-agent on two source trees and normalize the changelog.
 
 arcade-agent is a pre-existing, separately published project (MIT,
-github.com/tuannx/arcade-agent, PyPI `arcade-agent`). ArcadeAttest consumes
+github.com/arcade-agent/arcade-agent, PyPI `arcade-agent` 0.4.1). ArcadeAttest consumes
 its `changelog_architecture` output; it does not modify it.
 """
 from __future__ import annotations
