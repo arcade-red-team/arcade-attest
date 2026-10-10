@@ -1,0 +1,388 @@
+{
+  "schema": "arcade-attest/evidence@1",
+  "decision_id": "ADR-DOGFOOD-RICH",
+  "record_version": 1,
+  "repo": "Textualize/rich",
+  "mode": "advisory",
+  "enforced": false,
+  "refs": {
+    "a": "/tmp/dogfood/trees/rich-a",
+    "b": "/tmp/dogfood/trees/rich-b"
+  },
+  "evaluated_at": "2026-10-08T00:00:00Z",
+  "expires_at": "2026-10-09T00:00:00Z",
+  "verdict": "WARN",
+  "verdict_code": 1,
+  "predicates": [
+    {
+      "type": "no_new_smells",
+      "severity": "fail",
+      "status": "pass",
+      "measured": 0,
+      "threshold": {
+        "kinds": "any",
+        "allowed": 0
+      },
+      "evidence": []
+    },
+    {
+      "type": "max_responsibility_shifts",
+      "severity": "warn",
+      "status": "pass",
+      "measured": 0,
+      "threshold": {
+        "max": 25
+      },
+      "evidence": []
+    },
+    {
+      "type": "component_entity_cap",
+      "severity": "warn",
+      "status": "triggered",
+      "measured": 1089,
+      "threshold": {
+        "max": 400,
+        "component": "any"
+      },
+      "evidence": [
+        {
+          "component": "Rich",
+          "entities": 1089
+        }
+      ]
+    }
+  ],
+  "measured": {
+    "smells_new": 0,
+    "responsibility_shifts": 0,
+    "largest_component": {
+      "name": "Rich",
+      "entities": 1089
+    }
+  },
+  "summary": {
+    "components_a": 6,
+    "components_b": 6,
+    "shifts": 0,
+    "entities_a": 1135,
+    "entities_b": 1136,
+    "entities_added": 1,
+    "entities_deleted": 0,
+    "smells_new": 0,
+    "smells_resolved": 0
+  },
+  "architecture_summary": {
+    "components_b": 6,
+    "entities_a": 1135,
+    "entities_b": 1136,
+    "total_component_entities": 1136,
+    "largest_component": {
+      "name": "Rich",
+      "entities": 1089
+    },
+    "metrics_b": {
+      "BasicMQ": 0.2267,
+      "InterConnectivity": 0.0055,
+      "IntraConnectivity": 0.006,
+      "RCI": 0.9147,
+      "TurboMQ": 1.3604,
+      "TwoWayPairRatio": 0.0
+    },
+    "languages_b": [
+      "python"
+    ]
+  },
+  "criteria": [
+    {
+      "id": "smell_regression",
+      "score": 1.0,
+      "status": "scored",
+      "measured": {
+        "new_smells": 0,
+        "weighted_smells": 0
+      },
+      "evidence": [],
+      "formula": "scoring@1:smell_regression:raw=clamp(1-0.2*weighted_smells)",
+      "weight": 1.0,
+      "weighted_score": 1.0
+    },
+    {
+      "id": "responsibility_stability",
+      "score": 1.0,
+      "status": "scored",
+      "measured": {
+        "responsibility_shifts": 0,
+        "entities_b": 1136,
+        "shift_rate": 0.0
+      },
+      "evidence": [],
+      "formula": "scoring@1:responsibility_stability:raw=clamp(1-5*(shifts/max(1,entities_b)))",
+      "weight": 1.0,
+      "weighted_score": 1.0
+    },
+    {
+      "id": "god_component_risk",
+      "score": 0.0,
+      "status": "scored",
+      "measured": {
+        "largest_component": "Rich",
+        "largest_entities": 1089,
+        "largest_share": 0.9586
+      },
+      "evidence": [
+        {
+          "component": "Rich",
+          "entities": 1089
+        }
+      ],
+      "formula": "scoring@1:god_component_risk:raw=clamp(1-largest_share)",
+      "weight": 1.0,
+      "weighted_score": 0.0
+    },
+    {
+      "id": "component_balance",
+      "score": 0.1,
+      "status": "scored",
+      "measured": {
+        "components": 6,
+        "hhi": 0.9196
+      },
+      "evidence": [
+        {
+          "component": "Default",
+          "entities": 8
+        },
+        {
+          "component": "Benchmarks",
+          "entities": 12
+        },
+        {
+          "component": "Docs",
+          "entities": 1
+        },
+        {
+          "component": "Examples",
+          "entities": 25
+        },
+        {
+          "component": "Rich",
+          "entities": 1089
+        },
+        {
+          "component": "Tools",
+          "entities": 1
+        }
+      ],
+      "formula": "scoring@1:component_balance:raw=clamp(1-(HHI-1/n)/(1-1/n))",
+      "weight": 1.0,
+      "weighted_score": 0.1
+    },
+    {
+      "id": "modularity_trend",
+      "score": 0.5,
+      "status": "scored",
+      "measured": {
+        "metric": "TurboMQ",
+        "a": 1.3604,
+        "b": 1.3604,
+        "delta": 0.0
+      },
+      "evidence": [
+        {
+          "metric": "TurboMQ",
+          "a": 1.3604,
+          "b": 1.3604,
+          "delta": 0.0
+        }
+      ],
+      "formula": "scoring@1:modularity_trend:raw=clamp(0.5+clamp(TurboMQ.delta,-0.5,0.5))",
+      "weight": 1.0,
+      "weighted_score": 0.5
+    },
+    {
+      "id": "cohesion_trend",
+      "score": 0.5,
+      "status": "scored",
+      "measured": {
+        "metric": "IntraConnectivity",
+        "a": 0.006,
+        "b": 0.006,
+        "delta": 0.0
+      },
+      "evidence": [
+        {
+          "metric": "IntraConnectivity",
+          "a": 0.006,
+          "b": 0.006,
+          "delta": 0.0
+        }
+      ],
+      "formula": "scoring@1:cohesion_trend:raw=clamp(0.5+2.5*IntraConnectivity.delta)",
+      "weight": 1.0,
+      "weighted_score": 0.5
+    },
+    {
+      "id": "coupling_control",
+      "score": 0.5,
+      "status": "scored",
+      "measured": {
+        "inter_delta": 0.0,
+        "twoway_delta": 0.0
+      },
+      "evidence": [
+        {
+          "metric": "InterConnectivity",
+          "delta": 0.0
+        },
+        {
+          "metric": "TwoWayPairRatio",
+          "delta": 0.0
+        }
+      ],
+      "formula": "scoring@1:coupling_control:raw=clamp(0.5-2.5*InterConnectivity.delta-1.0*TwoWayPairRatio.delta)",
+      "weight": 1.0,
+      "weighted_score": 0.5
+    },
+    {
+      "id": "recovery_confidence_trend",
+      "score": 0.5,
+      "status": "scored",
+      "measured": {
+        "metric": "RCI",
+        "a": 0.9147,
+        "b": 0.9147,
+        "delta": 0.0
+      },
+      "evidence": [
+        {
+          "metric": "RCI",
+          "a": 0.9147,
+          "b": 0.9147,
+          "delta": 0.0
+        }
+      ],
+      "formula": "scoring@1:recovery_confidence_trend:raw=clamp(0.5+2.5*RCI.delta)",
+      "weight": 1.0,
+      "weighted_score": 0.5
+    },
+    {
+      "id": "change_containment",
+      "score": 1.0,
+      "status": "scored",
+      "measured": {
+        "entities_added": 1,
+        "entities_deleted": 0,
+        "entities_a": 1135,
+        "churn_rate": 0.0009
+      },
+      "evidence": [
+        {
+          "entities_added": 1,
+          "entities_deleted": 0,
+          "entities_a": 1135
+        }
+      ],
+      "formula": "scoring@1:change_containment:raw=clamp(1-0.5*((added+deleted)/max(1,entities_a)))",
+      "weight": 1.0,
+      "weighted_score": 1.0
+    },
+    {
+      "id": "evidence_confidence",
+      "score": 1.0,
+      "status": "scored",
+      "measured": {
+        "entities_b": 1136,
+        "warnings": 0
+      },
+      "evidence": [],
+      "formula": "scoring@1:evidence_confidence:raw=clamp(1-penalties)",
+      "weight": 1.0,
+      "weighted_score": 1.0
+    }
+  ],
+  "overall_score": 0.6,
+  "scoring": {
+    "version": "scoring@1",
+    "scale": "0.0-1.0 step 0.1",
+    "parallel_scorers": 10,
+    "scored_count": 10,
+    "not_run": [],
+    "scoring_input_hash": "d9a606d4882c5422958061b61f6f611f2ed23b9eaa4a1957f471b94999058a51",
+    "changes_source": "derived_from_summary",
+    "profile": {
+      "id": "balanced",
+      "name": "Balanced (default)",
+      "appetite": "balanced",
+      "skill": "skills/scoring/balanced.json"
+    },
+    "config_source": "default",
+    "suggestion_rule": null,
+    "weights": {
+      "smell_regression": 1.0,
+      "responsibility_stability": 1.0,
+      "god_component_risk": 1.0,
+      "component_balance": 1.0,
+      "modularity_trend": 1.0,
+      "cohesion_trend": 1.0,
+      "coupling_control": 1.0,
+      "recovery_confidence_trend": 1.0,
+      "change_containment": 1.0,
+      "evidence_confidence": 1.0
+    },
+    "normalized_weights": {
+      "smell_regression": 0.1,
+      "responsibility_stability": 0.1,
+      "god_component_risk": 0.1,
+      "component_balance": 0.1,
+      "modularity_trend": 0.1,
+      "cohesion_trend": 0.1,
+      "coupling_control": 0.1,
+      "recovery_confidence_trend": 0.1,
+      "change_containment": 0.1,
+      "evidence_confidence": 0.1
+    },
+    "effective_weights": {
+      "smell_regression": 0.1,
+      "responsibility_stability": 0.1,
+      "god_component_risk": 0.1,
+      "component_balance": 0.1,
+      "modularity_trend": 0.1,
+      "cohesion_trend": 0.1,
+      "coupling_control": 0.1,
+      "recovery_confidence_trend": 0.1,
+      "change_containment": 0.1,
+      "evidence_confidence": 0.1
+    },
+    "llm_in_scoring": false
+  },
+  "coverage": {
+    "languages_a": [
+      "python"
+    ],
+    "languages_b": [
+      "python"
+    ],
+    "entities_a": 1135,
+    "entities_b": 1136,
+    "component_sizes_known": true,
+    "warnings": []
+  },
+  "engine": {
+    "name": "arcade-attest",
+    "version": "0.1.0",
+    "analyzer": "arcade-agent changelog_architecture (PKG recovery)",
+    "llm_in_verdict": false
+  },
+  "honest_gaps": [
+    "No edge-level diff yet: deny_dependency predicates are not evaluated in this MVP.",
+    "Parser blind spots exist (for example files that declare no entities): a component can look empty and a verdict can be a false PASS. Coverage is reported in every evidence pack.",
+    "Predicate thresholds are starting guesses; they need per-repo history to calibrate.",
+    "An on-chain attestation proves the integrity and timestamp of a verdict, not that the verdict is objectively correct.",
+    "Criterion scores (scoring@1) are advisory: 0.5 on a trend criterion means 'no measured change', and a criterion without evidence is reported not_run instead of being scored."
+  ],
+  "hashes": {
+    "decision_record_hash": "a2e47a3100c777a4d3fb1707350bd0f252f16b4feebc3d8218fe19f1895a5f85",
+    "evidence_hash": "9cb6cb7cdd0f76f758875292be44378d8ada8b09d81582d4b648a6f783d8ff15"
+  },
+  "id": "att_9cb6cb7cdd0f76f7"
+}

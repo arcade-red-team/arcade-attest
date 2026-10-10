@@ -1,0 +1,36 @@
+{
+  "schema": "arcade-attest/dogfood-verdict@1",
+  "repo": "encode/httpx",
+  "range": {
+    "base": {
+      "tag": "0.27.2",
+      "commit": "609df7ecc0f7"
+    },
+    "head": {
+      "tag": "0.28.0",
+      "commit": "80960fa31918"
+    }
+  },
+  "decision_id": "ADR-DOGFOOD-HTTPX",
+  "verdict": "WARN",
+  "entities": {
+    "a": 524,
+    "b": 510
+  },
+  "components": {
+    "a": 475,
+    "b": 459
+  },
+  "smells_new": 0,
+  "responsibility_shifts": 33,
+  "largest_component": {
+    "name": "Transports",
+    "entities": 40
+  },
+  "overall_score": 0.8,
+  "runtime_s": 0.8,
+  "evaluated_at": "2026-10-08T00:00:00Z",
+  "evidence_file": "evidence.json",
+  "evidence_hash": "1219fcd39a63a1618ae09ef9295eaa9ada29f3e6012c90438820d12a545d24cc",
+  "reproduce": "arcade-attest evaluate --base <encode/httpx@0.27.2> --head <encode/httpx@0.28.0> --record decision-record.json --evaluated-at 2026-10-08T00:00:00Z"
+}
