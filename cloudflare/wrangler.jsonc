@@ -1,0 +1,22 @@
+{
+  // ArcadeAttest Decision API on Cloudflare Workers.
+  // Docs checked 2026-10-07 against developers.cloudflare.com (Workers
+  // configuration + KV bindings). Replace the PLACEHOLDER KV ids after:
+  //   npx wrangler kv namespace create arcade-attest-decisions
+  //   npx wrangler kv namespace create arcade-attest-decisions --preview
+  // Optional admin auth: npx wrangler secret put API_TOKEN
+  "name": "arcade-attest-decision-api",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-07",
+  "workers_dev": true,
+  "kv_namespaces": [
+    {
+      "binding": "DECISIONS",
+      "id": "PLACEHOLDER_KV_NAMESPACE_ID",
+      "preview_id": "PLACEHOLDER_KV_PREVIEW_ID"
+    }
+  ],
+  "vars": {
+    "SERVICE": "arcade-attest"
+  }
+}
