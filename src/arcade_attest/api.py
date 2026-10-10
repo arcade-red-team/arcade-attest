@@ -12,7 +12,7 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from . import store
+from . import __version__, store
 from .adapter import analyze_pair
 from .anchor import build_attestation_payload
 from .engine import evaluate
@@ -20,7 +20,7 @@ from .scoring import list_profiles
 
 STORE = store.STORE_DIR
 
-app = FastAPI(title="ArcadeAttest Decision API", version="0.1.0")
+app = FastAPI(title="ArcadeAttest Decision API", version=__version__)
 
 
 class EvaluateRequest(BaseModel):
@@ -37,7 +37,7 @@ def _now() -> str:
 
 @app.get("/health")
 def health():
-    return {"ok": True, "service": "arcade-attest", "llm_in_verdict": False}
+    return {"ok": True, "service": "arcade-attest", "version": __version__, "llm_in_verdict": False}
 
 
 @app.get("/v1/scoring/profiles")

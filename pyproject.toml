@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "arcade-attest"
-version = "0.1.0"
+version = "0.2.0"
 description = "ArcadeAttest Decision API: deterministic architecture verdicts (PASS/WARN/BLOCK) with evidence packs, anchored on-chain via EAS."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 license = { text = "MIT" }
 dependencies = [
-  "arcade-agent>=0.3.0",
+  "arcade-agent>=0.4.1,<0.5",
 ]
 
 [project.optional-dependencies]
