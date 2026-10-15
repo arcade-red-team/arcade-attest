@@ -1,0 +1,2412 @@
+{
+  "schema": "arcade-attest/evidence@1",
+  "decision_id": "ADR-DOGFOOD-HTTPX",
+  "record_version": 1,
+  "repo": "encode/httpx",
+  "mode": "advisory",
+  "enforced": false,
+  "refs": {
+    "a": "/tmp/dogfood/trees/httpx-a",
+    "b": "/tmp/dogfood/trees/httpx-b"
+  },
+  "evaluated_at": "2026-10-08T00:00:00Z",
+  "expires_at": "2026-10-09T00:00:00Z",
+  "verdict": "WARN",
+  "verdict_code": 1,
+  "predicates": [
+    {
+      "type": "no_new_smells",
+      "severity": "fail",
+      "status": "pass",
+      "measured": 0,
+      "threshold": {
+        "kinds": "any",
+        "allowed": 0
+      },
+      "evidence": []
+    },
+    {
+      "type": "max_responsibility_shifts",
+      "severity": "warn",
+      "status": "triggered",
+      "measured": 33,
+      "threshold": {
+        "max": 25
+      },
+      "evidence": [
+        {
+          "entity": "httpx._config.Timeout.__init__",
+          "from": "Init13",
+          "to": "Init12"
+        },
+        {
+          "entity": "httpx._content.AsyncIteratorByteStream.__init__",
+          "from": "Init14",
+          "to": "Init13"
+        },
+        {
+          "entity": "httpx._content.ByteStream.__init__",
+          "from": "Init15",
+          "to": "Init14"
+        },
+        {
+          "entity": "httpx._content.IteratorByteStream.__init__",
+          "from": "Init16",
+          "to": "Init15"
+        },
+        {
+          "entity": "httpx._decoders.BrotliDecoder.__init__",
+          "from": "Init17",
+          "to": "Init16"
+        },
+        {
+          "entity": "httpx._decoders.ByteChunker.__init__",
+          "from": "Init18",
+          "to": "Init17"
+        },
+        {
+          "entity": "httpx._decoders.DeflateDecoder.__init__",
+          "from": "Init19",
+          "to": "Init18"
+        },
+        {
+          "entity": "httpx._decoders.GZipDecoder.__init__",
+          "from": "Init20",
+          "to": "Init19"
+        },
+        {
+          "entity": "httpx._decoders.LineDecoder.__init__",
+          "from": "Init21",
+          "to": "Init20"
+        },
+        {
+          "entity": "httpx._decoders.MultiDecoder.__init__",
+          "from": "Init22",
+          "to": "Init21"
+        },
+        {
+          "entity": "httpx._decoders.TextChunker.__init__",
+          "from": "Init23",
+          "to": "Init22"
+        },
+        {
+          "entity": "httpx._decoders.TextDecoder.__init__",
+          "from": "Init24",
+          "to": "Init23"
+        },
+        {
+          "entity": "httpx._decoders.ZStandardDecoder.__init__",
+          "from": "Init25",
+          "to": "Init24"
+        },
+        {
+          "entity": "httpx._exceptions.CookieConflict.__init__",
+          "from": "Init26",
+          "to": "Init25"
+        },
+        {
+          "entity": "httpx._exceptions.HTTPError.__init__",
+          "from": "Init27",
+          "to": "Init26"
+        },
+        {
+          "entity": "httpx._exceptions.HTTPStatusError.__init__",
+          "from": "Init28",
+          "to": "Init27"
+        },
+        {
+          "entity": "httpx._exceptions.InvalidURL.__init__",
+          "from": "Init29",
+          "to": "Init28"
+        },
+        {
+          "entity": "httpx._exceptions.RequestError.__init__",
+          "from": "Init30",
+          "to": "Init29"
+        },
+        {
+          "entity": "httpx._exceptions.RequestNotRead.__init__",
+          "from": "Init31",
+          "to": "Init30"
+        },
+        {
+          "entity": "httpx._exceptions.ResponseNotRead.__init__",
+          "from": "Init32",
+          "to": "Init31"
+        },
+        {
+          "entity": "httpx._exceptions.StreamClosed.__init__",
+          "from": "Init33",
+          "to": "Init32"
+        },
+        {
+          "entity": "httpx._exceptions.StreamConsumed.__init__",
+          "from": "Init34",
+          "to": "Init33"
+        },
+        {
+          "entity": "httpx._exceptions.StreamError.__init__",
+          "from": "Init35",
+          "to": "Init34"
+        },
+        {
+          "entity": "httpx._models.Cookies.__init__",
+          "from": "Init36",
+          "to": "Init35"
+        },
+        {
+          "entity": "httpx._models.Headers.__init__",
+          "from": "Init37",
+          "to": "Init36"
+        },
+        {
+          "entity": "httpx._models.Request.__init__",
+          "from": "Init38",
+          "to": "Init37"
+        },
+        {
+          "entity": "httpx._models.Response.__init__",
+          "from": "Init39",
+          "to": "Init38"
+        },
+        {
+          "entity": "httpx._multipart.DataField.__init__",
+          "from": "Init40",
+          "to": "Init39"
+        },
+        {
+          "entity": "httpx._multipart.FileField.__init__",
+          "from": "Init41",
+          "to": "Init40"
+        },
+        {
+          "entity": "httpx._multipart.MultipartStream.__init__",
+          "from": "Init42",
+          "to": "Init41"
+        },
+        {
+          "entity": "httpx._urls.QueryParams.__init__",
+          "from": "Init43",
+          "to": "Init42"
+        },
+        {
+          "entity": "httpx._urls.URL.__init__",
+          "from": "Init44",
+          "to": "Init43"
+        },
+        {
+          "entity": "httpx._utils.URLPattern.__init__",
+          "from": "Init45",
+          "to": "Init44"
+        }
+      ]
+    },
+    {
+      "type": "component_entity_cap",
+      "severity": "warn",
+      "status": "pass",
+      "measured": 40,
+      "threshold": {
+        "max": 400,
+        "component": "any"
+      },
+      "evidence": []
+    }
+  ],
+  "measured": {
+    "smells_new": 0,
+    "responsibility_shifts": 33,
+    "largest_component": {
+      "name": "Transports",
+      "entities": 40
+    }
+  },
+  "summary": {
+    "components_a": 475,
+    "components_b": 459,
+    "shifts": 33,
+    "entities_a": 524,
+    "entities_b": 510,
+    "entities_added": 13,
+    "entities_deleted": 27,
+    "smells_new": 0,
+    "smells_resolved": 0
+  },
+  "architecture_summary": {
+    "components_b": 459,
+    "entities_a": 524,
+    "entities_b": 510,
+    "total_component_entities": 510,
+    "largest_component": {
+      "name": "Transports",
+      "entities": 40
+    },
+    "metrics_b": {
+      "BasicMQ": 0.003,
+      "InterConnectivity": 0.7735,
+      "IntraConnectivity": 0.0021,
+      "RCI": 0.0762,
+      "TurboMQ": 1.372,
+      "TwoWayPairRatio": 0.0056
+    },
+    "languages_b": [
+      "python"
+    ]
+  },
+  "criteria": [
+    {
+      "id": "smell_regression",
+      "score": 1.0,
+      "status": "scored",
+      "measured": {
+        "new_smells": 0,
+        "weighted_smells": 0
+      },
+      "evidence": [],
+      "formula": "scoring@1:smell_regression:raw=clamp(1-0.2*weighted_smells)",
+      "weight": 1.0,
+      "weighted_score": 1.0
+    },
+    {
+      "id": "responsibility_stability",
+      "score": 0.7,
+      "status": "scored",
+      "measured": {
+        "responsibility_shifts": 33,
+        "entities_b": 510,
+        "shift_rate": 0.0647
+      },
+      "evidence": [
+        {
+          "entity": "httpx._config.Timeout.__init__",
+          "from": "Init13",
+          "to": "Init12"
+        },
+        {
+          "entity": "httpx._content.AsyncIteratorByteStream.__init__",
+          "from": "Init14",
+          "to": "Init13"
+        },
+        {
+          "entity": "httpx._content.ByteStream.__init__",
+          "from": "Init15",
+          "to": "Init14"
+        },
+        {
+          "entity": "httpx._content.IteratorByteStream.__init__",
+          "from": "Init16",
+          "to": "Init15"
+        },
+        {
+          "entity": "httpx._decoders.BrotliDecoder.__init__",
+          "from": "Init17",
+          "to": "Init16"
+        },
+        {
+          "entity": "httpx._decoders.ByteChunker.__init__",
+          "from": "Init18",
+          "to": "Init17"
+        },
+        {
+          "entity": "httpx._decoders.DeflateDecoder.__init__",
+          "from": "Init19",
+          "to": "Init18"
+        },
+        {
+          "entity": "httpx._decoders.GZipDecoder.__init__",
+          "from": "Init20",
+          "to": "Init19"
+        },
+        {
+          "entity": "httpx._decoders.LineDecoder.__init__",
+          "from": "Init21",
+          "to": "Init20"
+        },
+        {
+          "entity": "httpx._decoders.MultiDecoder.__init__",
+          "from": "Init22",
+          "to": "Init21"
+        }
+      ],
+      "formula": "scoring@1:responsibility_stability:raw=clamp(1-5*(shifts/max(1,entities_b)))",
+      "weight": 1.0,
+      "weighted_score": 0.7
+    },
+    {
+      "id": "god_component_risk",
+      "score": 0.9,
+      "status": "scored",
+      "measured": {
+        "largest_component": "Transports",
+        "largest_entities": 40,
+        "largest_share": 0.0784
+      },
+      "evidence": [
+        {
+          "component": "Transports",
+          "entities": 40
+        }
+      ],
+      "formula": "scoring@1:god_component_risk:raw=clamp(1-largest_share)",
+      "weight": 1.0,
+      "weighted_score": 0.9
+    },
+    {
+      "id": "component_balance",
+      "score": 1.0,
+      "status": "scored",
+      "measured": {
+        "components": 459,
+        "hhi": 0.0083
+      },
+      "evidence": [
+        {
+          "component": "Version",
+          "entities": 1
+        },
+        {
+          "component": "Delete",
+          "entities": 1
+        },
+        {
+          "component": "Get",
+          "entities": 1
+        },
+        {
+          "component": "Head",
+          "entities": 1
+        },
+        {
+          "component": "Options",
+          "entities": 1
+        },
+        {
+          "component": "Patch",
+          "entities": 1
+        },
+        {
+          "component": "Post",
+          "entities": 1
+        },
+        {
+          "component": "Put",
+          "entities": 1
+        },
+        {
+          "component": "Request",
+          "entities": 1
+        },
+        {
+          "component": "Stream",
+          "entities": 1
+        },
+        {
+          "component": "Auth",
+          "entities": 1
+        },
+        {
+          "component": "AsyncAuthFlow",
+          "entities": 1
+        },
+        {
+          "component": "AuthFlow",
+          "entities": 1
+        },
+        {
+          "component": "SyncAuthFlow",
+          "entities": 1
+        },
+        {
+          "component": "Basicauth",
+          "entities": 1
+        },
+        {
+          "component": "Init",
+          "entities": 1
+        },
+        {
+          "component": "BuildAuthHeader",
+          "entities": 1
+        },
+        {
+          "component": "AuthFlow2",
+          "entities": 1
+        },
+        {
+          "component": "Digestauth",
+          "entities": 1
+        },
+        {
+          "component": "Init2",
+          "entities": 1
+        },
+        {
+          "component": "BuildAuthHeader2",
+          "entities": 1
+        },
+        {
+          "component": "GetClientNonce",
+          "entities": 1
+        },
+        {
+          "component": "GetHeaderValue",
+          "entities": 1
+        },
+        {
+          "component": "ParseChallenge",
+          "entities": 1
+        },
+        {
+          "component": "ResolveQop",
+          "entities": 1
+        },
+        {
+          "component": "AuthFlow3",
+          "entities": 1
+        },
+        {
+          "component": "Functionauth",
+          "entities": 1
+        },
+        {
+          "component": "Init3",
+          "entities": 1
+        },
+        {
+          "component": "AuthFlow4",
+          "entities": 1
+        },
+        {
+          "component": "Netrcauth",
+          "entities": 1
+        },
+        {
+          "component": "Init4",
+          "entities": 1
+        },
+        {
+          "component": "BuildAuthHeader3",
+          "entities": 1
+        },
+        {
+          "component": "AuthFlow5",
+          "entities": 1
+        },
+        {
+          "component": "Digestauthchallenge",
+          "entities": 1
+        },
+        {
+          "component": "Asyncclient",
+          "entities": 1
+        },
+        {
+          "component": "Aenter",
+          "entities": 1
+        },
+        {
+          "component": "Aexit",
+          "entities": 1
+        },
+        {
+          "component": "Init5",
+          "entities": 1
+        },
+        {
+          "component": "InitProxyTransport",
+          "entities": 1
+        },
+        {
+          "component": "InitTransport",
+          "entities": 1
+        },
+        {
+          "component": "SendHandlingAuth",
+          "entities": 1
+        },
+        {
+          "component": "SendHandlingRedirects",
+          "entities": 1
+        },
+        {
+          "component": "SendSingleRequest",
+          "entities": 1
+        },
+        {
+          "component": "TransportForUrl",
+          "entities": 1
+        },
+        {
+          "component": "Aclose",
+          "entities": 1
+        },
+        {
+          "component": "Delete2",
+          "entities": 1
+        },
+        {
+          "component": "Get2",
+          "entities": 1
+        },
+        {
+          "component": "Head2",
+          "entities": 1
+        },
+        {
+          "component": "Options2",
+          "entities": 1
+        },
+        {
+          "component": "Patch2",
+          "entities": 1
+        },
+        {
+          "component": "Post2",
+          "entities": 1
+        },
+        {
+          "component": "Put2",
+          "entities": 1
+        },
+        {
+          "component": "Request2",
+          "entities": 1
+        },
+        {
+          "component": "Send",
+          "entities": 1
+        },
+        {
+          "component": "Stream2",
+          "entities": 1
+        },
+        {
+          "component": "Baseclient",
+          "entities": 1
+        },
+        {
+          "component": "Init6",
+          "entities": 1
+        },
+        {
+          "component": "BuildAuth",
+          "entities": 1
+        },
+        {
+          "component": "BuildRedirectRequest",
+          "entities": 1
+        },
+        {
+          "component": "BuildRequestAuth",
+          "entities": 1
+        },
+        {
+          "component": "EnforceTrailingSlash",
+          "entities": 1
+        },
+        {
+          "component": "GetProxyMap",
+          "entities": 1
+        },
+        {
+          "component": "MergeCookies",
+          "entities": 1
+        },
+        {
+          "component": "MergeHeaders",
+          "entities": 1
+        },
+        {
+          "component": "MergeQueryparams",
+          "entities": 1
+        },
+        {
+          "component": "MergeUrl",
+          "entities": 1
+        },
+        {
+          "component": "RedirectHeaders",
+          "entities": 1
+        },
+        {
+          "component": "RedirectMethod",
+          "entities": 1
+        },
+        {
+          "component": "RedirectStream",
+          "entities": 1
+        },
+        {
+          "component": "RedirectUrl",
+          "entities": 1
+        },
+        {
+          "component": "SetTimeout",
+          "entities": 1
+        },
+        {
+          "component": "Auth2",
+          "entities": 1
+        },
+        {
+          "component": "BaseUrl",
+          "entities": 1
+        },
+        {
+          "component": "BuildRequest",
+          "entities": 1
+        },
+        {
+          "component": "Cookies",
+          "entities": 1
+        },
+        {
+          "component": "EventHooks",
+          "entities": 1
+        },
+        {
+          "component": "Headers",
+          "entities": 1
+        },
+        {
+          "component": "IsClosed",
+          "entities": 1
+        },
+        {
+          "component": "Params",
+          "entities": 1
+        },
+        {
+          "component": "Timeout",
+          "entities": 1
+        },
+        {
+          "component": "TrustEnv",
+          "entities": 1
+        },
+        {
+          "component": "Boundasyncstream",
+          "entities": 1
+        },
+        {
+          "component": "Aiter",
+          "entities": 1
+        },
+        {
+          "component": "Init7",
+          "entities": 1
+        },
+        {
+          "component": "Aclose2",
+          "entities": 1
+        },
+        {
+          "component": "Boundsyncstream",
+          "entities": 1
+        },
+        {
+          "component": "Init8",
+          "entities": 1
+        },
+        {
+          "component": "Iter",
+          "entities": 1
+        },
+        {
+          "component": "Close",
+          "entities": 1
+        },
+        {
+          "component": "Client",
+          "entities": 1
+        },
+        {
+          "component": "Enter",
+          "entities": 1
+        },
+        {
+          "component": "Exit",
+          "entities": 1
+        },
+        {
+          "component": "Init9",
+          "entities": 1
+        },
+        {
+          "component": "InitProxyTransport2",
+          "entities": 1
+        },
+        {
+          "component": "InitTransport2",
+          "entities": 1
+        },
+        {
+          "component": "SendHandlingAuth2",
+          "entities": 1
+        },
+        {
+          "component": "SendHandlingRedirects2",
+          "entities": 1
+        },
+        {
+          "component": "SendSingleRequest2",
+          "entities": 1
+        },
+        {
+          "component": "TransportForUrl2",
+          "entities": 1
+        },
+        {
+          "component": "Close2",
+          "entities": 1
+        },
+        {
+          "component": "Delete3",
+          "entities": 1
+        },
+        {
+          "component": "Get3",
+          "entities": 1
+        },
+        {
+          "component": "Head3",
+          "entities": 1
+        },
+        {
+          "component": "Options3",
+          "entities": 1
+        },
+        {
+          "component": "Patch3",
+          "entities": 1
+        },
+        {
+          "component": "Post3",
+          "entities": 1
+        },
+        {
+          "component": "Put3",
+          "entities": 1
+        },
+        {
+          "component": "Request3",
+          "entities": 1
+        },
+        {
+          "component": "Send2",
+          "entities": 1
+        },
+        {
+          "component": "Stream3",
+          "entities": 1
+        },
+        {
+          "component": "Clientstate",
+          "entities": 1
+        },
+        {
+          "component": "Useclientdefault",
+          "entities": 1
+        },
+        {
+          "component": "IsHttpsRedirect",
+          "entities": 1
+        },
+        {
+          "component": "PortOrDefault",
+          "entities": 1
+        },
+        {
+          "component": "SameOrigin",
+          "entities": 1
+        },
+        {
+          "component": "Limits",
+          "entities": 1
+        },
+        {
+          "component": "Eq",
+          "entities": 1
+        },
+        {
+          "component": "Init10",
+          "entities": 1
+        },
+        {
+          "component": "Repr",
+          "entities": 1
+        },
+        {
+          "component": "Proxy",
+          "entities": 1
+        },
+        {
+          "component": "Init11",
+          "entities": 1
+        },
+        {
+          "component": "Repr2",
+          "entities": 1
+        },
+        {
+          "component": "RawAuth",
+          "entities": 1
+        },
+        {
+          "component": "Timeout2",
+          "entities": 1
+        },
+        {
+          "component": "Eq2",
+          "entities": 1
+        },
+        {
+          "component": "Init12",
+          "entities": 1
+        },
+        {
+          "component": "Repr3",
+          "entities": 1
+        },
+        {
+          "component": "AsDict",
+          "entities": 1
+        },
+        {
+          "component": "Unsettype",
+          "entities": 1
+        },
+        {
+          "component": "CreateSslContext",
+          "entities": 1
+        },
+        {
+          "component": "Asynciteratorbytestream",
+          "entities": 1
+        },
+        {
+          "component": "Aiter2",
+          "entities": 1
+        },
+        {
+          "component": "Init13",
+          "entities": 1
+        },
+        {
+          "component": "Bytestream",
+          "entities": 1
+        },
+        {
+          "component": "Aiter3",
+          "entities": 1
+        },
+        {
+          "component": "Init14",
+          "entities": 1
+        },
+        {
+          "component": "Iter2",
+          "entities": 1
+        },
+        {
+          "component": "Iteratorbytestream",
+          "entities": 1
+        },
+        {
+          "component": "Init15",
+          "entities": 1
+        },
+        {
+          "component": "Iter3",
+          "entities": 1
+        },
+        {
+          "component": "Unattachedstream",
+          "entities": 1
+        },
+        {
+          "component": "Aiter4",
+          "entities": 1
+        },
+        {
+          "component": "Iter4",
+          "entities": 1
+        },
+        {
+          "component": "EncodeContent",
+          "entities": 1
+        },
+        {
+          "component": "EncodeHtml",
+          "entities": 1
+        },
+        {
+          "component": "EncodeJson",
+          "entities": 1
+        },
+        {
+          "component": "EncodeMultipartData",
+          "entities": 1
+        },
+        {
+          "component": "EncodeRequest",
+          "entities": 1
+        },
+        {
+          "component": "EncodeResponse",
+          "entities": 1
+        },
+        {
+          "component": "EncodeText",
+          "entities": 1
+        },
+        {
+          "component": "EncodeUrlencodedData",
+          "entities": 1
+        },
+        {
+          "component": "Brotlidecoder",
+          "entities": 1
+        },
+        {
+          "component": "Init16",
+          "entities": 1
+        },
+        {
+          "component": "Decode",
+          "entities": 1
+        },
+        {
+          "component": "Flush",
+          "entities": 1
+        },
+        {
+          "component": "Bytechunker",
+          "entities": 1
+        },
+        {
+          "component": "Init17",
+          "entities": 1
+        },
+        {
+          "component": "Decode2",
+          "entities": 1
+        },
+        {
+          "component": "Flush2",
+          "entities": 1
+        },
+        {
+          "component": "Contentdecoder",
+          "entities": 1
+        },
+        {
+          "component": "Decode3",
+          "entities": 1
+        },
+        {
+          "component": "Flush3",
+          "entities": 1
+        },
+        {
+          "component": "Deflatedecoder",
+          "entities": 1
+        },
+        {
+          "component": "Init18",
+          "entities": 1
+        },
+        {
+          "component": "Decode4",
+          "entities": 1
+        },
+        {
+          "component": "Flush4",
+          "entities": 1
+        },
+        {
+          "component": "Gzipdecoder",
+          "entities": 1
+        },
+        {
+          "component": "Init19",
+          "entities": 1
+        },
+        {
+          "component": "Decode5",
+          "entities": 1
+        },
+        {
+          "component": "Flush5",
+          "entities": 1
+        },
+        {
+          "component": "Identitydecoder",
+          "entities": 1
+        },
+        {
+          "component": "Decode6",
+          "entities": 1
+        },
+        {
+          "component": "Flush6",
+          "entities": 1
+        },
+        {
+          "component": "Linedecoder",
+          "entities": 1
+        },
+        {
+          "component": "Init20",
+          "entities": 1
+        },
+        {
+          "component": "Decode7",
+          "entities": 1
+        },
+        {
+          "component": "Flush7",
+          "entities": 1
+        },
+        {
+          "component": "Multidecoder",
+          "entities": 1
+        },
+        {
+          "component": "Init21",
+          "entities": 1
+        },
+        {
+          "component": "Decode8",
+          "entities": 1
+        },
+        {
+          "component": "Flush8",
+          "entities": 1
+        },
+        {
+          "component": "Textchunker",
+          "entities": 1
+        },
+        {
+          "component": "Init22",
+          "entities": 1
+        },
+        {
+          "component": "Decode9",
+          "entities": 1
+        },
+        {
+          "component": "Flush9",
+          "entities": 1
+        },
+        {
+          "component": "Textdecoder",
+          "entities": 1
+        },
+        {
+          "component": "Init23",
+          "entities": 1
+        },
+        {
+          "component": "Decode10",
+          "entities": 1
+        },
+        {
+          "component": "Flush10",
+          "entities": 1
+        },
+        {
+          "component": "Zstandarddecoder",
+          "entities": 1
+        },
+        {
+          "component": "Init24",
+          "entities": 1
+        },
+        {
+          "component": "Decode11",
+          "entities": 1
+        },
+        {
+          "component": "Flush11",
+          "entities": 1
+        },
+        {
+          "component": "Closeerror",
+          "entities": 1
+        },
+        {
+          "component": "Connecterror",
+          "entities": 1
+        },
+        {
+          "component": "Connecttimeout",
+          "entities": 1
+        },
+        {
+          "component": "Cookieconflict",
+          "entities": 1
+        },
+        {
+          "component": "Init25",
+          "entities": 1
+        },
+        {
+          "component": "Decodingerror",
+          "entities": 1
+        },
+        {
+          "component": "Httperror",
+          "entities": 1
+        },
+        {
+          "component": "Init26",
+          "entities": 1
+        },
+        {
+          "component": "Request4",
+          "entities": 1
+        },
+        {
+          "component": "Httpstatuserror",
+          "entities": 1
+        },
+        {
+          "component": "Init27",
+          "entities": 1
+        },
+        {
+          "component": "Invalidurl",
+          "entities": 1
+        },
+        {
+          "component": "Init28",
+          "entities": 1
+        },
+        {
+          "component": "Localprotocolerror",
+          "entities": 1
+        },
+        {
+          "component": "Networkerror",
+          "entities": 1
+        },
+        {
+          "component": "Pooltimeout",
+          "entities": 1
+        },
+        {
+          "component": "Protocolerror",
+          "entities": 1
+        },
+        {
+          "component": "Proxyerror",
+          "entities": 1
+        },
+        {
+          "component": "Readerror",
+          "entities": 1
+        },
+        {
+          "component": "Readtimeout",
+          "entities": 1
+        },
+        {
+          "component": "Remoteprotocolerror",
+          "entities": 1
+        },
+        {
+          "component": "Requesterror",
+          "entities": 1
+        },
+        {
+          "component": "Init29",
+          "entities": 1
+        },
+        {
+          "component": "Requestnotread",
+          "entities": 1
+        },
+        {
+          "component": "Init30",
+          "entities": 1
+        },
+        {
+          "component": "Responsenotread",
+          "entities": 1
+        },
+        {
+          "component": "Init31",
+          "entities": 1
+        },
+        {
+          "component": "Streamclosed",
+          "entities": 1
+        },
+        {
+          "component": "Init32",
+          "entities": 1
+        },
+        {
+          "component": "Streamconsumed",
+          "entities": 1
+        },
+        {
+          "component": "Init33",
+          "entities": 1
+        },
+        {
+          "component": "Streamerror",
+          "entities": 1
+        },
+        {
+          "component": "Init34",
+          "entities": 1
+        },
+        {
+          "component": "Timeoutexception",
+          "entities": 1
+        },
+        {
+          "component": "Toomanyredirects",
+          "entities": 1
+        },
+        {
+          "component": "Transporterror",
+          "entities": 1
+        },
+        {
+          "component": "Unsupportedprotocol",
+          "entities": 1
+        },
+        {
+          "component": "Writeerror",
+          "entities": 1
+        },
+        {
+          "component": "Writetimeout",
+          "entities": 1
+        },
+        {
+          "component": "RequestContext",
+          "entities": 1
+        },
+        {
+          "component": "DownloadResponse",
+          "entities": 1
+        },
+        {
+          "component": "FormatCertificate",
+          "entities": 1
+        },
+        {
+          "component": "FormatRequestHeaders",
+          "entities": 1
+        },
+        {
+          "component": "FormatResponseHeaders",
+          "entities": 1
+        },
+        {
+          "component": "GetLexerForResponse",
+          "entities": 1
+        },
+        {
+          "component": "HandleHelp",
+          "entities": 1
+        },
+        {
+          "component": "Main",
+          "entities": 1
+        },
+        {
+          "component": "PrintHelp",
+          "entities": 1
+        },
+        {
+          "component": "PrintRequestHeaders",
+          "entities": 1
+        },
+        {
+          "component": "PrintResponse",
+          "entities": 1
+        },
+        {
+          "component": "PrintResponseHeaders",
+          "entities": 1
+        },
+        {
+          "component": "Trace",
+          "entities": 1
+        },
+        {
+          "component": "ValidateAuth",
+          "entities": 1
+        },
+        {
+          "component": "ValidateJson",
+          "entities": 1
+        },
+        {
+          "component": "Cookies2",
+          "entities": 1
+        },
+        {
+          "component": "Bool",
+          "entities": 1
+        },
+        {
+          "component": "Delitem",
+          "entities": 1
+        },
+        {
+          "component": "Getitem",
+          "entities": 1
+        },
+        {
+          "component": "Init35",
+          "entities": 1
+        },
+        {
+          "component": "Iter5",
+          "entities": 1
+        },
+        {
+          "component": "Len",
+          "entities": 1
+        },
+        {
+          "component": "Repr4",
+          "entities": 1
+        },
+        {
+          "component": "Setitem",
+          "entities": 1
+        },
+        {
+          "component": "Clear",
+          "entities": 1
+        },
+        {
+          "component": "Delete4",
+          "entities": 1
+        },
+        {
+          "component": "ExtractCookies",
+          "entities": 1
+        },
+        {
+          "component": "Get4",
+          "entities": 1
+        },
+        {
+          "component": "Set",
+          "entities": 1
+        },
+        {
+          "component": "SetCookieHeader",
+          "entities": 1
+        },
+        {
+          "component": "Update",
+          "entities": 1
+        },
+        {
+          "component": "Headers2",
+          "entities": 1
+        },
+        {
+          "component": "Contains",
+          "entities": 1
+        },
+        {
+          "component": "Delitem2",
+          "entities": 1
+        },
+        {
+          "component": "Eq3",
+          "entities": 1
+        },
+        {
+          "component": "Getitem2",
+          "entities": 1
+        },
+        {
+          "component": "Init36",
+          "entities": 1
+        },
+        {
+          "component": "Iter6",
+          "entities": 1
+        },
+        {
+          "component": "Len2",
+          "entities": 1
+        },
+        {
+          "component": "Repr5",
+          "entities": 1
+        },
+        {
+          "component": "Setitem2",
+          "entities": 1
+        },
+        {
+          "component": "Copy",
+          "entities": 1
+        },
+        {
+          "component": "Encoding",
+          "entities": 1
+        },
+        {
+          "component": "Get5",
+          "entities": 1
+        },
+        {
+          "component": "GetList",
+          "entities": 1
+        },
+        {
+          "component": "Items",
+          "entities": 1
+        },
+        {
+          "component": "Keys",
+          "entities": 1
+        },
+        {
+          "component": "MultiItems",
+          "entities": 1
+        },
+        {
+          "component": "Raw",
+          "entities": 1
+        },
+        {
+          "component": "Update2",
+          "entities": 1
+        },
+        {
+          "component": "Values",
+          "entities": 1
+        },
+        {
+          "component": "Request5",
+          "entities": 1
+        },
+        {
+          "component": "Getstate",
+          "entities": 1
+        },
+        {
+          "component": "Init37",
+          "entities": 1
+        },
+        {
+          "component": "Repr6",
+          "entities": 1
+        },
+        {
+          "component": "Setstate",
+          "entities": 1
+        },
+        {
+          "component": "Prepare",
+          "entities": 1
+        },
+        {
+          "component": "Aread",
+          "entities": 1
+        },
+        {
+          "component": "Content",
+          "entities": 1
+        },
+        {
+          "component": "Read",
+          "entities": 1
+        },
+        {
+          "component": "Response",
+          "entities": 9
+        },
+        {
+          "component": "Getstate2",
+          "entities": 1
+        },
+        {
+          "component": "Init38",
+          "entities": 1
+        },
+        {
+          "component": "Repr7",
+          "entities": 1
+        },
+        {
+          "component": "Setstate2",
+          "entities": 1
+        },
+        {
+          "component": "GetContentDecoder",
+          "entities": 1
+        },
+        {
+          "component": "Prepare2",
+          "entities": 1
+        },
+        {
+          "component": "Aclose3",
+          "entities": 1
+        },
+        {
+          "component": "AiterBytes",
+          "entities": 1
+        },
+        {
+          "component": "AiterLines",
+          "entities": 1
+        },
+        {
+          "component": "AiterRaw",
+          "entities": 1
+        },
+        {
+          "component": "AiterText",
+          "entities": 1
+        },
+        {
+          "component": "Aread2",
+          "entities": 1
+        },
+        {
+          "component": "CharsetEncoding",
+          "entities": 1
+        },
+        {
+          "component": "Close3",
+          "entities": 1
+        },
+        {
+          "component": "Content2",
+          "entities": 1
+        },
+        {
+          "component": "Cookies3",
+          "entities": 1
+        },
+        {
+          "component": "Elapsed",
+          "entities": 1
+        },
+        {
+          "component": "Encoding2",
+          "entities": 1
+        },
+        {
+          "component": "HasRedirectLocation",
+          "entities": 1
+        },
+        {
+          "component": "HttpVersion",
+          "entities": 1
+        },
+        {
+          "component": "IsClientError",
+          "entities": 1
+        },
+        {
+          "component": "IsError",
+          "entities": 1
+        },
+        {
+          "component": "IsInformational",
+          "entities": 1
+        },
+        {
+          "component": "IsRedirect",
+          "entities": 1
+        },
+        {
+          "component": "IsServerError",
+          "entities": 1
+        },
+        {
+          "component": "IsSuccess",
+          "entities": 1
+        },
+        {
+          "component": "IterBytes",
+          "entities": 1
+        },
+        {
+          "component": "IterLines",
+          "entities": 1
+        },
+        {
+          "component": "IterRaw",
+          "entities": 1
+        },
+        {
+          "component": "IterText",
+          "entities": 1
+        },
+        {
+          "component": "Json",
+          "entities": 1
+        },
+        {
+          "component": "Links",
+          "entities": 1
+        },
+        {
+          "component": "NumBytesDownloaded",
+          "entities": 1
+        },
+        {
+          "component": "RaiseForStatus",
+          "entities": 1
+        },
+        {
+          "component": "Read2",
+          "entities": 1
+        },
+        {
+          "component": "ReasonPhrase",
+          "entities": 1
+        },
+        {
+          "component": "Request6",
+          "entities": 1
+        },
+        {
+          "component": "Text",
+          "entities": 1
+        },
+        {
+          "component": "Url",
+          "entities": 1
+        },
+        {
+          "component": "IsKnownEncoding",
+          "entities": 1
+        },
+        {
+          "component": "NormalizeHeaderKey",
+          "entities": 1
+        },
+        {
+          "component": "NormalizeHeaderValue",
+          "entities": 1
+        },
+        {
+          "component": "ObfuscateSensitiveHeaders",
+          "entities": 1
+        },
+        {
+          "component": "ParseContentTypeCharset",
+          "entities": 1
+        },
+        {
+          "component": "ParseHeaderLinks",
+          "entities": 1
+        },
+        {
+          "component": "Datafield",
+          "entities": 1
+        },
+        {
+          "component": "Init39",
+          "entities": 1
+        },
+        {
+          "component": "GetLength",
+          "entities": 1
+        },
+        {
+          "component": "Render",
+          "entities": 1
+        },
+        {
+          "component": "RenderData",
+          "entities": 1
+        },
+        {
+          "component": "RenderHeaders",
+          "entities": 1
+        },
+        {
+          "component": "Filefield",
+          "entities": 1
+        },
+        {
+          "component": "Init40",
+          "entities": 1
+        },
+        {
+          "component": "GetLength2",
+          "entities": 1
+        },
+        {
+          "component": "Render2",
+          "entities": 1
+        },
+        {
+          "component": "RenderData2",
+          "entities": 1
+        },
+        {
+          "component": "RenderHeaders2",
+          "entities": 1
+        },
+        {
+          "component": "Multipartstream",
+          "entities": 1
+        },
+        {
+          "component": "Aiter5",
+          "entities": 1
+        },
+        {
+          "component": "Init41",
+          "entities": 1
+        },
+        {
+          "component": "Iter7",
+          "entities": 1
+        },
+        {
+          "component": "IterFields",
+          "entities": 1
+        },
+        {
+          "component": "GetContentLength",
+          "entities": 1
+        },
+        {
+          "component": "GetHeaders",
+          "entities": 1
+        },
+        {
+          "component": "IterChunks",
+          "entities": 1
+        },
+        {
+          "component": "FormatFormParam",
+          "entities": 1
+        },
+        {
+          "component": "GuessContentType",
+          "entities": 1
+        },
+        {
+          "component": "GetMultipartBoundaryFromContentType",
+          "entities": 1
+        },
+        {
+          "component": "Codes",
+          "entities": 1
+        },
+        {
+          "component": "New",
+          "entities": 1
+        },
+        {
+          "component": "Str",
+          "entities": 1
+        },
+        {
+          "component": "GetReasonPhrase",
+          "entities": 1
+        },
+        {
+          "component": "IsClientError2",
+          "entities": 1
+        },
+        {
+          "component": "IsError2",
+          "entities": 1
+        },
+        {
+          "component": "IsInformational2",
+          "entities": 1
+        },
+        {
+          "component": "IsRedirect2",
+          "entities": 1
+        },
+        {
+          "component": "IsServerError2",
+          "entities": 1
+        },
+        {
+          "component": "IsSuccess2",
+          "entities": 1
+        },
+        {
+          "component": "Transports",
+          "entities": 40
+        },
+        {
+          "component": "Asyncbytestream",
+          "entities": 3
+        },
+        {
+          "component": "Aiter6",
+          "entities": 1
+        },
+        {
+          "component": "Aclose4",
+          "entities": 1
+        },
+        {
+          "component": "Syncbytestream",
+          "entities": 3
+        },
+        {
+          "component": "Iter8",
+          "entities": 1
+        },
+        {
+          "component": "Close4",
+          "entities": 1
+        },
+        {
+          "component": "Percent",
+          "entities": 1
+        },
+        {
+          "component": "Parseresult",
+          "entities": 1
+        },
+        {
+          "component": "Str2",
+          "entities": 1
+        },
+        {
+          "component": "Authority",
+          "entities": 1
+        },
+        {
+          "component": "CopyWith",
+          "entities": 1
+        },
+        {
+          "component": "Netloc",
+          "entities": 1
+        },
+        {
+          "component": "EncodeHost",
+          "entities": 1
+        },
+        {
+          "component": "NormalizePath",
+          "entities": 1
+        },
+        {
+          "component": "NormalizePort",
+          "entities": 1
+        },
+        {
+          "component": "PercentEncoded",
+          "entities": 1
+        },
+        {
+          "component": "Quote",
+          "entities": 1
+        },
+        {
+          "component": "Urlparse",
+          "entities": 1
+        },
+        {
+          "component": "ValidatePath",
+          "entities": 1
+        },
+        {
+          "component": "Queryparams",
+          "entities": 1
+        },
+        {
+          "component": "Bool2",
+          "entities": 1
+        },
+        {
+          "component": "Contains2",
+          "entities": 1
+        },
+        {
+          "component": "Eq4",
+          "entities": 1
+        },
+        {
+          "component": "Getitem3",
+          "entities": 1
+        },
+        {
+          "component": "Hash",
+          "entities": 1
+        },
+        {
+          "component": "Init42",
+          "entities": 1
+        },
+        {
+          "component": "Iter9",
+          "entities": 1
+        },
+        {
+          "component": "Len3",
+          "entities": 1
+        },
+        {
+          "component": "Repr8",
+          "entities": 1
+        },
+        {
+          "component": "Setitem3",
+          "entities": 1
+        },
+        {
+          "component": "Str3",
+          "entities": 1
+        },
+        {
+          "component": "Add",
+          "entities": 1
+        },
+        {
+          "component": "Get6",
+          "entities": 1
+        },
+        {
+          "component": "GetList2",
+          "entities": 1
+        },
+        {
+          "component": "Items2",
+          "entities": 1
+        },
+        {
+          "component": "Keys2",
+          "entities": 1
+        },
+        {
+          "component": "Merge",
+          "entities": 1
+        },
+        {
+          "component": "MultiItems2",
+          "entities": 1
+        },
+        {
+          "component": "Remove",
+          "entities": 1
+        },
+        {
+          "component": "Set2",
+          "entities": 1
+        },
+        {
+          "component": "Update3",
+          "entities": 1
+        },
+        {
+          "component": "Values2",
+          "entities": 1
+        },
+        {
+          "component": "Url2",
+          "entities": 1
+        },
+        {
+          "component": "Eq5",
+          "entities": 1
+        },
+        {
+          "component": "Hash2",
+          "entities": 1
+        },
+        {
+          "component": "Init43",
+          "entities": 1
+        },
+        {
+          "component": "Repr9",
+          "entities": 1
+        },
+        {
+          "component": "Str4",
+          "entities": 1
+        },
+        {
+          "component": "CopyAddParam",
+          "entities": 1
+        },
+        {
+          "component": "CopyMergeParams",
+          "entities": 1
+        },
+        {
+          "component": "CopyRemoveParam",
+          "entities": 1
+        },
+        {
+          "component": "CopySetParam",
+          "entities": 1
+        },
+        {
+          "component": "CopyWith2",
+          "entities": 1
+        },
+        {
+          "component": "Fragment",
+          "entities": 1
+        },
+        {
+          "component": "Host",
+          "entities": 1
+        },
+        {
+          "component": "IsAbsoluteUrl",
+          "entities": 1
+        },
+        {
+          "component": "IsRelativeUrl",
+          "entities": 1
+        },
+        {
+          "component": "Join",
+          "entities": 1
+        },
+        {
+          "component": "Netloc2",
+          "entities": 1
+        },
+        {
+          "component": "Params2",
+          "entities": 1
+        },
+        {
+          "component": "Password",
+          "entities": 1
+        },
+        {
+          "component": "Path",
+          "entities": 1
+        },
+        {
+          "component": "Port",
+          "entities": 1
+        },
+        {
+          "component": "Query",
+          "entities": 1
+        },
+        {
+          "component": "Raw2",
+          "entities": 1
+        },
+        {
+          "component": "RawHost",
+          "entities": 1
+        },
+        {
+          "component": "RawPath",
+          "entities": 1
+        },
+        {
+          "component": "RawScheme",
+          "entities": 1
+        },
+        {
+          "component": "Scheme",
+          "entities": 1
+        },
+        {
+          "component": "Userinfo",
+          "entities": 1
+        },
+        {
+          "component": "Username",
+          "entities": 1
+        },
+        {
+          "component": "Urlpattern",
+          "entities": 1
+        },
+        {
+          "component": "Eq6",
+          "entities": 1
+        },
+        {
+          "component": "Hash3",
+          "entities": 1
+        },
+        {
+          "component": "Init44",
+          "entities": 1
+        },
+        {
+          "component": "Lt",
+          "entities": 1
+        },
+        {
+          "component": "Matches",
+          "entities": 1
+        },
+        {
+          "component": "Priority",
+          "entities": 1
+        },
+        {
+          "component": "GetEnvironmentProxies",
+          "entities": 1
+        },
+        {
+          "component": "IsIpv4Hostname",
+          "entities": 1
+        },
+        {
+          "component": "IsIpv6Hostname",
+          "entities": 1
+        },
+        {
+          "component": "PeekFilelikeLength",
+          "entities": 1
+        },
+        {
+          "component": "PrimitiveValueToStr",
+          "entities": 1
+        },
+        {
+          "component": "ToBytes",
+          "entities": 1
+        },
+        {
+          "component": "ToBytesOrStr",
+          "entities": 1
+        },
+        {
+          "component": "ToStr",
+          "entities": 1
+        },
+        {
+          "component": "Unquote",
+          "entities": 1
+        }
+      ],
+      "formula": "scoring@1:component_balance:raw=clamp(1-(HHI-1/n)/(1-1/n))",
+      "weight": 1.0,
+      "weighted_score": 1.0
+    },
+    {
+      "id": "modularity_trend",
+      "score": 0.4,
+      "status": "scored",
+      "measured": {
+        "metric": "TurboMQ",
+        "a": 1.4267,
+        "b": 1.372,
+        "delta": -0.05469999999999997
+      },
+      "evidence": [
+        {
+          "metric": "TurboMQ",
+          "a": 1.4267,
+          "b": 1.372,
+          "delta": -0.05469999999999997
+        }
+      ],
+      "formula": "scoring@1:modularity_trend:raw=clamp(0.5+clamp(TurboMQ.delta,-0.5,0.5))",
+      "weight": 1.0,
+      "weighted_score": 0.4
+    },
+    {
+      "id": "cohesion_trend",
+      "score": 0.5,
+      "status": "scored",
+      "measured": {
+        "metric": "IntraConnectivity",
+        "a": 0.002,
+        "b": 0.0021,
+        "delta": 9.999999999999983e-05
+      },
+      "evidence": [
+        {
+          "metric": "IntraConnectivity",
+          "a": 0.002,
+          "b": 0.0021,
+          "delta": 9.999999999999983e-05
+        }
+      ],
+      "formula": "scoring@1:cohesion_trend:raw=clamp(0.5+2.5*IntraConnectivity.delta)",
+      "weight": 1.0,
+      "weighted_score": 0.5
+    },
+    {
+      "id": "coupling_control",
+      "score": 0.7,
+      "status": "scored",
+      "measured": {
+        "inter_delta": -0.07050000000000001,
+        "twoway_delta": 0.0002999999999999999
+      },
+      "evidence": [
+        {
+          "metric": "InterConnectivity",
+          "delta": -0.07050000000000001
+        },
+        {
+          "metric": "TwoWayPairRatio",
+          "delta": 0.0002999999999999999
+        }
+      ],
+      "formula": "scoring@1:coupling_control:raw=clamp(0.5-2.5*InterConnectivity.delta-1.0*TwoWayPairRatio.delta)",
+      "weight": 1.0,
+      "weighted_score": 0.7
+    },
+    {
+      "id": "recovery_confidence_trend",
+      "score": 0.5,
+      "status": "scored",
+      "measured": {
+        "metric": "RCI",
+        "a": 0.0724,
+        "b": 0.0762,
+        "delta": 0.003799999999999998
+      },
+      "evidence": [
+        {
+          "metric": "RCI",
+          "a": 0.0724,
+          "b": 0.0762,
+          "delta": 0.003799999999999998
+        }
+      ],
+      "formula": "scoring@1:recovery_confidence_trend:raw=clamp(0.5+2.5*RCI.delta)",
+      "weight": 1.0,
+      "weighted_score": 0.5
+    },
+    {
+      "id": "change_containment",
+      "score": 1.0,
+      "status": "scored",
+      "measured": {
+        "entities_added": 13,
+        "entities_deleted": 27,
+        "entities_a": 524,
+        "churn_rate": 0.0763
+      },
+      "evidence": [
+        {
+          "entities_added": 13,
+          "entities_deleted": 27,
+          "entities_a": 524
+        }
+      ],
+      "formula": "scoring@1:change_containment:raw=clamp(1-0.5*((added+deleted)/max(1,entities_a)))",
+      "weight": 1.0,
+      "weighted_score": 1.0
+    },
+    {
+      "id": "evidence_confidence",
+      "score": 1.0,
+      "status": "scored",
+      "measured": {
+        "entities_b": 510,
+        "warnings": 0
+      },
+      "evidence": [],
+      "formula": "scoring@1:evidence_confidence:raw=clamp(1-penalties)",
+      "weight": 1.0,
+      "weighted_score": 1.0
+    }
+  ],
+  "overall_score": 0.8,
+  "scoring": {
+    "version": "scoring@1",
+    "scale": "0.0-1.0 step 0.1",
+    "parallel_scorers": 10,
+    "scored_count": 10,
+    "not_run": [],
+    "scoring_input_hash": "1aeaff2166c948fef0ce9ca06c9c1cb4f95d0714363bbe2d0bcd16876b6538db",
+    "changes_source": "derived_from_summary",
+    "profile": {
+      "id": "balanced",
+      "name": "Balanced (default)",
+      "appetite": "balanced",
+      "skill": "skills/scoring/balanced.json"
+    },
+    "config_source": "default",
+    "suggestion_rule": null,
+    "weights": {
+      "smell_regression": 1.0,
+      "responsibility_stability": 1.0,
+      "god_component_risk": 1.0,
+      "component_balance": 1.0,
+      "modularity_trend": 1.0,
+      "cohesion_trend": 1.0,
+      "coupling_control": 1.0,
+      "recovery_confidence_trend": 1.0,
+      "change_containment": 1.0,
+      "evidence_confidence": 1.0
+    },
+    "normalized_weights": {
+      "smell_regression": 0.1,
+      "responsibility_stability": 0.1,
+      "god_component_risk": 0.1,
+      "component_balance": 0.1,
+      "modularity_trend": 0.1,
+      "cohesion_trend": 0.1,
+      "coupling_control": 0.1,
+      "recovery_confidence_trend": 0.1,
+      "change_containment": 0.1,
+      "evidence_confidence": 0.1
+    },
+    "effective_weights": {
+      "smell_regression": 0.1,
+      "responsibility_stability": 0.1,
+      "god_component_risk": 0.1,
+      "component_balance": 0.1,
+      "modularity_trend": 0.1,
+      "cohesion_trend": 0.1,
+      "coupling_control": 0.1,
+      "recovery_confidence_trend": 0.1,
+      "change_containment": 0.1,
+      "evidence_confidence": 0.1
+    },
+    "llm_in_scoring": false
+  },
+  "coverage": {
+    "languages_a": [
+      "python"
+    ],
+    "languages_b": [
+      "python"
+    ],
+    "entities_a": 524,
+    "entities_b": 510,
+    "component_sizes_known": true,
+    "warnings": []
+  },
+  "engine": {
+    "name": "arcade-attest",
+    "version": "0.1.0",
+    "analyzer": "arcade-agent changelog_architecture (PKG recovery)",
+    "llm_in_verdict": false
+  },
+  "honest_gaps": [
+    "No edge-level diff yet: deny_dependency predicates are not evaluated in this MVP.",
+    "Parser blind spots exist (for example files that declare no entities): a component can look empty and a verdict can be a false PASS. Coverage is reported in every evidence pack.",
+    "Predicate thresholds are starting guesses; they need per-repo history to calibrate.",
+    "An on-chain attestation proves the integrity and timestamp of a verdict, not that the verdict is objectively correct.",
+    "Criterion scores (scoring@1) are advisory: 0.5 on a trend criterion means 'no measured change', and a criterion without evidence is reported not_run instead of being scored."
+  ],
+  "hashes": {
+    "decision_record_hash": "a84196de1503db586ef52d8cb5abe7346d9c5a608fe4ad3478f2a32cde394431",
+    "evidence_hash": "1219fcd39a63a1618ae09ef9295eaa9ada29f3e6012c90438820d12a545d24cc"
+  },
+  "id": "att_1219fcd39a63a161"
+}
