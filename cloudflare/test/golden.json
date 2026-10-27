@@ -1,0 +1,857 @@
+{
+  "record": {
+    "id": "ADR-CF-GOLDEN",
+    "repo": "example/cloudflare",
+    "version": 1,
+    "mode": "advisory",
+    "predicates": [
+      {
+        "type": "no_new_smells",
+        "severity": "fail"
+      },
+      {
+        "type": "max_responsibility_shifts",
+        "params": {
+          "max": 2
+        },
+        "severity": "warn"
+      },
+      {
+        "type": "component_entity_cap",
+        "params": {
+          "max": 20
+        },
+        "severity": "warn"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "clean-balanced",
+      "record": {
+        "id": "ADR-CF-GOLDEN",
+        "repo": "example/cloudflare",
+        "version": 1,
+        "mode": "advisory",
+        "predicates": [
+          {
+            "type": "no_new_smells",
+            "severity": "fail"
+          },
+          {
+            "type": "max_responsibility_shifts",
+            "params": {
+              "max": 2
+            },
+            "severity": "warn"
+          },
+          {
+            "type": "component_entity_cap",
+            "params": {
+              "max": 20
+            },
+            "severity": "warn"
+          }
+        ]
+      },
+      "data": {
+        "smells_new": [],
+        "responsibility_shifts": [
+          {
+            "entity": "shop.billing.invoice.Invoice.issue",
+            "from": "Notifications",
+            "to": "Billing"
+          }
+        ],
+        "components": [
+          {
+            "name": "Auth",
+            "entities": 3
+          },
+          {
+            "name": "Billing",
+            "entities": 7
+          },
+          {
+            "name": "Notifications",
+            "entities": 3
+          },
+          {
+            "name": "Orders",
+            "entities": 3
+          },
+          {
+            "name": "Utils",
+            "entities": 4
+          }
+        ],
+        "summary": {
+          "components_a": 5,
+          "components_b": 5,
+          "shifts": 1,
+          "entities_a": 39,
+          "entities_b": 20,
+          "entities_added": 6,
+          "entities_deleted": 25,
+          "smells_new": 0,
+          "smells_resolved": 2
+        },
+        "metrics": {
+          "TurboMQ": {
+            "a": 1.3914,
+            "b": 1.7167,
+            "delta": 0.3253
+          },
+          "IntraConnectivity": {
+            "a": 0.14,
+            "b": 0.1524,
+            "delta": 0.0124
+          },
+          "InterConnectivity": {
+            "a": 0.1185,
+            "b": 0.2524,
+            "delta": 0.1339
+          },
+          "TwoWayPairRatio": {
+            "a": 0.1667,
+            "b": 0.0,
+            "delta": -0.1667
+          },
+          "RCI": {
+            "a": 0.2917,
+            "b": 0.3636,
+            "delta": 0.0719
+          }
+        },
+        "coverage": {
+          "entities_a": 39,
+          "entities_b": 20,
+          "languages_b": [
+            "python"
+          ],
+          "component_sizes_known": true,
+          "warnings": []
+        },
+        "refs": {
+          "a": "base",
+          "b": "head"
+        }
+      },
+      "expected": {
+        "verdict": "PASS",
+        "overall_score": 0.7,
+        "criteria": [
+          {
+            "id": "smell_regression",
+            "score": 1.0,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "responsibility_stability",
+            "score": 0.8,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "god_component_risk",
+            "score": 0.7,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "component_balance",
+            "score": 1.0,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "modularity_trend",
+            "score": 0.8,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "cohesion_trend",
+            "score": 0.5,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "coupling_control",
+            "score": 0.3,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "recovery_confidence_trend",
+            "score": 0.7,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "change_containment",
+            "score": 0.6,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "evidence_confidence",
+            "score": 1.0,
+            "status": "scored",
+            "weight": 1.0
+          }
+        ],
+        "predicates": [
+          {
+            "type": "no_new_smells",
+            "status": "pass",
+            "measured": 0
+          },
+          {
+            "type": "max_responsibility_shifts",
+            "status": "pass",
+            "measured": 1
+          },
+          {
+            "type": "component_entity_cap",
+            "status": "pass",
+            "measured": 7
+          }
+        ],
+        "scoring_profile": "balanced"
+      }
+    },
+    {
+      "name": "blocky-balanced",
+      "record": {
+        "id": "ADR-CF-GOLDEN",
+        "repo": "example/cloudflare",
+        "version": 1,
+        "mode": "advisory",
+        "predicates": [
+          {
+            "type": "no_new_smells",
+            "severity": "fail"
+          },
+          {
+            "type": "max_responsibility_shifts",
+            "params": {
+              "max": 2
+            },
+            "severity": "warn"
+          },
+          {
+            "type": "component_entity_cap",
+            "params": {
+              "max": 20
+            },
+            "severity": "warn"
+          }
+        ]
+      },
+      "data": {
+        "smells_new": [
+          {
+            "smell_type": "Concern Overload",
+            "severity": "medium",
+            "affected_components": [
+              "Utils"
+            ]
+          },
+          {
+            "smell_type": "Dependency Cycle",
+            "severity": "low",
+            "affected_components": [
+              "Billing",
+              "Notifications"
+            ]
+          }
+        ],
+        "responsibility_shifts": [
+          {
+            "entity": "shop.billing.invoice.Invoice.issue",
+            "from": "Notifications",
+            "to": "Billing"
+          }
+        ],
+        "components": [
+          {
+            "name": "Auth",
+            "entities": 3
+          },
+          {
+            "name": "Billing",
+            "entities": 5
+          },
+          {
+            "name": "Notifications",
+            "entities": 5
+          },
+          {
+            "name": "Orders",
+            "entities": 3
+          },
+          {
+            "name": "Utils",
+            "entities": 23
+          }
+        ],
+        "summary": {
+          "components_a": 5,
+          "components_b": 5,
+          "shifts": 1,
+          "entities_a": 20,
+          "entities_b": 39,
+          "entities_added": 25,
+          "entities_deleted": 6,
+          "smells_new": 2,
+          "smells_resolved": 0
+        },
+        "metrics": {
+          "TurboMQ": {
+            "a": 1.3914,
+            "b": 1.7167,
+            "delta": 0.3253
+          },
+          "IntraConnectivity": {
+            "a": 0.14,
+            "b": 0.1524,
+            "delta": 0.0124
+          },
+          "InterConnectivity": {
+            "a": 0.1185,
+            "b": 0.2524,
+            "delta": 0.1339
+          },
+          "TwoWayPairRatio": {
+            "a": 0.1667,
+            "b": 0.0,
+            "delta": -0.1667
+          },
+          "RCI": {
+            "a": 0.2917,
+            "b": 0.3636,
+            "delta": 0.0719
+          }
+        },
+        "coverage": {
+          "entities_a": 39,
+          "entities_b": 20,
+          "languages_b": [
+            "python"
+          ],
+          "component_sizes_known": true,
+          "warnings": []
+        },
+        "refs": {
+          "a": "base",
+          "b": "head"
+        }
+      },
+      "expected": {
+        "verdict": "BLOCK",
+        "overall_score": 0.6,
+        "criteria": [
+          {
+            "id": "smell_regression",
+            "score": 0.4,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "responsibility_stability",
+            "score": 0.9,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "god_component_risk",
+            "score": 0.4,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "component_balance",
+            "score": 0.8,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "modularity_trend",
+            "score": 0.8,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "cohesion_trend",
+            "score": 0.5,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "coupling_control",
+            "score": 0.3,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "recovery_confidence_trend",
+            "score": 0.7,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "change_containment",
+            "score": 0.2,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "evidence_confidence",
+            "score": 1.0,
+            "status": "scored",
+            "weight": 1.0
+          }
+        ],
+        "predicates": [
+          {
+            "type": "no_new_smells",
+            "status": "triggered",
+            "measured": 2
+          },
+          {
+            "type": "max_responsibility_shifts",
+            "status": "pass",
+            "measured": 1
+          },
+          {
+            "type": "component_entity_cap",
+            "status": "triggered",
+            "measured": 23
+          }
+        ],
+        "scoring_profile": "balanced"
+      }
+    },
+    {
+      "name": "clean-strict",
+      "record": {
+        "id": "ADR-CF-GOLDEN",
+        "repo": "example/cloudflare",
+        "version": 1,
+        "mode": "advisory",
+        "predicates": [
+          {
+            "type": "no_new_smells",
+            "severity": "fail"
+          },
+          {
+            "type": "max_responsibility_shifts",
+            "params": {
+              "max": 2
+            },
+            "severity": "warn"
+          },
+          {
+            "type": "component_entity_cap",
+            "params": {
+              "max": 20
+            },
+            "severity": "warn"
+          }
+        ],
+        "scoring": {
+          "profile": "strict_gate"
+        }
+      },
+      "data": {
+        "smells_new": [],
+        "responsibility_shifts": [
+          {
+            "entity": "shop.billing.invoice.Invoice.issue",
+            "from": "Notifications",
+            "to": "Billing"
+          }
+        ],
+        "components": [
+          {
+            "name": "Auth",
+            "entities": 3
+          },
+          {
+            "name": "Billing",
+            "entities": 7
+          },
+          {
+            "name": "Notifications",
+            "entities": 3
+          },
+          {
+            "name": "Orders",
+            "entities": 3
+          },
+          {
+            "name": "Utils",
+            "entities": 4
+          }
+        ],
+        "summary": {
+          "components_a": 5,
+          "components_b": 5,
+          "shifts": 1,
+          "entities_a": 39,
+          "entities_b": 20,
+          "entities_added": 6,
+          "entities_deleted": 25,
+          "smells_new": 0,
+          "smells_resolved": 2
+        },
+        "metrics": {
+          "TurboMQ": {
+            "a": 1.3914,
+            "b": 1.7167,
+            "delta": 0.3253
+          },
+          "IntraConnectivity": {
+            "a": 0.14,
+            "b": 0.1524,
+            "delta": 0.0124
+          },
+          "InterConnectivity": {
+            "a": 0.1185,
+            "b": 0.2524,
+            "delta": 0.1339
+          },
+          "TwoWayPairRatio": {
+            "a": 0.1667,
+            "b": 0.0,
+            "delta": -0.1667
+          },
+          "RCI": {
+            "a": 0.2917,
+            "b": 0.3636,
+            "delta": 0.0719
+          }
+        },
+        "coverage": {
+          "entities_a": 39,
+          "entities_b": 20,
+          "languages_b": [
+            "python"
+          ],
+          "component_sizes_known": true,
+          "warnings": []
+        },
+        "refs": {
+          "a": "base",
+          "b": "head"
+        }
+      },
+      "expected": {
+        "verdict": "PASS",
+        "overall_score": 0.7,
+        "criteria": [
+          {
+            "id": "smell_regression",
+            "score": 1.0,
+            "status": "scored",
+            "weight": 3.0
+          },
+          {
+            "id": "responsibility_stability",
+            "score": 0.8,
+            "status": "scored",
+            "weight": 2.0
+          },
+          {
+            "id": "god_component_risk",
+            "score": 0.7,
+            "status": "scored",
+            "weight": 3.0
+          },
+          {
+            "id": "component_balance",
+            "score": 1.0,
+            "status": "scored",
+            "weight": 1.5
+          },
+          {
+            "id": "modularity_trend",
+            "score": 0.8,
+            "status": "scored",
+            "weight": 1.5
+          },
+          {
+            "id": "cohesion_trend",
+            "score": 0.5,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "coupling_control",
+            "score": 0.3,
+            "status": "scored",
+            "weight": 2.5
+          },
+          {
+            "id": "recovery_confidence_trend",
+            "score": 0.7,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "change_containment",
+            "score": 0.6,
+            "status": "scored",
+            "weight": 1.5
+          },
+          {
+            "id": "evidence_confidence",
+            "score": 1.0,
+            "status": "scored",
+            "weight": 2.0
+          }
+        ],
+        "predicates": [
+          {
+            "type": "no_new_smells",
+            "status": "pass",
+            "measured": 0
+          },
+          {
+            "type": "max_responsibility_shifts",
+            "status": "pass",
+            "measured": 1
+          },
+          {
+            "type": "component_entity_cap",
+            "status": "pass",
+            "measured": 7
+          }
+        ],
+        "scoring_profile": "strict_gate"
+      }
+    },
+    {
+      "name": "blocky-auto-ai",
+      "record": {
+        "id": "ADR-CF-GOLDEN",
+        "repo": "example/cloudflare",
+        "version": 1,
+        "mode": "advisory",
+        "predicates": [
+          {
+            "type": "no_new_smells",
+            "severity": "fail"
+          },
+          {
+            "type": "max_responsibility_shifts",
+            "params": {
+              "max": 2
+            },
+            "severity": "warn"
+          },
+          {
+            "type": "component_entity_cap",
+            "params": {
+              "max": 20
+            },
+            "severity": "warn"
+          }
+        ],
+        "scoring": {
+          "profile": "auto",
+          "context": {
+            "tags": [
+              "ai-agent"
+            ]
+          }
+        }
+      },
+      "data": {
+        "smells_new": [
+          {
+            "smell_type": "Concern Overload",
+            "severity": "medium",
+            "affected_components": [
+              "Utils"
+            ]
+          },
+          {
+            "smell_type": "Dependency Cycle",
+            "severity": "low",
+            "affected_components": [
+              "Billing",
+              "Notifications"
+            ]
+          }
+        ],
+        "responsibility_shifts": [
+          {
+            "entity": "shop.billing.invoice.Invoice.issue",
+            "from": "Notifications",
+            "to": "Billing"
+          }
+        ],
+        "components": [
+          {
+            "name": "Auth",
+            "entities": 3
+          },
+          {
+            "name": "Billing",
+            "entities": 5
+          },
+          {
+            "name": "Notifications",
+            "entities": 5
+          },
+          {
+            "name": "Orders",
+            "entities": 3
+          },
+          {
+            "name": "Utils",
+            "entities": 23
+          }
+        ],
+        "summary": {
+          "components_a": 5,
+          "components_b": 5,
+          "shifts": 1,
+          "entities_a": 20,
+          "entities_b": 39,
+          "entities_added": 25,
+          "entities_deleted": 6,
+          "smells_new": 2,
+          "smells_resolved": 0
+        },
+        "metrics": {
+          "TurboMQ": {
+            "a": 1.3914,
+            "b": 1.7167,
+            "delta": 0.3253
+          },
+          "IntraConnectivity": {
+            "a": 0.14,
+            "b": 0.1524,
+            "delta": 0.0124
+          },
+          "InterConnectivity": {
+            "a": 0.1185,
+            "b": 0.2524,
+            "delta": 0.1339
+          },
+          "TwoWayPairRatio": {
+            "a": 0.1667,
+            "b": 0.0,
+            "delta": -0.1667
+          },
+          "RCI": {
+            "a": 0.2917,
+            "b": 0.3636,
+            "delta": 0.0719
+          }
+        },
+        "coverage": {
+          "entities_a": 39,
+          "entities_b": 20,
+          "languages_b": [
+            "python"
+          ],
+          "component_sizes_known": true,
+          "warnings": []
+        },
+        "refs": {
+          "a": "base",
+          "b": "head"
+        }
+      },
+      "expected": {
+        "verdict": "BLOCK",
+        "overall_score": 0.6,
+        "criteria": [
+          {
+            "id": "smell_regression",
+            "score": 0.4,
+            "status": "scored",
+            "weight": 3.0
+          },
+          {
+            "id": "responsibility_stability",
+            "score": 0.9,
+            "status": "scored",
+            "weight": 2.0
+          },
+          {
+            "id": "god_component_risk",
+            "score": 0.4,
+            "status": "scored",
+            "weight": 3.0
+          },
+          {
+            "id": "component_balance",
+            "score": 0.8,
+            "status": "scored",
+            "weight": 1.5
+          },
+          {
+            "id": "modularity_trend",
+            "score": 0.8,
+            "status": "scored",
+            "weight": 1.5
+          },
+          {
+            "id": "cohesion_trend",
+            "score": 0.5,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "coupling_control",
+            "score": 0.3,
+            "status": "scored",
+            "weight": 3.0
+          },
+          {
+            "id": "recovery_confidence_trend",
+            "score": 0.7,
+            "status": "scored",
+            "weight": 1.0
+          },
+          {
+            "id": "change_containment",
+            "score": 0.2,
+            "status": "scored",
+            "weight": 2.5
+          },
+          {
+            "id": "evidence_confidence",
+            "score": 1.0,
+            "status": "scored",
+            "weight": 2.5
+          }
+        ],
+        "predicates": [
+          {
+            "type": "no_new_smells",
+            "status": "triggered",
+            "measured": 2
+          },
+          {
+            "type": "max_responsibility_shifts",
+            "status": "pass",
+            "measured": 1
+          },
+          {
+            "type": "component_entity_cap",
+            "status": "triggered",
+            "measured": 23
+          }
+        ],
+        "scoring_profile": "ai_agent_code_gate"
+      }
+    }
+  ]
+}

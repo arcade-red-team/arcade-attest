@@ -8,6 +8,9 @@ cd "$(dirname "$0")/.."
 fail() { echo "{\"verdict\":\"block\",\"gate\":\"$1\"}"; exit 1; }
 
 python3 -m pytest -q > /tmp/attest-pytest.log 2>&1 || fail pytest
+if command -v node >/dev/null 2>&1; then
+  (cd cloudflare && npm test > /tmp/attest-cf.log 2>&1) || fail cloudflare
+fi
 bash scripts/run-demo.sh > /tmp/attest-demo.log 2>&1 || fail demo
 
 # Determinism: same changelog + same --evaluated-at, twice -> same evidence_hash.
@@ -26,4 +29,4 @@ print("evidence_hash:", a)
 PY
 fi
 
-echo '{"verdict":"pass","gates":["pytest","demo-pass","demo-block","determinism"]}'
+echo '{"verdict":"pass","gates":["pytest","cloudflare","demo-pass","demo-block","determinism"]}'

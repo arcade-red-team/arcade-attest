@@ -19,3 +19,17 @@ jobs:
         run: pip install -e ".[api,dev]"
       - name: Dogfood gate (tests + demo PASS/BLOCK + determinism)
         run: bash scripts/dogfood.sh
+
+  cloudflare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Cloudflare Worker tests (golden parity with Python engine)
+        working-directory: cloudflare
+        run: npm test
+      - name: Wrangler bundle check
+        working-directory: cloudflare
+        run: npx --yes wrangler deploy --dry-run

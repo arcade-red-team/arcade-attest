@@ -83,6 +83,15 @@ curl -X POST localhost:8787/v1/decisions:evaluate \
   -d '{"base_path":"...","head_path":"...","decision_record":{...}}'
 ```
 
+**Cloudflare Workers surface** ([`cloudflare/`](cloudflare/README.md)): the
+same verdict/scoring contract at the edge — `POST /v1/decisions:evaluate`
+takes the `changelog_architecture` output arcade-agent produces in CI/local
+Action runs (source trees are not parsed on the edge; arcade-agent's native
+dependencies do not run in Workers isolates), evidence packs persist in KV,
+and parity with the Python engine is pinned by golden tests generated from
+it. Deploy is the owner's step (`wrangler kv namespace create …` then
+`wrangler deploy`).
+
 Exit code is `2` when the verdict is BLOCK, so the CLI drops straight into CI.
 
 **CI gate: local Decision API judges, Qxotic Jinfer explains**
