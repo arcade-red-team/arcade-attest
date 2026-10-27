@@ -1,0 +1,2860 @@
+{
+  "schema": "arcade-attest/evidence@1",
+  "decision_id": "ADR-DOGFOOD-CLICK",
+  "record_version": 1,
+  "repo": "pallets/click",
+  "mode": "advisory",
+  "enforced": false,
+  "refs": {
+    "a": "/tmp/dogfood/trees/click-a",
+    "b": "/tmp/dogfood/trees/click-b"
+  },
+  "evaluated_at": "2026-10-08T00:00:00Z",
+  "expires_at": "2026-10-09T00:00:00Z",
+  "verdict": "WARN",
+  "verdict_code": 1,
+  "predicates": [
+    {
+      "type": "no_new_smells",
+      "severity": "fail",
+      "status": "pass",
+      "measured": 0,
+      "threshold": {
+        "kinds": "any",
+        "allowed": 0
+      },
+      "evidence": []
+    },
+    {
+      "type": "max_responsibility_shifts",
+      "severity": "warn",
+      "status": "triggered",
+      "measured": 29,
+      "threshold": {
+        "max": 25
+      },
+      "evidence": [
+        {
+          "entity": "click._termui_impl.ProgressBar.__init__",
+          "from": "Init6",
+          "to": "Init5"
+        },
+        {
+          "entity": "click._winconsole.ConsoleStream.__getattr__",
+          "from": "Getattr3",
+          "to": "Getattr4"
+        },
+        {
+          "entity": "click._winconsole.ConsoleStream.writelines",
+          "from": "Writelines",
+          "to": "Writelines2"
+        },
+        {
+          "entity": "click.core.Command.to_info_dict",
+          "from": "ToInfoDict",
+          "to": "ToInfoDict2"
+        },
+        {
+          "entity": "click.core.Context.close",
+          "from": "Close2",
+          "to": "Close3"
+        },
+        {
+          "entity": "click.core.Context.to_info_dict",
+          "from": "ToInfoDict2",
+          "to": "ToInfoDict3"
+        },
+        {
+          "entity": "click.core.Group.to_info_dict",
+          "from": "ToInfoDict3",
+          "to": "ToInfoDict4"
+        },
+        {
+          "entity": "click.core.Option.get_help_record",
+          "from": "GetHelpRecord",
+          "to": "GetHelpRecord2"
+        },
+        {
+          "entity": "click.core.Option.to_info_dict",
+          "from": "ToInfoDict4",
+          "to": "ToInfoDict5"
+        },
+        {
+          "entity": "click.core.Parameter.get_help_record",
+          "from": "GetHelpRecord2",
+          "to": "GetHelpRecord3"
+        },
+        {
+          "entity": "click.core.Parameter.to_info_dict",
+          "from": "ToInfoDict5",
+          "to": "ToInfoDict6"
+        },
+        {
+          "entity": "click.core.__getattr__",
+          "from": "Getattr4",
+          "to": "Getattr5"
+        },
+        {
+          "entity": "click.parser.__getattr__",
+          "from": "Getattr5",
+          "to": "Getattr6"
+        },
+        {
+          "entity": "click.shell_completion.CompletionItem.__getattr__",
+          "from": "Getattr6",
+          "to": "Getattr7"
+        },
+        {
+          "entity": "click.shell_completion.ShellComplete.format_completion",
+          "from": "FormatCompletion3",
+          "to": "FormatCompletion4"
+        },
+        {
+          "entity": "click.shell_completion.ShellComplete.get_completion_args",
+          "from": "GetCompletionArgs3",
+          "to": "GetCompletionArgs4"
+        },
+        {
+          "entity": "click.shell_completion.ZshComplete.format_completion",
+          "from": "FormatCompletion4",
+          "to": "FormatCompletion5"
+        },
+        {
+          "entity": "click.shell_completion.ZshComplete.get_completion_args",
+          "from": "GetCompletionArgs4",
+          "to": "GetCompletionArgs5"
+        },
+        {
+          "entity": "click.testing.BytesIOCopy.flush",
+          "from": "Flush",
+          "to": "Flush2"
+        },
+        {
+          "entity": "click.testing.EchoingStdin.__getattr__",
+          "from": "Getattr7",
+          "to": "Getattr8"
+        },
+        {
+          "entity": "click.testing._NamedTextIOWrapper.close",
+          "from": "Close3",
+          "to": "Close4"
+        },
+        {
+          "entity": "click.types.Choice.to_info_dict",
+          "from": "ToInfoDict6",
+          "to": "ToInfoDict7"
+        },
+        {
+          "entity": "click.types.DateTime.to_info_dict",
+          "from": "ToInfoDict7",
+          "to": "ToInfoDict8"
+        },
+        {
+          "entity": "click.types.File.to_info_dict",
+          "from": "ToInfoDict8",
+          "to": "ToInfoDict9"
+        },
+        {
+          "entity": "click.types.FuncParamType.to_info_dict",
+          "from": "ToInfoDict9",
+          "to": "ToInfoDict10"
+        },
+        {
+          "entity": "click.types.ParamType.to_info_dict",
+          "from": "ToInfoDict10",
+          "to": "ToInfoDict11"
+        },
+        {
+          "entity": "click.types.Path.to_info_dict",
+          "from": "ToInfoDict11",
+          "to": "ToInfoDict12"
+        },
+        {
+          "entity": "click.types.Tuple.to_info_dict",
+          "from": "ToInfoDict12",
+          "to": "ToInfoDict13"
+        },
+        {
+          "entity": "click.types._NumberRangeBase.to_info_dict",
+          "from": "ToInfoDict13",
+          "to": "ToInfoDict14"
+        }
+      ]
+    },
+    {
+      "type": "component_entity_cap",
+      "severity": "warn",
+      "status": "pass",
+      "measured": 1,
+      "threshold": {
+        "max": 400,
+        "component": "any"
+      },
+      "evidence": []
+    }
+  ],
+  "measured": {
+    "smells_new": 0,
+    "responsibility_shifts": 29,
+    "largest_component": {
+      "name": "Default",
+      "entities": 1
+    }
+  },
+  "summary": {
+    "components_a": 557,
+    "components_b": 576,
+    "shifts": 29,
+    "entities_a": 557,
+    "entities_b": 576,
+    "entities_added": 49,
+    "entities_deleted": 30,
+    "smells_new": 0,
+    "smells_resolved": 0
+  },
+  "architecture_summary": {
+    "components_b": 576,
+    "entities_a": 557,
+    "entities_b": 576,
+    "total_component_entities": 576,
+    "largest_component": {
+      "name": "Default",
+      "entities": 1
+    },
+    "metrics_b": {
+      "BasicMQ": 0.0,
+      "InterConnectivity": 1.0,
+      "IntraConnectivity": 0.0,
+      "RCI": 0.0,
+      "TurboMQ": 0.0,
+      "TwoWayPairRatio": 0.0
+    },
+    "languages_b": [
+      "python"
+    ]
+  },
+  "criteria": [
+    {
+      "id": "smell_regression",
+      "score": 1.0,
+      "status": "scored",
+      "measured": {
+        "new_smells": 0,
+        "weighted_smells": 0
+      },
+      "evidence": [],
+      "formula": "scoring@1:smell_regression:raw=clamp(1-0.2*weighted_smells)",
+      "weight": 1.0,
+      "weighted_score": 1.0
+    },
+    {
+      "id": "responsibility_stability",
+      "score": 0.7,
+      "status": "scored",
+      "measured": {
+        "responsibility_shifts": 29,
+        "entities_b": 576,
+        "shift_rate": 0.0503
+      },
+      "evidence": [
+        {
+          "entity": "click._termui_impl.ProgressBar.__init__",
+          "from": "Init6",
+          "to": "Init5"
+        },
+        {
+          "entity": "click._winconsole.ConsoleStream.__getattr__",
+          "from": "Getattr3",
+          "to": "Getattr4"
+        },
+        {
+          "entity": "click._winconsole.ConsoleStream.writelines",
+          "from": "Writelines",
+          "to": "Writelines2"
+        },
+        {
+          "entity": "click.core.Command.to_info_dict",
+          "from": "ToInfoDict",
+          "to": "ToInfoDict2"
+        },
+        {
+          "entity": "click.core.Context.close",
+          "from": "Close2",
+          "to": "Close3"
+        },
+        {
+          "entity": "click.core.Context.to_info_dict",
+          "from": "ToInfoDict2",
+          "to": "ToInfoDict3"
+        },
+        {
+          "entity": "click.core.Group.to_info_dict",
+          "from": "ToInfoDict3",
+          "to": "ToInfoDict4"
+        },
+        {
+          "entity": "click.core.Option.get_help_record",
+          "from": "GetHelpRecord",
+          "to": "GetHelpRecord2"
+        },
+        {
+          "entity": "click.core.Option.to_info_dict",
+          "from": "ToInfoDict4",
+          "to": "ToInfoDict5"
+        },
+        {
+          "entity": "click.core.Parameter.get_help_record",
+          "from": "GetHelpRecord2",
+          "to": "GetHelpRecord3"
+        }
+      ],
+      "formula": "scoring@1:responsibility_stability:raw=clamp(1-5*(shifts/max(1,entities_b)))",
+      "weight": 1.0,
+      "weighted_score": 0.7
+    },
+    {
+      "id": "god_component_risk",
+      "score": 1.0,
+      "status": "scored",
+      "measured": {
+        "largest_component": "Default",
+        "largest_entities": 1,
+        "largest_share": 0.0017
+      },
+      "evidence": [
+        {
+          "component": "Default",
+          "entities": 1
+        }
+      ],
+      "formula": "scoring@1:god_component_risk:raw=clamp(1-largest_share)",
+      "weight": 1.0,
+      "weighted_score": 1.0
+    },
+    {
+      "id": "component_balance",
+      "score": 1.0,
+      "status": "scored",
+      "measured": {
+        "components": 576,
+        "hhi": 0.0017
+      },
+      "evidence": [
+        {
+          "component": "Default",
+          "entities": 1
+        },
+        {
+          "component": "Atomicfile",
+          "entities": 1
+        },
+        {
+          "component": "Enter",
+          "entities": 1
+        },
+        {
+          "component": "Exit",
+          "entities": 1
+        },
+        {
+          "component": "Getattr",
+          "entities": 1
+        },
+        {
+          "component": "Init",
+          "entities": 1
+        },
+        {
+          "component": "Repr",
+          "entities": 1
+        },
+        {
+          "component": "Close",
+          "entities": 1
+        },
+        {
+          "component": "Name",
+          "entities": 1
+        },
+        {
+          "component": "Fixupstream",
+          "entities": 1
+        },
+        {
+          "component": "Getattr2",
+          "entities": 1
+        },
+        {
+          "component": "Init2",
+          "entities": 1
+        },
+        {
+          "component": "Read1",
+          "entities": 1
+        },
+        {
+          "component": "Readable",
+          "entities": 1
+        },
+        {
+          "component": "Seekable",
+          "entities": 1
+        },
+        {
+          "component": "Writable",
+          "entities": 1
+        },
+        {
+          "component": "Nonclosingtextiowrapper",
+          "entities": 1
+        },
+        {
+          "component": "Del",
+          "entities": 1
+        },
+        {
+          "component": "Init3",
+          "entities": 1
+        },
+        {
+          "component": "Isatty",
+          "entities": 1
+        },
+        {
+          "component": "FindBinaryReader",
+          "entities": 1
+        },
+        {
+          "component": "FindBinaryWriter",
+          "entities": 1
+        },
+        {
+          "component": "ForceCorrectTextReader",
+          "entities": 1
+        },
+        {
+          "component": "ForceCorrectTextStream",
+          "entities": 1
+        },
+        {
+          "component": "ForceCorrectTextWriter",
+          "entities": 1
+        },
+        {
+          "component": "IsBinaryReader",
+          "entities": 1
+        },
+        {
+          "component": "IsBinaryWriter",
+          "entities": 1
+        },
+        {
+          "component": "IsCompatStreamAttr",
+          "entities": 1
+        },
+        {
+          "component": "IsCompatibleTextStream",
+          "entities": 1
+        },
+        {
+          "component": "IsJupyterKernelOutput",
+          "entities": 1
+        },
+        {
+          "component": "MakeCachedStreamFunc",
+          "entities": 1
+        },
+        {
+          "component": "MakeTextStream",
+          "entities": 1
+        },
+        {
+          "component": "StreamIsMisconfigured",
+          "entities": 1
+        },
+        {
+          "component": "WrapIoOpen",
+          "entities": 1
+        },
+        {
+          "component": "GetBestEncoding",
+          "entities": 1
+        },
+        {
+          "component": "GetBinaryStderr",
+          "entities": 1
+        },
+        {
+          "component": "GetBinaryStdin",
+          "entities": 1
+        },
+        {
+          "component": "GetBinaryStdout",
+          "entities": 1
+        },
+        {
+          "component": "GetTextStderr",
+          "entities": 1
+        },
+        {
+          "component": "GetTextStdin",
+          "entities": 1
+        },
+        {
+          "component": "GetTextStdout",
+          "entities": 1
+        },
+        {
+          "component": "IsAsciiEncoding",
+          "entities": 1
+        },
+        {
+          "component": "Isatty2",
+          "entities": 1
+        },
+        {
+          "component": "OpenStream",
+          "entities": 1
+        },
+        {
+          "component": "ShouldStripAnsi",
+          "entities": 1
+        },
+        {
+          "component": "StripAnsi",
+          "entities": 1
+        },
+        {
+          "component": "TermLen",
+          "entities": 1
+        },
+        {
+          "component": "Editor",
+          "entities": 1
+        },
+        {
+          "component": "Init4",
+          "entities": 1
+        },
+        {
+          "component": "Edit",
+          "entities": 1
+        },
+        {
+          "component": "EditFiles",
+          "entities": 1
+        },
+        {
+          "component": "GetEditor",
+          "entities": 1
+        },
+        {
+          "component": "Progressbar",
+          "entities": 1
+        },
+        {
+          "component": "Enter2",
+          "entities": 1
+        },
+        {
+          "component": "Exit2",
+          "entities": 1
+        },
+        {
+          "component": "Init5",
+          "entities": 1
+        },
+        {
+          "component": "Iter",
+          "entities": 1
+        },
+        {
+          "component": "Next",
+          "entities": 1
+        },
+        {
+          "component": "Eta",
+          "entities": 1
+        },
+        {
+          "component": "Finish",
+          "entities": 1
+        },
+        {
+          "component": "FormatBar",
+          "entities": 1
+        },
+        {
+          "component": "FormatEta",
+          "entities": 1
+        },
+        {
+          "component": "FormatPct",
+          "entities": 1
+        },
+        {
+          "component": "FormatPos",
+          "entities": 1
+        },
+        {
+          "component": "FormatProgressLine",
+          "entities": 1
+        },
+        {
+          "component": "Generator",
+          "entities": 1
+        },
+        {
+          "component": "MakeStep",
+          "entities": 1
+        },
+        {
+          "component": "Pct",
+          "entities": 1
+        },
+        {
+          "component": "RenderFinish",
+          "entities": 1
+        },
+        {
+          "component": "RenderProgress",
+          "entities": 1
+        },
+        {
+          "component": "TimePerIteration",
+          "entities": 1
+        },
+        {
+          "component": "Update",
+          "entities": 1
+        },
+        {
+          "component": "Pagerwriter",
+          "entities": 1
+        },
+        {
+          "component": "Getattr3",
+          "entities": 1
+        },
+        {
+          "component": "Init6",
+          "entities": 1
+        },
+        {
+          "component": "Close2",
+          "entities": 1
+        },
+        {
+          "component": "Flush",
+          "entities": 1
+        },
+        {
+          "component": "Write",
+          "entities": 1
+        },
+        {
+          "component": "Writelines",
+          "entities": 1
+        },
+        {
+          "component": "LessUsesRawMode",
+          "entities": 1
+        },
+        {
+          "component": "Nullpager",
+          "entities": 1
+        },
+        {
+          "component": "PagerContextmanager",
+          "entities": 1
+        },
+        {
+          "component": "Pipepager",
+          "entities": 1
+        },
+        {
+          "component": "ResolvePagerCommand",
+          "entities": 1
+        },
+        {
+          "component": "Tempfilepager",
+          "entities": 1
+        },
+        {
+          "component": "TranslateChToExc",
+          "entities": 1
+        },
+        {
+          "component": "GetPagerFile",
+          "entities": 1
+        },
+        {
+          "component": "OpenUrl",
+          "entities": 1
+        },
+        {
+          "component": "Textwrapper",
+          "entities": 1
+        },
+        {
+          "component": "HandleLongWord",
+          "entities": 1
+        },
+        {
+          "component": "WrapChunks",
+          "entities": 1
+        },
+        {
+          "component": "ExtraIndent",
+          "entities": 1
+        },
+        {
+          "component": "IndentOnly",
+          "entities": 1
+        },
+        {
+          "component": "TruncateVisible",
+          "entities": 1
+        },
+        {
+          "component": "Sentinel",
+          "entities": 1
+        },
+        {
+          "component": "Repr2",
+          "entities": 1
+        },
+        {
+          "component": "Consolestream",
+          "entities": 1
+        },
+        {
+          "component": "Getattr4",
+          "entities": 1
+        },
+        {
+          "component": "Init7",
+          "entities": 1
+        },
+        {
+          "component": "Repr3",
+          "entities": 1
+        },
+        {
+          "component": "Isatty3",
+          "entities": 1
+        },
+        {
+          "component": "Name2",
+          "entities": 1
+        },
+        {
+          "component": "Write2",
+          "entities": 1
+        },
+        {
+          "component": "Writelines2",
+          "entities": 1
+        },
+        {
+          "component": "Windowsconsolerawiobase",
+          "entities": 1
+        },
+        {
+          "component": "Init8",
+          "entities": 1
+        },
+        {
+          "component": "Isatty4",
+          "entities": 1
+        },
+        {
+          "component": "Windowsconsolereader",
+          "entities": 1
+        },
+        {
+          "component": "Readable2",
+          "entities": 1
+        },
+        {
+          "component": "Readinto",
+          "entities": 1
+        },
+        {
+          "component": "Windowsconsolewriter",
+          "entities": 1
+        },
+        {
+          "component": "GetErrorMessage",
+          "entities": 1
+        },
+        {
+          "component": "Writable2",
+          "entities": 1
+        },
+        {
+          "component": "Write3",
+          "entities": 1
+        },
+        {
+          "component": "GetTextStderr2",
+          "entities": 1
+        },
+        {
+          "component": "GetTextStdin2",
+          "entities": 1
+        },
+        {
+          "component": "GetTextStdout2",
+          "entities": 1
+        },
+        {
+          "component": "GetWindowsConsoleStream",
+          "entities": 1
+        },
+        {
+          "component": "IsConsole",
+          "entities": 1
+        },
+        {
+          "component": "Argument",
+          "entities": 1
+        },
+        {
+          "component": "Init9",
+          "entities": 1
+        },
+        {
+          "component": "ParseDecls",
+          "entities": 1
+        },
+        {
+          "component": "AddToParser",
+          "entities": 1
+        },
+        {
+          "component": "GetErrorHint",
+          "entities": 1
+        },
+        {
+          "component": "GetHelpRecord",
+          "entities": 1
+        },
+        {
+          "component": "GetUsagePieces",
+          "entities": 1
+        },
+        {
+          "component": "HumanReadableName",
+          "entities": 1
+        },
+        {
+          "component": "MakeMetavar",
+          "entities": 1
+        },
+        {
+          "component": "ToInfoDict",
+          "entities": 1
+        },
+        {
+          "component": "Command",
+          "entities": 1
+        },
+        {
+          "component": "Call",
+          "entities": 1
+        },
+        {
+          "component": "Init10",
+          "entities": 1
+        },
+        {
+          "component": "Repr4",
+          "entities": 1
+        },
+        {
+          "component": "MainShellCompletion",
+          "entities": 1
+        },
+        {
+          "component": "CollectUsagePieces",
+          "entities": 1
+        },
+        {
+          "component": "FormatArguments",
+          "entities": 1
+        },
+        {
+          "component": "FormatEpilog",
+          "entities": 1
+        },
+        {
+          "component": "FormatHelp",
+          "entities": 1
+        },
+        {
+          "component": "FormatHelpText",
+          "entities": 1
+        },
+        {
+          "component": "FormatOptions",
+          "entities": 1
+        },
+        {
+          "component": "FormatUsage",
+          "entities": 1
+        },
+        {
+          "component": "GetHelp",
+          "entities": 1
+        },
+        {
+          "component": "GetHelpOption",
+          "entities": 1
+        },
+        {
+          "component": "GetHelpOptionNames",
+          "entities": 1
+        },
+        {
+          "component": "GetParams",
+          "entities": 1
+        },
+        {
+          "component": "GetShortHelpStr",
+          "entities": 1
+        },
+        {
+          "component": "GetUsage",
+          "entities": 1
+        },
+        {
+          "component": "Invoke",
+          "entities": 1
+        },
+        {
+          "component": "Main",
+          "entities": 1
+        },
+        {
+          "component": "MakeContext",
+          "entities": 1
+        },
+        {
+          "component": "MakeParser",
+          "entities": 1
+        },
+        {
+          "component": "ParseArgs",
+          "entities": 1
+        },
+        {
+          "component": "ShellComplete",
+          "entities": 1
+        },
+        {
+          "component": "ToInfoDict2",
+          "entities": 1
+        },
+        {
+          "component": "Commandcollection",
+          "entities": 1
+        },
+        {
+          "component": "Init11",
+          "entities": 1
+        },
+        {
+          "component": "AddSource",
+          "entities": 1
+        },
+        {
+          "component": "GetCommand",
+          "entities": 1
+        },
+        {
+          "component": "ListCommands",
+          "entities": 1
+        },
+        {
+          "component": "Context",
+          "entities": 1
+        },
+        {
+          "component": "Enter3",
+          "entities": 1
+        },
+        {
+          "component": "Exit3",
+          "entities": 1
+        },
+        {
+          "component": "Init12",
+          "entities": 1
+        },
+        {
+          "component": "CloseWithExceptionInfo",
+          "entities": 1
+        },
+        {
+          "component": "DefaultMapHas",
+          "entities": 1
+        },
+        {
+          "component": "MakeSubContext",
+          "entities": 1
+        },
+        {
+          "component": "Abort",
+          "entities": 1
+        },
+        {
+          "component": "CallOnClose",
+          "entities": 1
+        },
+        {
+          "component": "Close3",
+          "entities": 1
+        },
+        {
+          "component": "CommandPath",
+          "entities": 1
+        },
+        {
+          "component": "EnsureObject",
+          "entities": 1
+        },
+        {
+          "component": "Exit4",
+          "entities": 1
+        },
+        {
+          "component": "Fail",
+          "entities": 1
+        },
+        {
+          "component": "FindObject",
+          "entities": 1
+        },
+        {
+          "component": "FindRoot",
+          "entities": 1
+        },
+        {
+          "component": "Forward",
+          "entities": 1
+        },
+        {
+          "component": "GetHelp2",
+          "entities": 1
+        },
+        {
+          "component": "GetParameterSource",
+          "entities": 1
+        },
+        {
+          "component": "GetUsage2",
+          "entities": 1
+        },
+        {
+          "component": "Invoke2",
+          "entities": 1
+        },
+        {
+          "component": "LookupDefault",
+          "entities": 1
+        },
+        {
+          "component": "MakeFormatter",
+          "entities": 1
+        },
+        {
+          "component": "Meta",
+          "entities": 1
+        },
+        {
+          "component": "ProtectedArgs",
+          "entities": 1
+        },
+        {
+          "component": "Scope",
+          "entities": 1
+        },
+        {
+          "component": "SetParameterSource",
+          "entities": 1
+        },
+        {
+          "component": "ToInfoDict3",
+          "entities": 1
+        },
+        {
+          "component": "WithResource",
+          "entities": 1
+        },
+        {
+          "component": "Group",
+          "entities": 1
+        },
+        {
+          "component": "Init13",
+          "entities": 1
+        },
+        {
+          "component": "AddCommand",
+          "entities": 1
+        },
+        {
+          "component": "CollectUsagePieces2",
+          "entities": 1
+        },
+        {
+          "component": "Command2",
+          "entities": 1
+        },
+        {
+          "component": "FormatCommands",
+          "entities": 1
+        },
+        {
+          "component": "FormatOptions2",
+          "entities": 1
+        },
+        {
+          "component": "GetCommand2",
+          "entities": 1
+        },
+        {
+          "component": "Group2",
+          "entities": 1
+        },
+        {
+          "component": "Invoke3",
+          "entities": 1
+        },
+        {
+          "component": "ListCommands2",
+          "entities": 1
+        },
+        {
+          "component": "ParseArgs2",
+          "entities": 1
+        },
+        {
+          "component": "ResolveCommand",
+          "entities": 1
+        },
+        {
+          "component": "ResultCallback",
+          "entities": 1
+        },
+        {
+          "component": "ShellComplete2",
+          "entities": 1
+        },
+        {
+          "component": "ToInfoDict4",
+          "entities": 1
+        },
+        {
+          "component": "Option",
+          "entities": 1
+        },
+        {
+          "component": "Init14",
+          "entities": 1
+        },
+        {
+          "component": "InferFlagKind",
+          "entities": 1
+        },
+        {
+          "component": "ParseDecls2",
+          "entities": 1
+        },
+        {
+          "component": "PickType",
+          "entities": 1
+        },
+        {
+          "component": "ResolveLazyDefault",
+          "entities": 1
+        },
+        {
+          "component": "Validate",
+          "entities": 1
+        },
+        {
+          "component": "AddToParser2",
+          "entities": 1
+        },
+        {
+          "component": "ConsumeValue",
+          "entities": 1
+        },
+        {
+          "component": "FlagActivationValue",
+          "entities": 1
+        },
+        {
+          "component": "GetDefault",
+          "entities": 1
+        },
+        {
+          "component": "GetErrorHint2",
+          "entities": 1
+        },
+        {
+          "component": "GetHelpExtra",
+          "entities": 1
+        },
+        {
+          "component": "GetHelpRecord2",
+          "entities": 1
+        },
+        {
+          "component": "IsBoolFlag",
+          "entities": 1
+        },
+        {
+          "component": "ProcessValue",
+          "entities": 1
+        },
+        {
+          "component": "PromptForValue",
+          "entities": 1
+        },
+        {
+          "component": "ResolveEnvvarValue",
+          "entities": 1
+        },
+        {
+          "component": "ToInfoDict5",
+          "entities": 1
+        },
+        {
+          "component": "ValueFromEnvvar",
+          "entities": 1
+        },
+        {
+          "component": "Parameter",
+          "entities": 1
+        },
+        {
+          "component": "Init15",
+          "entities": 1
+        },
+        {
+          "component": "Repr5",
+          "entities": 1
+        },
+        {
+          "component": "HideUnset",
+          "entities": 1
+        },
+        {
+          "component": "ParseDecls3",
+          "entities": 1
+        },
+        {
+          "component": "AddToParser3",
+          "entities": 1
+        },
+        {
+          "component": "ConsumeValue2",
+          "entities": 1
+        },
+        {
+          "component": "GetDefault2",
+          "entities": 1
+        },
+        {
+          "component": "GetErrorHint3",
+          "entities": 1
+        },
+        {
+          "component": "GetHelpRecord3",
+          "entities": 1
+        },
+        {
+          "component": "GetUsagePieces2",
+          "entities": 1
+        },
+        {
+          "component": "HandleParseResult",
+          "entities": 1
+        },
+        {
+          "component": "HumanReadableName2",
+          "entities": 1
+        },
+        {
+          "component": "MakeMetavar2",
+          "entities": 1
+        },
+        {
+          "component": "ProcessValue2",
+          "entities": 1
+        },
+        {
+          "component": "ResolveEnvvarValue2",
+          "entities": 1
+        },
+        {
+          "component": "ShellComplete3",
+          "entities": 1
+        },
+        {
+          "component": "ToInfoDict6",
+          "entities": 1
+        },
+        {
+          "component": "TypeCastValue",
+          "entities": 1
+        },
+        {
+          "component": "ValueFromEnvvar2",
+          "entities": 1
+        },
+        {
+          "component": "ValueIsMissing",
+          "entities": 1
+        },
+        {
+          "component": "Parametersource",
+          "entities": 1
+        },
+        {
+          "component": "Basecommand",
+          "entities": 1
+        },
+        {
+          "component": "Fakesubclasscheck",
+          "entities": 1
+        },
+        {
+          "component": "Instancecheck",
+          "entities": 1
+        },
+        {
+          "component": "Subclasscheck",
+          "entities": 1
+        },
+        {
+          "component": "Multicommand",
+          "entities": 1
+        },
+        {
+          "component": "Getattr5",
+          "entities": 1
+        },
+        {
+          "component": "CheckIter",
+          "entities": 1
+        },
+        {
+          "component": "CheckNestedChain",
+          "entities": 1
+        },
+        {
+          "component": "CompleteVisibleCommands",
+          "entities": 1
+        },
+        {
+          "component": "FormatDeprecatedLabel",
+          "entities": 1
+        },
+        {
+          "component": "FormatDeprecatedSuffix",
+          "entities": 1
+        },
+        {
+          "component": "AugmentUsageErrors",
+          "entities": 1
+        },
+        {
+          "component": "Batch",
+          "entities": 1
+        },
+        {
+          "component": "IterParamsForProcessing",
+          "entities": 1
+        },
+        {
+          "component": "ParamMemo",
+          "entities": 1
+        },
+        {
+          "component": "Argument2",
+          "entities": 1
+        },
+        {
+          "component": "Command3",
+          "entities": 1
+        },
+        {
+          "component": "ConfirmationOption",
+          "entities": 1
+        },
+        {
+          "component": "CustomVersionOption",
+          "entities": 1
+        },
+        {
+          "component": "Group3",
+          "entities": 1
+        },
+        {
+          "component": "HelpOption",
+          "entities": 1
+        },
+        {
+          "component": "MakePassDecorator",
+          "entities": 1
+        },
+        {
+          "component": "Option2",
+          "entities": 1
+        },
+        {
+          "component": "PassContext",
+          "entities": 1
+        },
+        {
+          "component": "PassMetaKey",
+          "entities": 1
+        },
+        {
+          "component": "PassObj",
+          "entities": 1
+        },
+        {
+          "component": "PasswordOption",
+          "entities": 1
+        },
+        {
+          "component": "VersionOption",
+          "entities": 1
+        },
+        {
+          "component": "Abort2",
+          "entities": 1
+        },
+        {
+          "component": "Badargumentusage",
+          "entities": 1
+        },
+        {
+          "component": "Badoptionusage",
+          "entities": 1
+        },
+        {
+          "component": "Init16",
+          "entities": 1
+        },
+        {
+          "component": "Badparameter",
+          "entities": 1
+        },
+        {
+          "component": "Init17",
+          "entities": 1
+        },
+        {
+          "component": "FormatMessage",
+          "entities": 1
+        },
+        {
+          "component": "Clickexception",
+          "entities": 1
+        },
+        {
+          "component": "Init18",
+          "entities": 1
+        },
+        {
+          "component": "Str",
+          "entities": 1
+        },
+        {
+          "component": "FormatMessage2",
+          "entities": 1
+        },
+        {
+          "component": "Show",
+          "entities": 1
+        },
+        {
+          "component": "Exit5",
+          "entities": 1
+        },
+        {
+          "component": "Init19",
+          "entities": 1
+        },
+        {
+          "component": "Fileerror",
+          "entities": 1
+        },
+        {
+          "component": "Init20",
+          "entities": 1
+        },
+        {
+          "component": "FormatMessage3",
+          "entities": 1
+        },
+        {
+          "component": "Missingparameter",
+          "entities": 1
+        },
+        {
+          "component": "Init21",
+          "entities": 1
+        },
+        {
+          "component": "Str2",
+          "entities": 1
+        },
+        {
+          "component": "FormatMessage4",
+          "entities": 1
+        },
+        {
+          "component": "Noargsishelperror",
+          "entities": 1
+        },
+        {
+          "component": "Init22",
+          "entities": 1
+        },
+        {
+          "component": "Show2",
+          "entities": 1
+        },
+        {
+          "component": "Nosuchcommand",
+          "entities": 1
+        },
+        {
+          "component": "Init23",
+          "entities": 1
+        },
+        {
+          "component": "FormatMessage5",
+          "entities": 1
+        },
+        {
+          "component": "Nosuchoption",
+          "entities": 1
+        },
+        {
+          "component": "Init24",
+          "entities": 1
+        },
+        {
+          "component": "FormatMessage6",
+          "entities": 1
+        },
+        {
+          "component": "Usageerror",
+          "entities": 1
+        },
+        {
+          "component": "Init25",
+          "entities": 1
+        },
+        {
+          "component": "Show3",
+          "entities": 1
+        },
+        {
+          "component": "FormatPossibilities",
+          "entities": 1
+        },
+        {
+          "component": "JoinParamHints",
+          "entities": 1
+        },
+        {
+          "component": "Helpformatter",
+          "entities": 1
+        },
+        {
+          "component": "Init26",
+          "entities": 1
+        },
+        {
+          "component": "Dedent",
+          "entities": 1
+        },
+        {
+          "component": "Getvalue",
+          "entities": 1
+        },
+        {
+          "component": "Indent",
+          "entities": 1
+        },
+        {
+          "component": "Indentation",
+          "entities": 1
+        },
+        {
+          "component": "Section",
+          "entities": 1
+        },
+        {
+          "component": "Write4",
+          "entities": 1
+        },
+        {
+          "component": "WriteDl",
+          "entities": 1
+        },
+        {
+          "component": "WriteHeading",
+          "entities": 1
+        },
+        {
+          "component": "WriteParagraph",
+          "entities": 1
+        },
+        {
+          "component": "WriteText",
+          "entities": 1
+        },
+        {
+          "component": "WriteUsage",
+          "entities": 1
+        },
+        {
+          "component": "IterRows",
+          "entities": 1
+        },
+        {
+          "component": "JoinOptions",
+          "entities": 1
+        },
+        {
+          "component": "MeasureTable",
+          "entities": 1
+        },
+        {
+          "component": "WrapText",
+          "entities": 1
+        },
+        {
+          "component": "GetCurrentContext",
+          "entities": 1
+        },
+        {
+          "component": "PopContext",
+          "entities": 1
+        },
+        {
+          "component": "PushContext",
+          "entities": 1
+        },
+        {
+          "component": "ResolveColorDefault",
+          "entities": 1
+        },
+        {
+          "component": "Argument3",
+          "entities": 1
+        },
+        {
+          "component": "Init27",
+          "entities": 1
+        },
+        {
+          "component": "Process",
+          "entities": 1
+        },
+        {
+          "component": "Option3",
+          "entities": 1
+        },
+        {
+          "component": "Init28",
+          "entities": 1
+        },
+        {
+          "component": "Process2",
+          "entities": 1
+        },
+        {
+          "component": "TakesValue",
+          "entities": 1
+        },
+        {
+          "component": "Optionparser",
+          "entities": 1
+        },
+        {
+          "component": "Init29",
+          "entities": 1
+        },
+        {
+          "component": "GetValueFromState",
+          "entities": 1
+        },
+        {
+          "component": "MatchLongOpt",
+          "entities": 1
+        },
+        {
+          "component": "MatchShortOpt",
+          "entities": 1
+        },
+        {
+          "component": "ProcessArgsForArgs",
+          "entities": 1
+        },
+        {
+          "component": "ProcessArgsForOptions",
+          "entities": 1
+        },
+        {
+          "component": "ProcessOpts",
+          "entities": 1
+        },
+        {
+          "component": "AddArgument",
+          "entities": 1
+        },
+        {
+          "component": "AddOption",
+          "entities": 1
+        },
+        {
+          "component": "ParseArgs3",
+          "entities": 1
+        },
+        {
+          "component": "Parsingstate",
+          "entities": 1
+        },
+        {
+          "component": "Init30",
+          "entities": 1
+        },
+        {
+          "component": "Getattr6",
+          "entities": 1
+        },
+        {
+          "component": "NormalizeOpt",
+          "entities": 1
+        },
+        {
+          "component": "SplitOpt",
+          "entities": 1
+        },
+        {
+          "component": "UnpackArgs",
+          "entities": 1
+        },
+        {
+          "component": "Bashcomplete",
+          "entities": 1
+        },
+        {
+          "component": "CheckVersion",
+          "entities": 1
+        },
+        {
+          "component": "FormatCompletion",
+          "entities": 1
+        },
+        {
+          "component": "GetCompletionArgs",
+          "entities": 1
+        },
+        {
+          "component": "Source",
+          "entities": 1
+        },
+        {
+          "component": "Completionitem",
+          "entities": 1
+        },
+        {
+          "component": "Getattr7",
+          "entities": 1
+        },
+        {
+          "component": "Init31",
+          "entities": 1
+        },
+        {
+          "component": "Fishcomplete",
+          "entities": 1
+        },
+        {
+          "component": "FormatCompletion2",
+          "entities": 1
+        },
+        {
+          "component": "GetCompletionArgs2",
+          "entities": 1
+        },
+        {
+          "component": "Powershellcomplete",
+          "entities": 1
+        },
+        {
+          "component": "FormatCompletion3",
+          "entities": 1
+        },
+        {
+          "component": "GetCompletionArgs3",
+          "entities": 1
+        },
+        {
+          "component": "Shellcomplete",
+          "entities": 1
+        },
+        {
+          "component": "Init32",
+          "entities": 1
+        },
+        {
+          "component": "Complete",
+          "entities": 1
+        },
+        {
+          "component": "FormatCompletion4",
+          "entities": 1
+        },
+        {
+          "component": "FuncName",
+          "entities": 1
+        },
+        {
+          "component": "GetCompletionArgs4",
+          "entities": 1
+        },
+        {
+          "component": "GetCompletions",
+          "entities": 1
+        },
+        {
+          "component": "Source2",
+          "entities": 1
+        },
+        {
+          "component": "SourceVars",
+          "entities": 1
+        },
+        {
+          "component": "Zshcomplete",
+          "entities": 1
+        },
+        {
+          "component": "FormatCompletion5",
+          "entities": 1
+        },
+        {
+          "component": "GetCompletionArgs5",
+          "entities": 1
+        },
+        {
+          "component": "Sourcevarsdict",
+          "entities": 1
+        },
+        {
+          "component": "IsIncompleteArgument",
+          "entities": 1
+        },
+        {
+          "component": "IsIncompleteOption",
+          "entities": 1
+        },
+        {
+          "component": "ResolveContext",
+          "entities": 1
+        },
+        {
+          "component": "ResolveIncomplete",
+          "entities": 1
+        },
+        {
+          "component": "StartOfOption",
+          "entities": 1
+        },
+        {
+          "component": "AddCompletionClass",
+          "entities": 1
+        },
+        {
+          "component": "GetCompletionClass",
+          "entities": 1
+        },
+        {
+          "component": "ShellComplete4",
+          "entities": 1
+        },
+        {
+          "component": "SplitArgString",
+          "entities": 1
+        },
+        {
+          "component": "BuildPrompt",
+          "entities": 1
+        },
+        {
+          "component": "FormatDefault",
+          "entities": 1
+        },
+        {
+          "component": "InterpretColor",
+          "entities": 1
+        },
+        {
+          "component": "MaskHiddenInput",
+          "entities": 1
+        },
+        {
+          "component": "ReadlinePrompt",
+          "entities": 1
+        },
+        {
+          "component": "Clear",
+          "entities": 1
+        },
+        {
+          "component": "Confirm",
+          "entities": 1
+        },
+        {
+          "component": "EchoViaPager",
+          "entities": 1
+        },
+        {
+          "component": "Edit2",
+          "entities": 1
+        },
+        {
+          "component": "GetPagerFile2",
+          "entities": 1
+        },
+        {
+          "component": "Getchar",
+          "entities": 1
+        },
+        {
+          "component": "HiddenPromptFunc",
+          "entities": 1
+        },
+        {
+          "component": "Launch",
+          "entities": 1
+        },
+        {
+          "component": "Pause",
+          "entities": 1
+        },
+        {
+          "component": "Progressbar2",
+          "entities": 1
+        },
+        {
+          "component": "Prompt",
+          "entities": 1
+        },
+        {
+          "component": "RawTerminal",
+          "entities": 1
+        },
+        {
+          "component": "Secho",
+          "entities": 1
+        },
+        {
+          "component": "Style",
+          "entities": 1
+        },
+        {
+          "component": "Unstyle",
+          "entities": 1
+        },
+        {
+          "component": "Bytesiocopy",
+          "entities": 1
+        },
+        {
+          "component": "Init33",
+          "entities": 1
+        },
+        {
+          "component": "Flush2",
+          "entities": 1
+        },
+        {
+          "component": "Write5",
+          "entities": 1
+        },
+        {
+          "component": "Clirunner",
+          "entities": 1
+        },
+        {
+          "component": "Init34",
+          "entities": 1
+        },
+        {
+          "component": "GetDefaultProgName",
+          "entities": 1
+        },
+        {
+          "component": "Invoke4",
+          "entities": 1
+        },
+        {
+          "component": "IsolatedFilesystem",
+          "entities": 1
+        },
+        {
+          "component": "Isolation",
+          "entities": 1
+        },
+        {
+          "component": "MakeEnv",
+          "entities": 1
+        },
+        {
+          "component": "Echoingstdin",
+          "entities": 1
+        },
+        {
+          "component": "Getattr8",
+          "entities": 1
+        },
+        {
+          "component": "Init35",
+          "entities": 1
+        },
+        {
+          "component": "Iter2",
+          "entities": 1
+        },
+        {
+          "component": "Repr6",
+          "entities": 1
+        },
+        {
+          "component": "Echo",
+          "entities": 1
+        },
+        {
+          "component": "Read",
+          "entities": 1
+        },
+        {
+          "component": "Read12",
+          "entities": 1
+        },
+        {
+          "component": "Readline",
+          "entities": 1
+        },
+        {
+          "component": "Readlines",
+          "entities": 1
+        },
+        {
+          "component": "Result",
+          "entities": 1
+        },
+        {
+          "component": "Init36",
+          "entities": 1
+        },
+        {
+          "component": "Repr7",
+          "entities": 1
+        },
+        {
+          "component": "Output",
+          "entities": 1
+        },
+        {
+          "component": "Stderr",
+          "entities": 1
+        },
+        {
+          "component": "Stdout",
+          "entities": 1
+        },
+        {
+          "component": "Streammixer",
+          "entities": 1
+        },
+        {
+          "component": "Init37",
+          "entities": 1
+        },
+        {
+          "component": "Fdcapture",
+          "entities": 1
+        },
+        {
+          "component": "Init38",
+          "entities": 1
+        },
+        {
+          "component": "Start",
+          "entities": 1
+        },
+        {
+          "component": "Stop",
+          "entities": 1
+        },
+        {
+          "component": "Namedtextiowrapper",
+          "entities": 1
+        },
+        {
+          "component": "Init39",
+          "entities": 1
+        },
+        {
+          "component": "Close4",
+          "entities": 1
+        },
+        {
+          "component": "Fileno",
+          "entities": 1
+        },
+        {
+          "component": "Mode",
+          "entities": 1
+        },
+        {
+          "component": "Name3",
+          "entities": 1
+        },
+        {
+          "component": "PauseEcho",
+          "entities": 1
+        },
+        {
+          "component": "MakeInputStream",
+          "entities": 1
+        },
+        {
+          "component": "Boolparamtype",
+          "entities": 1
+        },
+        {
+          "component": "Repr8",
+          "entities": 1
+        },
+        {
+          "component": "Convert",
+          "entities": 1
+        },
+        {
+          "component": "StrToBool",
+          "entities": 1
+        },
+        {
+          "component": "Choice",
+          "entities": 1
+        },
+        {
+          "component": "Init40",
+          "entities": 1
+        },
+        {
+          "component": "Repr9",
+          "entities": 1
+        },
+        {
+          "component": "NormalizedMapping",
+          "entities": 1
+        },
+        {
+          "component": "Convert2",
+          "entities": 1
+        },
+        {
+          "component": "GetInvalidChoiceMessage",
+          "entities": 1
+        },
+        {
+          "component": "GetMetavar",
+          "entities": 1
+        },
+        {
+          "component": "GetMissingMessage",
+          "entities": 1
+        },
+        {
+          "component": "NormalizeChoice",
+          "entities": 1
+        },
+        {
+          "component": "ShellComplete5",
+          "entities": 1
+        },
+        {
+          "component": "ToInfoDict7",
+          "entities": 1
+        },
+        {
+          "component": "Compositeparamtype",
+          "entities": 1
+        },
+        {
+          "component": "Arity",
+          "entities": 1
+        },
+        {
+          "component": "Datetime",
+          "entities": 1
+        },
+        {
+          "component": "Init41",
+          "entities": 1
+        },
+        {
+          "component": "Repr10",
+          "entities": 1
+        },
+        {
+          "component": "TryToConvertDate",
+          "entities": 1
+        },
+        {
+          "component": "Convert3",
+          "entities": 1
+        },
+        {
+          "component": "GetMetavar2",
+          "entities": 1
+        },
+        {
+          "component": "ToInfoDict8",
+          "entities": 1
+        },
+        {
+          "component": "Datetimeinfodict",
+          "entities": 1
+        },
+        {
+          "component": "File",
+          "entities": 1
+        },
+        {
+          "component": "Init42",
+          "entities": 1
+        },
+        {
+          "component": "Convert4",
+          "entities": 1
+        },
+        {
+          "component": "ResolveLazyFlag",
+          "entities": 1
+        },
+        {
+          "component": "ShellComplete6",
+          "entities": 1
+        },
+        {
+          "component": "ToInfoDict9",
+          "entities": 1
+        },
+        {
+          "component": "Fileinfodict",
+          "entities": 1
+        },
+        {
+          "component": "Floatparamtype",
+          "entities": 1
+        },
+        {
+          "component": "Repr11",
+          "entities": 1
+        },
+        {
+          "component": "Floatrange",
+          "entities": 1
+        },
+        {
+          "component": "Init43",
+          "entities": 1
+        },
+        {
+          "component": "Clamp",
+          "entities": 1
+        },
+        {
+          "component": "Funcparamtype",
+          "entities": 1
+        },
+        {
+          "component": "Init44",
+          "entities": 1
+        },
+        {
+          "component": "Convert5",
+          "entities": 1
+        },
+        {
+          "component": "ToInfoDict10",
+          "entities": 1
+        },
+        {
+          "component": "Intparamtype",
+          "entities": 1
+        },
+        {
+          "component": "Repr12",
+          "entities": 1
+        },
+        {
+          "component": "Intrange",
+          "entities": 1
+        },
+        {
+          "component": "Clamp2",
+          "entities": 1
+        },
+        {
+          "component": "Optionhelpextra",
+          "entities": 1
+        },
+        {
+          "component": "Paramtype",
+          "entities": 1
+        },
+        {
+          "component": "Call2",
+          "entities": 1
+        },
+        {
+          "component": "Convert6",
+          "entities": 1
+        },
+        {
+          "component": "Fail2",
+          "entities": 1
+        },
+        {
+          "component": "GetMetavar3",
+          "entities": 1
+        },
+        {
+          "component": "GetMissingMessage2",
+          "entities": 1
+        },
+        {
+          "component": "ShellComplete7",
+          "entities": 1
+        },
+        {
+          "component": "SplitEnvvarValue",
+          "entities": 1
+        },
+        {
+          "component": "ToInfoDict11",
+          "entities": 1
+        },
+        {
+          "component": "Paramtypeinfodict",
+          "entities": 1
+        },
+        {
+          "component": "Path",
+          "entities": 1
+        },
+        {
+          "component": "Init45",
+          "entities": 1
+        },
+        {
+          "component": "CoercePathResult",
+          "entities": 1
+        },
+        {
+          "component": "Convert7",
+          "entities": 1
+        },
+        {
+          "component": "ShellComplete8",
+          "entities": 1
+        },
+        {
+          "component": "ToInfoDict12",
+          "entities": 1
+        },
+        {
+          "component": "Pathinfodict",
+          "entities": 1
+        },
+        {
+          "component": "Stringparamtype",
+          "entities": 1
+        },
+        {
+          "component": "Repr13",
+          "entities": 1
+        },
+        {
+          "component": "Convert8",
+          "entities": 1
+        },
+        {
+          "component": "Tuple",
+          "entities": 1
+        },
+        {
+          "component": "Init46",
+          "entities": 1
+        },
+        {
+          "component": "Arity2",
+          "entities": 1
+        },
+        {
+          "component": "Convert9",
+          "entities": 1
+        },
+        {
+          "component": "Name4",
+          "entities": 1
+        },
+        {
+          "component": "ToInfoDict13",
+          "entities": 1
+        },
+        {
+          "component": "Tupleinfodict",
+          "entities": 1
+        },
+        {
+          "component": "Uuidparametertype",
+          "entities": 1
+        },
+        {
+          "component": "Repr14",
+          "entities": 1
+        },
+        {
+          "component": "Convert10",
+          "entities": 1
+        },
+        {
+          "component": "Unprocessedparamtype",
+          "entities": 1
+        },
+        {
+          "component": "Repr15",
+          "entities": 1
+        },
+        {
+          "component": "Convert11",
+          "entities": 1
+        },
+        {
+          "component": "Numberparamtypebase",
+          "entities": 1
+        },
+        {
+          "component": "Convert12",
+          "entities": 1
+        },
+        {
+          "component": "Numberrangebase",
+          "entities": 1
+        },
+        {
+          "component": "Init47",
+          "entities": 1
+        },
+        {
+          "component": "Repr16",
+          "entities": 1
+        },
+        {
+          "component": "Clamp3",
+          "entities": 1
+        },
+        {
+          "component": "DescribeRange",
+          "entities": 1
+        },
+        {
+          "component": "Convert13",
+          "entities": 1
+        },
+        {
+          "component": "ToInfoDict14",
+          "entities": 1
+        },
+        {
+          "component": "GuessType",
+          "entities": 1
+        },
+        {
+          "component": "IsFileLike",
+          "entities": 1
+        },
+        {
+          "component": "ConvertType",
+          "entities": 1
+        },
+        {
+          "component": "Keepopenfile",
+          "entities": 1
+        },
+        {
+          "component": "Enter4",
+          "entities": 1
+        },
+        {
+          "component": "Exit6",
+          "entities": 1
+        },
+        {
+          "component": "Getattr9",
+          "entities": 1
+        },
+        {
+          "component": "Init48",
+          "entities": 1
+        },
+        {
+          "component": "Iter3",
+          "entities": 1
+        },
+        {
+          "component": "Repr17",
+          "entities": 1
+        },
+        {
+          "component": "Lazyfile",
+          "entities": 1
+        },
+        {
+          "component": "Enter5",
+          "entities": 1
+        },
+        {
+          "component": "Exit7",
+          "entities": 1
+        },
+        {
+          "component": "Getattr10",
+          "entities": 1
+        },
+        {
+          "component": "Init49",
+          "entities": 1
+        },
+        {
+          "component": "Iter4",
+          "entities": 1
+        },
+        {
+          "component": "Repr18",
+          "entities": 1
+        },
+        {
+          "component": "Close5",
+          "entities": 1
+        },
+        {
+          "component": "CloseIntelligently",
+          "entities": 1
+        },
+        {
+          "component": "Open",
+          "entities": 1
+        },
+        {
+          "component": "Pacifyflushwrapper",
+          "entities": 1
+        },
+        {
+          "component": "Getattr11",
+          "entities": 1
+        },
+        {
+          "component": "Init50",
+          "entities": 1
+        },
+        {
+          "component": "Flush3",
+          "entities": 1
+        },
+        {
+          "component": "Getattr12",
+          "entities": 1
+        },
+        {
+          "component": "DetectProgramName",
+          "entities": 1
+        },
+        {
+          "component": "ExpandArgs",
+          "entities": 1
+        },
+        {
+          "component": "GetBinaryStream",
+          "entities": 1
+        },
+        {
+          "component": "GetTextStream",
+          "entities": 1
+        },
+        {
+          "component": "MakeDefaultShortHelp",
+          "entities": 1
+        },
+        {
+          "component": "Posixify",
+          "entities": 1
+        },
+        {
+          "component": "Safecall",
+          "entities": 1
+        },
+        {
+          "component": "Echo2",
+          "entities": 1
+        },
+        {
+          "component": "FormatFilename",
+          "entities": 1
+        },
+        {
+          "component": "GetAppDir",
+          "entities": 1
+        },
+        {
+          "component": "MakeStr",
+          "entities": 1
+        },
+        {
+          "component": "OpenFile",
+          "entities": 1
+        }
+      ],
+      "formula": "scoring@1:component_balance:raw=clamp(1-(HHI-1/n)/(1-1/n))",
+      "weight": 1.0,
+      "weighted_score": 1.0
+    },
+    {
+      "id": "modularity_trend",
+      "score": 0.5,
+      "status": "scored",
+      "measured": {
+        "metric": "TurboMQ",
+        "a": 0.0,
+        "b": 0.0,
+        "delta": 0.0
+      },
+      "evidence": [
+        {
+          "metric": "TurboMQ",
+          "a": 0.0,
+          "b": 0.0,
+          "delta": 0.0
+        }
+      ],
+      "formula": "scoring@1:modularity_trend:raw=clamp(0.5+clamp(TurboMQ.delta,-0.5,0.5))",
+      "weight": 1.0,
+      "weighted_score": 0.5
+    },
+    {
+      "id": "cohesion_trend",
+      "score": 0.5,
+      "status": "scored",
+      "measured": {
+        "metric": "IntraConnectivity",
+        "a": 0.0,
+        "b": 0.0,
+        "delta": 0.0
+      },
+      "evidence": [
+        {
+          "metric": "IntraConnectivity",
+          "a": 0.0,
+          "b": 0.0,
+          "delta": 0.0
+        }
+      ],
+      "formula": "scoring@1:cohesion_trend:raw=clamp(0.5+2.5*IntraConnectivity.delta)",
+      "weight": 1.0,
+      "weighted_score": 0.5
+    },
+    {
+      "id": "coupling_control",
+      "score": 0.5,
+      "status": "scored",
+      "measured": {
+        "inter_delta": 0.0,
+        "twoway_delta": 0.0
+      },
+      "evidence": [
+        {
+          "metric": "InterConnectivity",
+          "delta": 0.0
+        },
+        {
+          "metric": "TwoWayPairRatio",
+          "delta": 0.0
+        }
+      ],
+      "formula": "scoring@1:coupling_control:raw=clamp(0.5-2.5*InterConnectivity.delta-1.0*TwoWayPairRatio.delta)",
+      "weight": 1.0,
+      "weighted_score": 0.5
+    },
+    {
+      "id": "recovery_confidence_trend",
+      "score": 0.5,
+      "status": "scored",
+      "measured": {
+        "metric": "RCI",
+        "a": 0.0,
+        "b": 0.0,
+        "delta": 0.0
+      },
+      "evidence": [
+        {
+          "metric": "RCI",
+          "a": 0.0,
+          "b": 0.0,
+          "delta": 0.0
+        }
+      ],
+      "formula": "scoring@1:recovery_confidence_trend:raw=clamp(0.5+2.5*RCI.delta)",
+      "weight": 1.0,
+      "weighted_score": 0.5
+    },
+    {
+      "id": "change_containment",
+      "score": 0.9,
+      "status": "scored",
+      "measured": {
+        "entities_added": 49,
+        "entities_deleted": 30,
+        "entities_a": 557,
+        "churn_rate": 0.1418
+      },
+      "evidence": [
+        {
+          "entities_added": 49,
+          "entities_deleted": 30,
+          "entities_a": 557
+        }
+      ],
+      "formula": "scoring@1:change_containment:raw=clamp(1-0.5*((added+deleted)/max(1,entities_a)))",
+      "weight": 1.0,
+      "weighted_score": 0.9
+    },
+    {
+      "id": "evidence_confidence",
+      "score": 1.0,
+      "status": "scored",
+      "measured": {
+        "entities_b": 576,
+        "warnings": 0
+      },
+      "evidence": [],
+      "formula": "scoring@1:evidence_confidence:raw=clamp(1-penalties)",
+      "weight": 1.0,
+      "weighted_score": 1.0
+    }
+  ],
+  "overall_score": 0.8,
+  "scoring": {
+    "version": "scoring@1",
+    "scale": "0.0-1.0 step 0.1",
+    "parallel_scorers": 10,
+    "scored_count": 10,
+    "not_run": [],
+    "scoring_input_hash": "d42ca0c716d429b84a8932f056d06a2ef5867fbdb9f868de292a1510bcf2a178",
+    "changes_source": "derived_from_summary",
+    "profile": {
+      "id": "balanced",
+      "name": "Balanced (default)",
+      "appetite": "balanced",
+      "skill": "skills/scoring/balanced.json"
+    },
+    "config_source": "default",
+    "suggestion_rule": null,
+    "weights": {
+      "smell_regression": 1.0,
+      "responsibility_stability": 1.0,
+      "god_component_risk": 1.0,
+      "component_balance": 1.0,
+      "modularity_trend": 1.0,
+      "cohesion_trend": 1.0,
+      "coupling_control": 1.0,
+      "recovery_confidence_trend": 1.0,
+      "change_containment": 1.0,
+      "evidence_confidence": 1.0
+    },
+    "normalized_weights": {
+      "smell_regression": 0.1,
+      "responsibility_stability": 0.1,
+      "god_component_risk": 0.1,
+      "component_balance": 0.1,
+      "modularity_trend": 0.1,
+      "cohesion_trend": 0.1,
+      "coupling_control": 0.1,
+      "recovery_confidence_trend": 0.1,
+      "change_containment": 0.1,
+      "evidence_confidence": 0.1
+    },
+    "effective_weights": {
+      "smell_regression": 0.1,
+      "responsibility_stability": 0.1,
+      "god_component_risk": 0.1,
+      "component_balance": 0.1,
+      "modularity_trend": 0.1,
+      "cohesion_trend": 0.1,
+      "coupling_control": 0.1,
+      "recovery_confidence_trend": 0.1,
+      "change_containment": 0.1,
+      "evidence_confidence": 0.1
+    },
+    "llm_in_scoring": false
+  },
+  "coverage": {
+    "languages_a": [
+      "python"
+    ],
+    "languages_b": [
+      "python"
+    ],
+    "entities_a": 557,
+    "entities_b": 576,
+    "component_sizes_known": true,
+    "warnings": []
+  },
+  "engine": {
+    "name": "arcade-attest",
+    "version": "0.1.0",
+    "analyzer": "arcade-agent changelog_architecture (PKG recovery)",
+    "llm_in_verdict": false
+  },
+  "honest_gaps": [
+    "No edge-level diff yet: deny_dependency predicates are not evaluated in this MVP.",
+    "Parser blind spots exist (for example files that declare no entities): a component can look empty and a verdict can be a false PASS. Coverage is reported in every evidence pack.",
+    "Predicate thresholds are starting guesses; they need per-repo history to calibrate.",
+    "An on-chain attestation proves the integrity and timestamp of a verdict, not that the verdict is objectively correct.",
+    "Criterion scores (scoring@1) are advisory: 0.5 on a trend criterion means 'no measured change', and a criterion without evidence is reported not_run instead of being scored."
+  ],
+  "hashes": {
+    "decision_record_hash": "31dbb718e619bd1470e450700ea533c9b923cc3a6242588931a3e78199bc8ab6",
+    "evidence_hash": "45f949a5d25a5d153f9971ba4ed7550a99db8587097f424d7515e8dc6fa60cc5"
+  },
+  "id": "att_45f949a5d25a5d15"
+}

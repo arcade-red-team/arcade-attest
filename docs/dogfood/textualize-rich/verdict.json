@@ -1,0 +1,36 @@
+{
+  "schema": "arcade-attest/dogfood-verdict@1",
+  "repo": "Textualize/rich",
+  "range": {
+    "base": {
+      "tag": "v14.3.4",
+      "commit": "ee8378c3bbbd"
+    },
+    "head": {
+      "tag": "v15.0.0",
+      "commit": "6ac483cbea39"
+    }
+  },
+  "decision_id": "ADR-DOGFOOD-RICH",
+  "verdict": "WARN",
+  "entities": {
+    "a": 1135,
+    "b": 1136
+  },
+  "components": {
+    "a": 6,
+    "b": 6
+  },
+  "smells_new": 0,
+  "responsibility_shifts": 0,
+  "largest_component": {
+    "name": "Rich",
+    "entities": 1089
+  },
+  "overall_score": 0.6,
+  "runtime_s": 2.3,
+  "evaluated_at": "2026-10-08T00:00:00Z",
+  "evidence_file": "evidence.json",
+  "evidence_hash": "9cb6cb7cdd0f76f758875292be44378d8ada8b09d81582d4b648a6f783d8ff15",
+  "reproduce": "arcade-attest evaluate --base <Textualize/rich@v14.3.4> --head <Textualize/rich@v15.0.0> --record decision-record.json --evaluated-at 2026-10-08T00:00:00Z"
+}
