@@ -1,0 +1,50 @@
+# Self-gate: this repo's own PRs go through this repo's own action (uses: ./)
+# against its own Decision Record. Analyzes src/ of the real PR base and head.
+#
+# Thresholds in .arcade-attest/decision-record.json were measured over every
+# first-parent change on main (d869afd..3780372): responsibility_shifts max 1,
+# largest component Scoring at 28 entities. Change them only with an issue.
+
+name: self-gate
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  self-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Materialize base and head src trees
+        run: |
+          for side in base head; do
+            sha=$([ "$side" = base ] && echo "${{ github.event.pull_request.base.sha }}" || echo "${{ github.event.pull_request.head.sha }}")
+            mkdir -p "$RUNNER_TEMP/attest-$side"
+            git archive "$sha" src | tar -x -C "$RUNNER_TEMP/attest-$side"
+          done
+
+      - name: ArcadeAttest Gate (this repo's action)
+        id: gate
+        uses: ./
+        with:
+          record: .arcade-attest/decision-record.json
+          base-path: ${{ runner.temp }}/attest-base/src
+          head-path: ${{ runner.temp }}/attest-head/src
+          language: python
+          # Fork PRs get a read-only token, so only comment on same-repo PRs.
+          comment: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: self-gate-evidence-pack
+          path: evidence-pack.json
+          if-no-files-found: ignore
